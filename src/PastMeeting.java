@@ -14,5 +14,3 @@
          */
         String getNotes();
     }
-
-}

@@ -7,5 +7,3 @@
 
         // (i.e. only necessary for type checking and/or downcasting)
     }
-
-}
