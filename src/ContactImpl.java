@@ -5,8 +5,8 @@ public class ContactImpl implements Contact
     private String notes = "";
 
     /** @param IdHelper in order to ensure uniqueness,
-     *  the user cannot be allowed to assign id's */
-    private int IdHelper = 0;
+    the user cannot be allowed to assign id's */
+    private static int IdHelper = 0;
 
     public ContactImpl(String name)
     {
