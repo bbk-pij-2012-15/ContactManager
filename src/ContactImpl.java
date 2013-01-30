@@ -12,14 +12,17 @@ public class ContactImpl implements Contact
 
     public int getId()
     {
+        return 0;
     }
 
     public String getName()
     {
+        return "0";
     }
 
     public String getNotes()
     {
+        return "0";
     }
 
     public void addNotes(String note)
