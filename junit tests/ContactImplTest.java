@@ -4,21 +4,14 @@ import static org.junit.Assert.*;
 public class ContactImplTest
 {
 
-    // create a ContactImpl for the entire test to use
-    // n.b. test WILL fail at this point as ContactImpl not yet implemented
+    /** create a ContactImpl for the entire test to use */
     public ContactImpl cont = new ContactImpl("Test Contact");
-
-    @Before
-    public void buildUp() throws Exception
-    {
-       fail("not yet written");
-    }
 
     @After
     public void cleanUp() throws Exception
     {
-        // remove object after test by setting it to null
-        // just in case it interferes with future tests
+        /**remove object after test by setting it to null
+        just in case it interferes with future tests */
         cont = null;
     }
 
@@ -26,7 +19,7 @@ public class ContactImplTest
     public void testGetId() throws Exception
     {
         int output = cont.getId();
-        int expected = 001;
+        int expected = 0;
         assertEquals(expected, output);
     }
 
@@ -55,8 +48,9 @@ public class ContactImplTest
     @Test
     public void testGetNotes() throws Exception
     {
+        cont.addNotes("This is a note");
         String output = cont.getNotes();
-        String expected = "This is a note";
+        String expected = "This is a note\n";
         assertEquals(expected, output);
     }
 }
