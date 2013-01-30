@@ -34,8 +34,8 @@ public class ContactImplTest
     @Test
     public void testAddNotes() throws Exception
     {
-        // test AddNotes by making sure a note has been added and so
-        // it is not empty (""). we test the actual String in next method
+        /** test AddNotes by making sure a note has been added and so
+        it is not empty (""). we test the actual String in next method */
         cont.addNotes("This is a note");
         boolean passedTest = false;
         if (cont.getNotes() != "")
