@@ -2,15 +2,16 @@ public class ContactImpl implements Contact
 {
     private int Id;
     private String name;
-    protected String notes;
+    private String notes = "";
 
-    // in order to ensure uniqueness, the user cannot be allowed to assign id's
+    /** @param IdHelper in order to ensure uniqueness,
+     *  the user cannot be allowed to assign id's */
     private int IdHelper = 0;
 
     public ContactImpl(String name)
     {
-        // Id is assigned from IdHelper (initially at 0)
-        // IdHelper is then incremented for the next Id it will assign
+        /** @param Id is assigned from IdHelper (initially at 0)
+        IdHelper is then incremented for the next Id it will assign */
         this.name = name;
         this.Id = IdHelper;
         IdHelper++;
@@ -18,21 +19,23 @@ public class ContactImpl implements Contact
 
     public int getId()
     {
-        return 0;
+        return this.Id;
     }
 
     public String getName()
     {
-        return "0";
+        return this.name;
     }
 
     public String getNotes()
     {
-        return "0";
+        return this.notes;
     }
 
     public void addNotes(String note)
     {
-
+        /** prints a newline at the end of each added note
+        so the list of notes remains clear to read */
+        notes += (note + "\n");
     }
 }
