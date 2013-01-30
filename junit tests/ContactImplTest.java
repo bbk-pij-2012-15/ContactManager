@@ -27,15 +27,18 @@ public class ContactImplTest
     public void testIdHelper() throws Exception
     {
         /** create several ContactImpl objects and verify
-         * they all have unique, consecutive Ids */
+        they all have unique, consecutive Ids */
         ContactImpl cont1 = new ContactImpl("Test Contact");
         ContactImpl cont2 = new ContactImpl("Test Contact");
         ContactImpl cont3 = new ContactImpl("Test Contact");
         ContactImpl cont4 = new ContactImpl("Test Contact");
         ContactImpl cont5 = new ContactImpl("Test Contact");
         String output = "" + cont.getId() + cont1.getId() + cont2.getId() + cont3.getId() + cont4.getId() + cont5.getId();
-        String expected = "01234";
+        String expected = "012345";
         assertEquals(expected, output);
+        /** fails at the moment due to IdHelper being assigned to 0 at the
+        top of ContactImpl class - this means each object of the class
+        is instantiated with IdHelper equal to 0 */
      }
 
     @Test
