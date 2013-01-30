@@ -42,9 +42,14 @@ public class ContactImplTest
     public void testAddNotes() throws Exception
     {
         // test AddNotes by making sure a note has been added and so
-        // it is not null. we test the actual String in next method
+        // it is not empty (""). we test the actual String in next method
         cont.addNotes("This is a note");
-        assertNotNull(cont.notes);
+        boolean passedTest = false;
+        if (cont.getNotes() != "")
+        {
+            passedTest = true;
+        }
+        assertTrue(passedTest);
     }
 
     @Test
