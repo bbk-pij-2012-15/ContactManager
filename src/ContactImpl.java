@@ -4,10 +4,16 @@ public class ContactImpl implements Contact
     private String name;
     protected String notes;
 
-    public ContactImpl(int Id, String name)
+    // in order to ensure uniqueness, the user cannot be allowed to assign id's
+    private int IdHelper = 0;
+
+    public ContactImpl(String name)
     {
+        // Id is assigned from IdHelper (initially at 0)
+        // IdHelper is then incremented for the next Id it will assign
         this.name = name;
-        this.Id = Id;
+        this.Id = IdHelper;
+        IdHelper++;
     }
 
     public int getId()
