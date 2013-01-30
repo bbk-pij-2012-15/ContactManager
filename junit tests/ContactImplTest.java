@@ -5,7 +5,7 @@ public class ContactImplTest
 {
 
     /** create a ContactImpl for the entire test to use */
-    public ContactImpl cont = new ContactImpl("Test Contact");
+    ContactImpl cont = new ContactImpl("Test Contact");
 
     @After
     public void cleanUp() throws Exception
@@ -22,6 +22,21 @@ public class ContactImplTest
         int expected = 0;
         assertEquals(expected, output);
     }
+
+    @Test
+    public void testIdHelper() throws Exception
+    {
+        /** create several ContactImpl objects and verify
+         * they all have unique, consecutive Ids */
+        ContactImpl cont1 = new ContactImpl("Test Contact");
+        ContactImpl cont2 = new ContactImpl("Test Contact");
+        ContactImpl cont3 = new ContactImpl("Test Contact");
+        ContactImpl cont4 = new ContactImpl("Test Contact");
+        ContactImpl cont5 = new ContactImpl("Test Contact");
+        String output = "" + cont.getId() + cont1.getId() + cont2.getId() + cont3.getId() + cont4.getId() + cont5.getId();
+        String expected = "01234";
+        assertEquals(expected, output);
+     }
 
     @Test
     public void testGetName() throws Exception
