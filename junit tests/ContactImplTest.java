@@ -6,7 +6,7 @@ public class ContactImplTest
 
     // create a ContactImpl for the entire test to use
     // n.b. test WILL fail at this point as ContactImpl not yet implemented
-    public ContactImpl cont = new ContactImpl(001, "Test Contact");
+    public ContactImpl cont = new ContactImpl("Test Contact");
 
     @Before
     public void buildUp() throws Exception
