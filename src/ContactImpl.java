@@ -6,7 +6,7 @@ public class ContactImpl implements Contact
 
     /** @param IdHelper in order to ensure uniqueness,
     the user cannot be allowed to assign id's */
-    private static int IdHelper = 0;
+    private static int IdHelper = 1;
 
     public ContactImpl(String name)
     {
@@ -34,7 +34,7 @@ public class ContactImpl implements Contact
 
     public void addNotes(String note)
     {
-        /** prints a newline at the end of each added note
+        /** @return prints a newline at the end of each added note
         so the list of notes remains clear to read */
         notes += (note + "\n");
     }
