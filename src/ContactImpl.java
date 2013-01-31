@@ -10,7 +10,7 @@ public class ContactImpl implements Contact
 
     public ContactImpl(String name)
     {
-        /** @param Id is assigned from IdHelper (initially at 0)
+        /** @param Id is assigned from IdHelper (initially at 1)
         IdHelper is then incremented for the next Id it will assign */
         this.name = name;
         this.Id = IdHelper;
