@@ -39,7 +39,7 @@ public class ContactImplTest
         /** test several ContactImpl objects and verify
         they all have unique, consecutive Ids */
         String output = "" + cont.getId() + cont1.getId() + cont2.getId() + cont3.getId() + cont4.getId() + cont5.getId();
-        String expected = "012345";
+        String expected = "123456";
         assertEquals(expected, output);
      }
 
