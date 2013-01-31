@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 public class ContactImplTest
 {
 
-    /** create a ContactImpl for the entire test to use */
+    /** create some ContactImpl objects for the entire test to use */
     ContactImpl cont = new ContactImpl("Test Contact");
     ContactImpl cont1 = new ContactImpl("Test Contact");
     ContactImpl cont2 = new ContactImpl("Test Contact");
@@ -13,7 +13,7 @@ public class ContactImplTest
     ContactImpl cont5 = new ContactImpl("Test Contact");
 
     @After
-    public void cleanUp() throws Exception
+    public void cleanUp()
     {
         /**remove objects after test by setting it to null
         just in case they interfere with future tests */
@@ -26,15 +26,15 @@ public class ContactImplTest
     }
 
     @Test
-    public void testGetId() throws Exception
+    public void testGetId()
     {
         int output = cont.getId();
-        int expected = 0;
+        int expected = 1;
         assertEquals(expected, output);
     }
 
     @Test
-    public void testIdHelper() throws Exception
+    public void testIdHelper()
     {
         /** test several ContactImpl objects and verify
         they all have unique, consecutive Ids */
@@ -44,7 +44,7 @@ public class ContactImplTest
      }
 
     @Test
-    public void testGetName() throws Exception
+    public void testGetName()
     {
         String output = cont.getName();
         String expected = "Test Contact";
@@ -52,7 +52,7 @@ public class ContactImplTest
     }
 
     @Test
-    public void testAddNotes() throws Exception
+    public void testAddNotes()
     {
         /** test AddNotes by making sure a note has been added and so
         it is not empty (""). we test the actual String in next method */
@@ -66,7 +66,7 @@ public class ContactImplTest
     }
 
     @Test
-    public void testGetNotes() throws Exception
+    public void testGetNotes()
     {
         cont.addNotes("This is a note");
         String output = cont.getNotes();
