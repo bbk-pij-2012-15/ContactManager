@@ -6,13 +6,23 @@ public class ContactImplTest
 
     /** create a ContactImpl for the entire test to use */
     ContactImpl cont = new ContactImpl("Test Contact");
+    ContactImpl cont1 = new ContactImpl("Test Contact");
+    ContactImpl cont2 = new ContactImpl("Test Contact");
+    ContactImpl cont3 = new ContactImpl("Test Contact");
+    ContactImpl cont4 = new ContactImpl("Test Contact");
+    ContactImpl cont5 = new ContactImpl("Test Contact");
 
     @After
     public void cleanUp() throws Exception
     {
-        /**remove object after test by setting it to null
-        just in case it interferes with future tests */
+        /**remove objects after test by setting it to null
+        just in case they interfere with future tests */
         cont = null;
+        cont1 = null;
+        cont2 = null;
+        cont3 = null;
+        cont4 = null;
+        cont5 = null;
     }
 
     @Test
@@ -26,17 +36,11 @@ public class ContactImplTest
     @Test
     public void testIdHelper() throws Exception
     {
-        /** create several ContactImpl objects and verify
+        /** test several ContactImpl objects and verify
         they all have unique, consecutive Ids */
-        ContactImpl cont1 = new ContactImpl("Test Contact");
-        ContactImpl cont2 = new ContactImpl("Test Contact");
-        ContactImpl cont3 = new ContactImpl("Test Contact");
-        ContactImpl cont4 = new ContactImpl("Test Contact");
-        ContactImpl cont5 = new ContactImpl("Test Contact");
         String output = "" + cont.getId() + cont1.getId() + cont2.getId() + cont3.getId() + cont4.getId() + cont5.getId();
         String expected = "012345";
         assertEquals(expected, output);
-
      }
 
     @Test
