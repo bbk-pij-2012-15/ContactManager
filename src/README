@@ -1,1 +1,5 @@
-First thing I can usefully push
+I have decided to use serialization to save and load data. Due to this, I have decided to change the program's implementation:
+I will use an ArrayList to store the contacts, as it is a convenient single object for use with serialization
+Variable IdHelper is static and so is unsuitable for serialization, therefore I will assign new Contact Id's based on
+(size of ArrayList + 1)
+
