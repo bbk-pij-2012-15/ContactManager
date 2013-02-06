@@ -1,4 +1,6 @@
-public class ContactImpl implements Contact
+import java.io.Serializable;
+
+public class ContactImpl implements Contact, Serializable
 {
     private int Id;
     private String name;
@@ -6,7 +8,7 @@ public class ContactImpl implements Contact
 
     /** @param IdHelper in order to ensure uniqueness,
     the user cannot be allowed to assign id's */
-    private static int IdHelper = 1;
+    private int IdHelper = (ContactManagerImpl.getArraySize() + 1);
 
     public ContactImpl(String name)
     {
@@ -14,7 +16,6 @@ public class ContactImpl implements Contact
         IdHelper is then incremented for the next Id it will assign */
         this.name = name;
         this.Id = IdHelper;
-        IdHelper++;
     }
 
     public int getId()
