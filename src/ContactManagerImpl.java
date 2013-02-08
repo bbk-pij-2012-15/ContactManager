@@ -2,16 +2,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+import java.io.File;
+import java.io.Serializable;
 
-public class ContactManagerImpl implements ContactManager
+public class ContactManagerImpl implements ContactManager, Serializable
 {
+    private File dataOnDisk = new File("./data");
+    private List<ContactImpl> contactsList = new ArrayList<ContactImpl>(1);
 
-    private static List<ContactImpl> ContactArray = new ArrayList<ContactImpl>(1);
-
-    public static int getArraySize()
+    public ContactManagerImpl(List<ContactImpl> list)
     {
-        int size = ContactArray.size();
-        return size;
+        this.contactsList = list;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
