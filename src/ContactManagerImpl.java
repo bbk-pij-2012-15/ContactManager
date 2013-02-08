@@ -1,9 +1,8 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
-import java.io.File;
-import java.io.Serializable;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
@@ -77,6 +76,20 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void flush()
     {
+        try
+        {
+            ObjectOutputStream objectOut =
+                    new ObjectOutputStream(
+                            new BufferedOutputStream(
+                                    new FileOutputStream(dataOnDisk)));
 
+            objectOut.writeObject(contactsList);
+            objectOut.close();
+        }
+        catch (IOException ioex)
+        {
+            System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
+            ioex.printStackTrace();
+        }
     }
 }
