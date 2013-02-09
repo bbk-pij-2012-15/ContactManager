@@ -6,8 +6,10 @@ import java.util.Set;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
-    private File dataOnDisk = new File("./data");
+    private File dataOnDisk = new File("./contactData");
     private List<ContactImpl> contactsList = new ArrayList<ContactImpl>(1);
+
+    public ContactManagerImpl(){}
 
     public ContactManagerImpl(List<ContactImpl> list)
     {
@@ -85,6 +87,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
             objectOut.writeObject(contactsList);
             objectOut.close();
+        }
+        catch (FileNotFoundException fnfex)
+        {
+            System.err.println("File not found. Please make sure you are in correct directory and try again");
         }
         catch (IOException ioex)
         {
