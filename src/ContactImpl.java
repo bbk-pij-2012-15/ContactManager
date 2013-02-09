@@ -2,20 +2,18 @@ import java.io.Serializable;
 
 public class ContactImpl implements Contact, Serializable
 {
-    private int Id;
     private String name;
     private String notes = "";
-
     /** @param IdHelper in order to ensure uniqueness,
     the user cannot be allowed to assign id's */
-    private int IdHelper = (ContactManagerImpl.getArraySize() + 1);
+    private int Id;
 
-    public ContactImpl(String name)
+    public ContactImpl(String name, int Id)
     {
-        /** @param Id is assigned from IdHelper (initially at 1)
-        IdHelper is then incremented for the next Id it will assign */
+        /** @param Id is safe to have in the constructor as the user never directly constructs Contacts,
+         *  (this is done by the ContactManager) and so cannot set an arbitrary or non-unique Id */
         this.name = name;
-        this.Id = IdHelper;
+        this.Id = Id;
     }
 
     public int getId()
