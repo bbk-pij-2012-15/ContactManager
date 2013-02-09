@@ -63,7 +63,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void addNewContact(String name, String notes)
     {
-
+        /** @param uniqueId a unique Id constructed by adding 1
+         *  to the current size of the ArrayList */
+        int uniqueId = this.contactsList.size();
+        ContactImpl tmp = new ContactImpl(name, notes, uniqueId);       // split into 2 lines
+        contactsList.add(tmp);                                          // for clarity
     }
 
     public Set<Contact> getContacts(int... ids)
