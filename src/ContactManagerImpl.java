@@ -7,11 +7,11 @@ import java.util.Set;
 public class ContactManagerImpl implements ContactManager, Serializable
 {
     private File dataOnDisk = new File("./contactData");
-    private List<ContactImpl> contactsList = new ArrayList<ContactImpl>(1);
+    private List<Contact> contactsList = new ArrayList<Contact>(1);
 
     public ContactManagerImpl(){}
 
-    public ContactManagerImpl(List<ContactImpl> list)
+    public ContactManagerImpl(List<Contact> list)
     {
         this.contactsList = list;
     }
@@ -66,8 +66,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** @param uniqueId a unique Id constructed by adding 1
          *  to the current size of the ArrayList */
         int uniqueId = this.contactsList.size();
-        ContactImpl tmp = new ContactImpl(name, notes, uniqueId);       // split into 2 lines
-        contactsList.add(tmp);                                          // for clarity
+        Contact tmp = new ContactImpl(name, uniqueId);    // construct a Contact object
+        if (notes != null)
+        {
+            tmp.addNotes(notes);      // call the addNotes method to ensure newline character is added
+        }
+        contactsList.add(tmp);          // add object to list with or without notes
     }
 
     public Set<Contact> getContacts(int... ids)
