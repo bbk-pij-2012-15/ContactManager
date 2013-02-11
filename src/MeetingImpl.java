@@ -34,7 +34,7 @@ public class MeetingImpl implements Meeting
         for (Iterator<Contact> itr = this.contactSet.iterator(); itr.hasNext(); )
         {
             Contact tmp = itr.next();
-            setInfo += tmp.getInfo();   // will implement this method later
+            setInfo += tmp.getInfo();   // will implement this method later in class ContactImpl
         }
         return setInfo;
     }
