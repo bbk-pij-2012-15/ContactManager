@@ -1,8 +1,23 @@
 import org.junit.*;
+
+import java.io.File;
+
 import static org.junit.Assert.*;
 
 public class ContactManagerImplTest
 {
+    ContactManagerImpl conman = new ContactManagerImpl();
+    private File dataOnDisk = new File("./contacts.txt");
+
+
+    @Test
+    public void testAddNewContact()
+    {
+        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
+        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
+        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
+    }
+
     @After
     public void cleanUp()
     {
@@ -61,13 +76,7 @@ public class ContactManagerImplTest
     public void testAddMeetingNotes()
     {
         fail("not written yet");
-    }
-
-    @Test
-    public void testAddNewContact()
-    {
-        fail("not written yet");
-    }
+    }//
 
     @Test
     public void testGetContactsInt()
@@ -84,6 +93,20 @@ public class ContactManagerImplTest
     @Test
     public void testFlush()
     {
-        fail("not written yet");
+        boolean testSuccess = false;
+        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
+        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
+        conman.flush();
+        if (dataOnDisk.exists())
+        {
+            testSuccess = true;
+        }
+        assertTrue(testSuccess);
+    }
+
+    @Test
+    public void testLoad()
+    {
+
     }
 }
