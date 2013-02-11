@@ -66,16 +66,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** @param uniqueId a unique Id constructed by adding 1
          *  to the current size of the ArrayList */
         int uniqueId = this.contactsList.size();
-        Contact tmp = new ContactImpl(name, uniqueId);    // construct a Contact object
-        try
-        {
-            tmp.addNotes(notes);
-        }
-        catch (NullPointerException npex)
-        {
-            addNewContact(name, "");
-        }
-        contactsList.add(tmp);          // add object to list with or without notes
+        Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object
+        contactsList.add(tmp);
     }
 
     public Set<Contact> getContacts(int... ids)
