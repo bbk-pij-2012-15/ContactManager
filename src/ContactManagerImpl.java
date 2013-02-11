@@ -9,7 +9,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private List<Contact> contactsList = new ArrayList<Contact>();
 
-    public ContactManagerImpl(){}
+    public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
 
     public ContactManagerImpl(List<Contact> list)
     {
@@ -94,7 +94,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         catch (FileNotFoundException fnfex)
         {
-            System.err.println("File not found. Please make sure you are in correct directory and try again");
+            System.err.println("Contacts.txt file not found. Please make sure directory is writeable and try again");
         }
         catch (IOException ioex)
         {
