@@ -8,12 +8,13 @@ public class ContactImpl implements Contact, Serializable
     the user cannot be allowed to assign id's */
     private int Id;
 
-    public ContactImpl(String name, int Id)
+    public ContactImpl(String name, String notes, int Id)
     {
         /** @param Id is safe to have in the constructor as the user never directly constructs Contacts,
          *  (this is done by the ContactManager) and so cannot set an arbitrary or non-unique Id */
         this.name = name;
         this.Id = Id;
+        this.notes = notes;
     }
 
     public int getId()
