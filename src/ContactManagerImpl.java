@@ -85,16 +85,50 @@ public class ContactManagerImpl implements ContactManager, Serializable
         try
         {
             ObjectOutputStream objectOut =
-                    new ObjectOutputStream(
-                            new BufferedOutputStream(
+                    new ObjectOutputStream(                                        // written over several lines
+                            new BufferedOutputStream(                              // for extra clarity
                                     new FileOutputStream(dataOnDisk)));
 
-            objectOut.writeObject(contactsList);
+            objectOut.writeObject(contactsList);      // writes the ArrayList containing contacts to disk
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
         {
             System.err.println("Contacts.txt file not found. Please make sure directory is writeable and try again");
+        }
+        catch (IOException ioex)
+        {
+            System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
+            ioex.printStackTrace();
+        }
+    }
+
+    public ContactManager load()
+    {
+        try
+        {
+            ObjectInputStream objectIn =
+                    new ObjectInputStream(                                      // written over several lines
+                            new BufferedInputStream(                            // for extra clarity
+                                    new FileInputStream(dataOnDisk)));
+
+            List<Contact> contactsList = (ArrayList<Contact>) objectIn.readObject();
+            objectIn.close();
+
+            ContactManager tmp = new ContactManagerImpl(contactsList);
+            return tmp;
+        }
+        catch (FileNotFoundException fnfex)
+        {
+            System.err.println("Contacts.txt file not found. Please make sure directory is readable and/or " +
+                    "\nthat you have flushed at least once previously, and then try again");
+        }
+        catch (ClassNotFoundException cnfex)
+        {
+            System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
+                    "\nthat you have flushed at least once previously, and then try again." +
+                    "\n If you are working in a different directory, make sure your CLASSPATH includes the required classes:\n\n");
+            System.out.print(cnfex.getCause().toString());       // will hopefully print the class that caused the exception
         }
         catch (IOException ioex)
         {
