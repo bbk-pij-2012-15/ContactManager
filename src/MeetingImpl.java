@@ -31,10 +31,10 @@ public class MeetingImpl implements Meeting
     public String getSetInfo()
     {
         String setInfo = "";
-        for (Iterator<Contact> itr = this.contactSet.iterator(); itr.hasNext(); )
+        for (Iterator<Contact> itr = this.contactSet.iterator(); itr.hasNext();)
         {
-            Contact tmp = itr.next();
-            setInfo += tmp.getInfo();   // will implement this method later in class ContactImpl
+            ContactImpl tmp = (ContactImpl) itr.next();
+            setInfo += tmp.getInfo();
         }
         return setInfo;
     }
