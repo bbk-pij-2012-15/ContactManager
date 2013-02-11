@@ -38,4 +38,12 @@ public class ContactImpl implements Contact, Serializable
         so the list of notes remains clear to read */
         notes += (note + "\n");
     }
+
+    public String getInfo()
+    {
+        /** @return returns a useful String containing a Contact's name, id and any notes
+        Will be used for test purposes and to display information about a specific Contact */
+        String tmp = "Name: " + this.name + ", Id: " + this.Id + ", Notes: \n" + this.notes;
+        return tmp;
+    }
 }
