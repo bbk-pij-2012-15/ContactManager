@@ -6,8 +6,8 @@ import java.util.Set;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
-    private File dataOnDisk = new File("./contactData");
-    private List<Contact> contactsList = new ArrayList<Contact>(1);
+    private File dataOnDisk = new File("./contacts.txt");
+    private List<Contact> contactsList = new ArrayList<Contact>();
 
     public ContactManagerImpl(){}
 
@@ -67,9 +67,13 @@ public class ContactManagerImpl implements ContactManager, Serializable
          *  to the current size of the ArrayList */
         int uniqueId = this.contactsList.size();
         Contact tmp = new ContactImpl(name, uniqueId);    // construct a Contact object
-        if (notes != null)
+        try
         {
-            tmp.addNotes(notes);      // call the addNotes method to ensure newline character is added
+            tmp.addNotes(notes);
+        }
+        catch (NullPointerException npex)
+        {
+            addNewContact(name, "");
         }
         contactsList.add(tmp);          // add object to list with or without notes
     }
