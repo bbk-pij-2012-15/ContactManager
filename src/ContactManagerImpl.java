@@ -18,37 +18,37 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
     {
-
+            return 0;
     }
 
     public PastMeeting getPastMeeting(int id)
     {
-
+             return null;
     }
 
     public FutureMeeting getFutureMeeting(int id)
     {
-
+               return null;
     }
 
     public Meeting getMeeting(int id)
     {
-
+                return null;
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact)
     {
-
+                 return null;
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
-
+                   return null;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact)
     {
-
+                  return null;
     }
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
@@ -66,18 +66,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** @param uniqueId a unique Id constructed by adding 1
          *  to the current size of the ArrayList */
         int uniqueId = this.contactsList.size();
-        Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object
+        Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
         contactsList.add(tmp);
     }
 
     public Set<Contact> getContacts(int... ids)
     {
-
+         return null;
     }
 
     public Set<Contact> getContacts(String name)
     {
-
+            return null;
     }
 
     public void flush()
@@ -127,13 +127,14 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
                     "\nthat you have flushed at least once previously, and then try again." +
-                    "\n If you are working in a different directory, make sure your CLASSPATH includes the required classes:\n\n");
-            System.out.print(cnfex.getCause().toString());       // will hopefully print the class that caused the exception
+                    "\n If you are working in a different directory, make sure your CLASSPATH includes the required class:\n\n");
+            System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
         }
         catch (IOException ioex)
         {
             System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
             ioex.printStackTrace();
         }
+        return null;
     }
 }
