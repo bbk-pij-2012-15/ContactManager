@@ -10,9 +10,11 @@ public class PastMeetingImpl implements PastMeeting extends Meeting
           this.
     }
 
-    public void addNotes()
+    public void addNotes(String note)
     {
-
+        /** @return prints a newline at the end of each added note and a dash
+        at the start so the list of notes remains clear to read */
+        meetingNotes += ("-" + note + "\n");
     }
 
     public String getNotes()
