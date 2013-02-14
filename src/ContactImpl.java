@@ -34,9 +34,9 @@ public class ContactImpl implements Contact, Serializable
 
     public void addNotes(String note)
     {
-        /** @return prints a newline at the end of each added note
-        so the list of notes remains clear to read */
-        notes += (note + "\n");
+        /** @return prints a newline at the end of each added note and a dash
+        at the start so the list of notes remains clear to read */
+        notes += ("-" + note + "\n");
     }
 
     public String getInfo()
