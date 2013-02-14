@@ -19,13 +19,13 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** @param currentDate an instance of Calendar to get the
          current date in order to see if the date provided is valid */
         Calendar currentDate = GregorianCalendar.getInstance();
-        if (currentDate.after(date))
+        if (currentDate.after(date))       // i.e if user's date is in the past
         {
             throw new IllegalArgumentException("Specified date is in the past! Please try again.");
         }
         for (Iterator<Contact> itr = contacts.iterator(); itr.hasNext();)
         {
-            if (!contactSet.contains(itr.next()))
+            if (!contactSet.contains(itr.next()))      // if contactSet does NOT contain itr.next()
             {
                 throw new IllegalArgumentException("Contact \"" + itr.next().getName() + "\" does not exist! Please try again.");
             }
