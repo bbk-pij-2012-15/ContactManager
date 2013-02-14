@@ -39,7 +39,19 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public PastMeeting getPastMeeting(int id)
     {
-             return null;
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (itr.next().getId() == id)
+            {
+                break;
+                return (PastMeeting) itr.next();
+            }
+            else
+            {
+                System.err.println("No meeting found with id " + id);
+                return null;
+            }
+        }
     }
 
     public FutureMeeting getFutureMeeting(int id)
