@@ -3,13 +3,13 @@ import java.util.*;
 public class MeetingImpl implements Meeting
 {
     private int meetingId;
-    private Set<Contact> contactSet = new HashSet<Contact>();
+    private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
     private Calendar meetingCal;
 
     public MeetingImpl(Set<Contact> set)
     {
         this.meetingId = (set.size() + 1);
-        this.contactSet.addAll(set);
+        this.contactsAtMeeting.addAll(set);
         this.meetingCal = new GregorianCalendar().getInstance();
     }
 
@@ -25,13 +25,13 @@ public class MeetingImpl implements Meeting
 
     public Set<Contact> getContacts()
     {
-        return this.contactSet;
+        return this.contactsAtMeeting;
     }
 
     public String getSetInfo()
     {
         String setInfo = "";
-        for (Iterator<Contact> itr = this.contactSet.iterator(); itr.hasNext();)
+        for (Iterator<Contact> itr = this.contactsAtMeeting.iterator(); itr.hasNext();)
         {
             ContactImpl tmp = (ContactImpl) itr.next();
             setInfo += tmp.getInfo();
