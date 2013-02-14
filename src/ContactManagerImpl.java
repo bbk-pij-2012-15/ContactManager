@@ -5,6 +5,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 {
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
+    private Set<Meeting> meetingSet = new HashSet<Meeting>();
 
     public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
 
@@ -15,7 +16,25 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
     {
-            return 0;
+        /** @param currentDate an instance of Calendar to get the
+         current date in order to see if the date provided is valid */
+        Calendar currentDate = GregorianCalendar.getInstance();
+        if (currentDate.after(date))
+        {
+            throw new IllegalArgumentException("Specified date is in the past! Please try again.");
+        }
+        for (Iterator<Contact> itr = contacts.iterator(); itr.hasNext();)
+        {
+            if (!contactSet.contains(itr.next()))
+            {
+                throw new IllegalArgumentException("Contact \"" + itr.next().getName() + "\" does not exist! Please try again.");
+            }
+        }
+        /** if neither exception thrown, FutureMeeting object can be instantiated */
+        FutureMeeting tmp = new FutureMeetingImpl(contacts, date);
+        meetingSet.add(tmp);
+        /** @return the ID for the meeting by calling getId() */
+        return tmp.getId();
     }
 
     public PastMeeting getPastMeeting(int id)
