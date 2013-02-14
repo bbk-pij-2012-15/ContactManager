@@ -38,13 +38,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         return tmp.getId();
     }
 
-    public PastMeeting getPastMeeting(int id)            // STILL NEED TO SORT PAST/FUT MEETINGS
+    public PastMeeting getPastMeeting(int id)
     {
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
         {
             if (itr.next().getId() == id)
             {
-                break;
+                if (itr.next().inFuture() == true)
+                {
+                    throw new IllegalArgumentException("Meeting with specified ID will not happen until " + itr.next().getFormattedDate());
+                    return null;
+                }
+                /** if exception not thrown, but the id was found, then the meeting must be past */
                 return (PastMeeting) itr.next();
             }
             else
