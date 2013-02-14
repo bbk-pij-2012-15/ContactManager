@@ -10,11 +10,11 @@ public class MeetingImpl implements Meeting
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
     private Calendar meetingCal;
 
-    public MeetingImpl(Set<Contact> set)
+    public MeetingImpl(Set<Contact> set, Calendar date)
     {
         this.meetingId = (set.size() + 1);
         this.contactsAtMeeting.addAll(set);
-        this.meetingCal = new GregorianCalendar().getInstance();
+        this.meetingCal = date;
     }
 
     public int getId()
