@@ -1,13 +1,13 @@
 import java.util.Calendar;
 import java.util.Set;
 
-public class PastMeetingImpl implements PastMeeting extends Meeting
+public class PastMeetingImpl extends MeetingImpl implements PastMeeting
 {
     private String meetingNotes;
 
     public PastMeetingImpl(Set<Contact> set, Calendar date)
     {
-          this.
+        super(set, date);
     }
 
     public void addNotes(String note)
@@ -39,7 +39,7 @@ public class PastMeetingImpl implements PastMeeting extends Meeting
 
     public Calendar getDate()
     {
-
+        return super.meetingCal;
     }
 
     public Set<Contact> getContacts()
