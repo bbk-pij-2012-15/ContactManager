@@ -10,9 +10,14 @@ public class PastMeetingImpl implements PastMeeting extends Meeting
           this.
     }
 
-    public String getNotes()
+    public void addNotes()
     {
 
+    }
+
+    public String getNotes()
+    {
+        return this.meetingNotes;
     }
 
     public int getId()
