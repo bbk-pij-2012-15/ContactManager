@@ -6,7 +6,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
-    private Map<Calendar, Set<Meeting>> meetingMap = new TreeMap<Calendar, Set<Meeting>>(Comparator);
 
     public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
 
