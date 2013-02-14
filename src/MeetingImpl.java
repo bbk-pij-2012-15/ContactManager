@@ -9,12 +9,24 @@ public class MeetingImpl implements Meeting
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
     private Calendar meetingCal;
+    private boolean past = false;
+    private boolean future = false;
 
     public MeetingImpl(Set<Contact> set, Calendar date)
     {
         this.meetingId = (set.size() + 1);
         this.contactsAtMeeting.addAll(set);
         this.meetingCal = date;
+
+        Calendar currentDate = GregorianCalendar.getInstance();
+        if (currentDate.after(date))       // i.e if meeting date is in the past
+        {
+            this.past = true;
+        }
+        else if (currentDate.before(date))       // i.e. if meeting date is in the future
+        {
+            this.future = true;
+        }
     }
 
     public int getId()
