@@ -34,6 +34,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         FutureMeeting tmp = new FutureMeetingImpl(contacts, date);
         meetingSet.add(tmp);
         /** @return the ID for the meeting by calling getId() */
+        System.out.println("Success - Meeting Scheduled!");
         return tmp.getId();
     }
 
