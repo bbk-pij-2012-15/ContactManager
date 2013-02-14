@@ -1,19 +1,16 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
     private File dataOnDisk = new File("./contacts.txt");
-    private List<Contact> contactsList = new ArrayList<Contact>();
+    private Set<Contact> contactSet = new HashSet<Contact>();
 
     public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
 
-    public ContactManagerImpl(List<Contact> list)
+    public ContactManagerImpl(Set<Contact> set)
     {
-        this.contactsList = list;
+        this.contactSet = set;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
@@ -64,10 +61,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public void addNewContact(String name, String notes)
     {
         /** @param uniqueId a unique Id constructed by adding 1
-         *  to the current size of the ArrayList */
-        int uniqueId = this.contactsList.size();
+         *  to the current size of the HashSet */
+        int uniqueId = this.contactSet.size();
         Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
-        contactsList.add(tmp);
+        contactSet.add(tmp);
     }
 
     public Set<Contact> getContacts(int... ids)
@@ -89,7 +86,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                             new BufferedOutputStream(                              // for extra clarity
                                     new FileOutputStream(dataOnDisk)));
 
-            objectOut.writeObject(contactsList);      // writes the ArrayList containing contacts to disk
+            objectOut.writeObject(contactSet);      // writes the ArrayList containing contacts to disk
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
@@ -112,10 +109,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
                             new BufferedInputStream(                            // for extra clarity
                                     new FileInputStream(dataOnDisk)));
 
-            List<Contact> contactsList = (ArrayList<Contact>) objectIn.readObject();
+            Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();
             objectIn.close();
 
-            ContactManager tmp = new ContactManagerImpl(contactsList);
+            ContactManager tmp = new ContactManagerImpl(contactSet);
             return tmp;
         }
         catch (FileNotFoundException fnfex)
