@@ -65,6 +65,13 @@ public class MeetingImpl implements Meeting
         return info;
     }
 
+    public String getFormattedDate()
+    {
+        String datestr = "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
+                (this.meetingCal.get(GregorianCalendar.MONTH) + 1) + "/" + this.meetingCal.get(GregorianCalendar.YEAR);
+        return datestr;
+    }
+
     public boolean inPast()
     {
         return past;
