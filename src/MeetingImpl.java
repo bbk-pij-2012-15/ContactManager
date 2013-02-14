@@ -65,4 +65,14 @@ public class MeetingImpl implements Meeting
         return info;
     }
 
+    public boolean inPast()
+    {
+        return past;
+    }
+
+    public boolean inFuture()
+    {
+        return future;
+    }
+
 }
