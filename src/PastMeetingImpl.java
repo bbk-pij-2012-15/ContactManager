@@ -17,9 +17,19 @@ public class PastMeetingImpl implements PastMeeting extends Meeting
         meetingNotes += ("-" + note + "\n");
     }
 
+     /** Returns the notes from the meeting.
+     * If there are no notes, the empty string is returned.
+      @return the notes from the meeting. */
     public String getNotes()
     {
-        return this.meetingNotes;
+        if (meetingNotes == null)
+        {
+            return "";
+        }
+        else
+        {
+            return this.meetingNotes;
+        }
     }
 
     public int getId()
