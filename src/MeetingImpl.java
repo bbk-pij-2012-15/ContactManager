@@ -25,6 +25,11 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         }
     }
 
+    public MeetingImpl()
+    {
+        // no args constructor for comparator
+    }
+
     public int getId()
     {
         return this.meetingId;
