@@ -44,7 +44,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             if (itr.next().getId() == id)
             {
-                if (itr.next().inFuture() == true)
+                if (itr.next().inFuture() == true)     // call boolean getter method to check whether meeting is past or future
                 {
                     throw new IllegalArgumentException("Meeting with specified ID will not happen until " + itr.next().getFormattedDate());
                     return null;
@@ -62,7 +62,24 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public FutureMeeting getFutureMeeting(int id)
     {
-               return null;
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (itr.next().getId() == id)
+            {
+                if (itr.next().inPast() == true)       // call boolean getter method to check whether meeting is past or future
+                {
+                    throw new IllegalArgumentException("Meeting with specified ID happened on " + itr.next().getFormattedDate());
+                    return null;
+                }
+                /** if exception not thrown, but the id was found, then the meeting must be in the future */
+                return (FutureMeeting) itr.next();
+            }
+            else
+            {
+                System.err.println("No meeting found with id " + id);
+                return null;
+            }
+        }
     }
 
     public Meeting getMeeting(int id)
