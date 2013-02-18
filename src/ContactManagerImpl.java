@@ -49,7 +49,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     throw new IllegalArgumentException("Meeting with specified ID will not happen until " + itr.next().getFormattedDate());
                     return null;
                 }
-                /** if exception not thrown, but the id was found, then the meeting must be past */
+                /** if exception not thrown, but the id was found, then the meeting must be past
+                 * @return itr.next which is type Meeting, cast into type PastMeeting */
                 return (PastMeeting) itr.next();
             }
             else
@@ -71,7 +72,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     throw new IllegalArgumentException("Meeting with specified ID happened on " + itr.next().getFormattedDate());
                     return null;
                 }
-                /** if exception not thrown, but the id was found, then the meeting must be in the future */
+                /** if exception not thrown, but the id was found, then the meeting must be in the future
+                 * @return itr.next which is type Meeting, cast into type FutureMeeting */
                 return (FutureMeeting) itr.next();
             }
             else
@@ -84,7 +86,19 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public Meeting getMeeting(int id)
     {
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (itr.next().getId() == id)
+            {
+                /** @return itr.next which is type Meeting, no need for casting */
+                return itr.next();
+            }
+            else
+            {
+                System.err.println("No meeting found with id " + id);
                 return null;
+            }
+        }
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact)
