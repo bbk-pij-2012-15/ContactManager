@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 
-public class MeetingImpl implements Meeting
+public class MeetingImpl implements Meeting, Comparable<Meeting>
 {
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
@@ -80,6 +80,12 @@ public class MeetingImpl implements Meeting
     public boolean inFuture()
     {
         return future;
+    }
+
+    @Override
+    public int compareTo(Meeting meeting)
+    {
+
     }
 
 }
