@@ -111,11 +111,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
         List<Meeting> list = new ArrayList<Meeting>();
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
         {
-            if (itr.next().getContacts().contains(contact))
+            Meeting m = itr.next();
+            if (m.getContacts().contains(contact))
             {
                 /** each time a matching Meeting is found, it is added to the list.
                  * still need to sort chronologically and eliminate duplicates */
-                list.add(itr.next());
+                list.add(m);
             }
         }
         return list;
