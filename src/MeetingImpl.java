@@ -1,10 +1,6 @@
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
+import java.util.*;
 
-public class MeetingImpl implements Meeting, Comparable<Meeting>
+public class MeetingImpl implements Meeting, Comparator<Meeting>
 {
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
@@ -83,9 +79,14 @@ public class MeetingImpl implements Meeting, Comparable<Meeting>
     }
 
     @Override
-    public int compareTo(Meeting meeting)
+    public int compare(Meeting m1, Meeting m2)
     {
-
+        Calendar cal1 = m1.getDate();      // the calendar for the first meeting
+        Calendar cal2 = m2.getDate();   // the calendar for the second meeting
+        int cal1Time = (int) cal1.getTimeInMillis() ;     // cast the long return type of method getTimeInMillis to an int for the comparator
+        int cal2Time = (int) cal2.getTimeInMillis();
+        /** @return a number which will unambiguously place each calendar in order (using milliseconds) */
+        return (cal1Time - cal2Time);
     }
 
 }
