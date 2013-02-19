@@ -6,7 +6,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
-    private static boolean firstRun = true;
+    public static boolean firstRun = true;
 
     /** First-run constructor which creates empty sets for meetings and contacts
      *  and immediately saves them to disk, so that load() can call the second constructor
