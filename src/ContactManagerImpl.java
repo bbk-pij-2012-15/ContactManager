@@ -9,9 +9,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
 
-    public ContactManagerImpl(Set<Contact> set)
+    public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset)
     {
-        this.contactSet = set;
+        this.contactSet = cset;
+        this.meetingSet = mset;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
@@ -165,7 +166,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
             objectIn.close();
 
-            ContactManager tmp = new ContactManagerImpl(contactSet);
+            ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
             return tmp;
         }
         catch (FileNotFoundException fnfex)
