@@ -83,7 +83,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     list.add(m);
                 }
             }
-
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
         }
