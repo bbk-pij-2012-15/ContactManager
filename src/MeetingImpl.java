@@ -142,7 +142,7 @@ public class MeetingImpl implements Meeting
             long cal2Time = cal2.getTimeInMillis();
             /** @return a number which will unambiguously place each calendar in order (using milliseconds)
              * 1 if cal1Time is greater than cal2Time, -1 for vice-versa and 0 for equality*/
-            return cal1Time > cal2Time ? 1 : cal1Time < cal2Time ? -1 : 0;        // used ternary operator to save space
+            return (cal1Time > cal2Time) ? 1 : (cal1Time < cal2Time) ? -1 : 0;        // used ternary operator to save space
         }
     };
 }
