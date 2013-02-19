@@ -96,7 +96,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
 
     /** @param whatKindOfMeeting - flag passed from ContactManager so we know
      * whether getFutureMeeting(), getPastMeeting() or getMeeting() has been called */
-    public Meeting returnMeeting(Set<Meeting> meetingSet, int id, char whatKindOfMeeting)
+    protected Meeting returnMeeting(Set<Meeting> meetingSet, int id, char whatKindOfMeeting)
     {
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
         {
