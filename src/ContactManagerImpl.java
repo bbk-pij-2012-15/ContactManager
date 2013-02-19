@@ -137,7 +137,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
                             new BufferedOutputStream(                              // for extra clarity
                                     new FileOutputStream(dataOnDisk)));
 
-            objectOut.writeObject(contactSet);      // writes the ArrayList containing contacts to disk
+            objectOut.writeObject(contactSet);      // writes the HashSet containing contacts to disk
+            objectOut.writeObject(meetingSet);      // writes the HashSet containing meetings to disk
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
