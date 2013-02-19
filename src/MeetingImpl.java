@@ -94,7 +94,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         return (cal1Time - cal2Time);
     }
 
-    /** @param shouldBeFuture - flag passed from ContactMangager so we know
+    /** @param shouldBeFuture - flag passed from ContactManager so we know
      * whether getFutureMeeting() or getPastMeeting() has been called */
     public Meeting getMeeting(Set<Meeting> meetingSet, int id, boolean shouldBeFuture)
     {
@@ -136,6 +136,8 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
                 return null;
             }
         }
+        System.err.println("Unable to read list of meetings. Please ensure it has readable permissions and/or has been created");
+        return null;
     }
 
 }
