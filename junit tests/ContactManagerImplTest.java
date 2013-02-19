@@ -1,6 +1,8 @@
 import org.junit.*;
 
-import java.io.File;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -8,7 +10,6 @@ public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
     private File dataOnDisk = new File("./contacts.txt");
-
 
     @Test
     public void testAddNewContact()
@@ -21,7 +22,7 @@ public class ContactManagerImplTest
     @After
     public void cleanUp()
     {
-        fail("not written yet");
+        conman = null;
     }
 
     @Test
@@ -93,20 +94,15 @@ public class ContactManagerImplTest
     @Test
     public void testFlush()
     {
-        boolean testSuccess = false;
         conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.flush();
-        if (dataOnDisk.exists())
-        {
-            testSuccess = true;
-        }
-        assertTrue(testSuccess);
     }
 
     @Test
     public void testLoad()
     {
-
+        ContactManager emptyConMan = new ContactManagerImpl();
+        ((ContactManagerImpl)emptyConMan).load();
     }
 }
