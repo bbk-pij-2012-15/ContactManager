@@ -94,4 +94,48 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         return (cal1Time - cal2Time);
     }
 
+    public Meeting getMeeting(Set<Meeting> meetingSet, int id, boolean shouldBeFuture)
+    {
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (itr.next().getId() == id && shouldBeFuture == true)   // i.e. this needs to be a FUTURE meeting
+            {
+                if (((MeetingImpl)itr.next()).inFuture() == true)     // use boolean getter to confirm this is a FUTURE meeting
+                {
+                    /** if this condition true we have found id AND confirmed the meeting to be FUTURE
+                     * @return itr.next which is type Meeting, cast into type FutureMeeting */
+                    return (FutureMeeting) itr.next();
+                }
+                else if (((MeetingImpl)itr.next()).inPast() == true)       // i.e. if this is a PAST meeting [error]
+                {
+                    /** if this condition true we have found id BUT the meeting is PAST
+                     * @return null and throw an IllegalArgsException */
+                    throw new IllegalArgumentException("Meeting with specified ID happened on " + ((MeetingImpl)itr.next()).getFormattedDate());
+                    return null;
+                }
+            }
+            else if (itr.next().getId() == id && shouldBeFuture == false)   // i.e. this needs to be a PAST meeting
+            {
+                if (((MeetingImpl)itr.next()).inPast() == true)   // use boolean getter to confirm this is a PAST meeting
+                {
+                    /** if this condition true we have found id AND confirmed the meeting to be PAST
+                     * @return itr.next which is type Meeting, cast into type FutureMeeting */
+                    return (PastMeeting) itr.next();
+                }
+                else if (((MeetingImpl)itr.next()).inFuture() == true)    // i.e. if this is a FUTURE meeting [error]
+                {
+                    /** if this condition true we have found id BUT the meeting is FUTURE
+                     * @return null and throw an IllegalArgsException */
+                    throw new IllegalArgumentException("Meeting with specified ID will not happen until " + ((MeetingImpl)itr.next()).getFormattedDate());
+                    return null;
+                }
+            }
+            else // if the id is never found at all
+            {
+                System.err.println("No meeting found with id " + id);
+                return null;
+            }
+        }
+    }
+
 }
