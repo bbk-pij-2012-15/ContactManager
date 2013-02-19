@@ -96,7 +96,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
 
     /** @param shouldBeFuture - flag passed from ContactManager so we know
      * whether getFutureMeeting() or getPastMeeting() has been called */
-    public Meeting getMeeting(Set<Meeting> meetingSet, int id, boolean shouldBeFuture)
+    public Meeting returnMeeting(Set<Meeting> meetingSet, int id, boolean shouldBeFuture)
     {
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
         {
@@ -106,7 +106,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
                 {
                     /** if this condition true we have found id AND confirmed the meeting to be FUTURE
                      * @return itr.next which is type Meeting, cast into type FutureMeeting */
-                    return (FutureMeeting) itr.next();
+                    return itr.next();
                 }
                 else if (((MeetingImpl)itr.next()).inPast() == true)       // i.e. if this is a PAST meeting [error]
                 {
@@ -121,7 +121,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
                 {
                     /** if this condition true we have found id AND confirmed the meeting to be PAST
                      * @return itr.next which is type Meeting, cast into type FutureMeeting */
-                    return (PastMeeting) itr.next();
+                    return itr.next();
                 }
                 else if (((MeetingImpl)itr.next()).inFuture() == true)    // i.e. if this is a FUTURE meeting [error]
                 {
