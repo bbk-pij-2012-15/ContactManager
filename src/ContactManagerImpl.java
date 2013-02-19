@@ -46,7 +46,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             {
                 if (((MeetingImpl)itr.next()).inFuture() == true)     // call boolean getter method to check whether meeting is past or future
                 {
-                    throw new IllegalArgumentException("Meeting with specified ID will not happen until " + itr.next().getFormattedDate());
+                    throw new IllegalArgumentException("Meeting with specified ID will not happen until " + ((MeetingImpl)itr.next()).getFormattedDate());
                     return null;
                 }
                 /** if exception not thrown, but the id was found, then the meeting must be past
