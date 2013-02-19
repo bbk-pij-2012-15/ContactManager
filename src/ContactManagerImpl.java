@@ -42,7 +42,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         char flag = 'p';                        // 'p' for past meeting
         Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);      // call the method in MeetingImpl
         return (PastMeeting) meeting;        // cast to correct type on return
     }
 
@@ -50,7 +50,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         char flag = 'f';                        // 'f' for future meeting
         Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);       // call the method in MeetingImpl
         return (FutureMeeting) meeting;     // cast to correct type on return
     }
 
@@ -58,7 +58,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         char flag = 'm';                        // 'm' for simply meeting
         Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);       // call the method in MeetingImpl
         return meeting;                     // no need for casting here
     }
 
