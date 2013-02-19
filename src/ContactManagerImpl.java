@@ -40,65 +40,26 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public PastMeeting getPastMeeting(int id)
     {
-        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
-        {
-            if (itr.next().getId() == id)
-            {
-                if (((MeetingImpl)itr.next()).inFuture() == true)     // call boolean getter method to check whether meeting is past or future
-                {
-                    throw new IllegalArgumentException("Meeting with specified ID will not happen until " + ((MeetingImpl)itr.next()).getFormattedDate());
-                    return null;
-                }
-                /** if exception not thrown, but the id was found, then the meeting must be past
-                 * @return itr.next which is type Meeting, cast into type PastMeeting */
-                return (PastMeeting) itr.next();
-            }
-            else
-            {
-                System.err.println("No meeting found with id " + id);
-                return null;
-            }
-        }
+        char flag = 'p';                        // 'p' for past meeting
+        Meeting meeting = new MeetingImpl();
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        return (PastMeeting) meeting;        // cast to correct type on return
     }
 
     public FutureMeeting getFutureMeeting(int id)
     {
-        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
-        {
-            if (itr.next().getId() == id)
-            {
-                if (((MeetingImpl)itr.next()).inPast() == true)       // call boolean getter method to check whether meeting is past or future
-                {
-                    throw new IllegalArgumentException("Meeting with specified ID happened on " + ((MeetingImpl)itr.next()).getFormattedDate());
-                    return null;
-                }
-                /** if exception not thrown, but the id was found, then the meeting must be in the future
-                 * @return itr.next which is type Meeting, cast into type FutureMeeting */
-                return (FutureMeeting) itr.next();
-            }
-            else
-            {
-                System.err.println("No meeting found with id " + id);
-                return null;
-            }
-        }
+        char flag = 'f';                        // 'f' for future meeting
+        Meeting meeting = new MeetingImpl();
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        return (FutureMeeting) meeting;     // cast to correct type on return
     }
 
     public Meeting getMeeting(int id)
     {
-        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
-        {
-            if (itr.next().getId() == id)
-            {
-                /** @return itr.next which is type Meeting, no need for casting */
-                return itr.next();
-            }
-            else
-            {
-                System.err.println("No meeting found with id " + id);
-                return null;
-            }
-        }
+        char flag = 'm';                        // 'm' for simply meeting
+        Meeting meeting = new MeetingImpl();
+        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);
+        return meeting;                     // no need for casting here
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact)
