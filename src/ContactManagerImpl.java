@@ -6,7 +6,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
-    private static  boolean firstRun = true;
+    private static boolean firstRun = true;
 
     /** First-run constructor which creates empty sets for meetings and contacts
      *  and immediately saves them to disk, so that load() can call the second constructor
@@ -165,38 +165,46 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public ContactManager load()
     {
-        try
+        if (firstRun)
         {
-            ObjectInputStream objectIn =
-                    new ObjectInputStream(                                      // written over several lines
-                            new BufferedInputStream(                            // for extra clarity
-                                    new FileInputStream(dataOnDisk)));
-
-            Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();      // read the HashSet containing contacts from disk
-            Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
-            objectIn.close();
-
-            ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
-            /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
+            ContactManager tmp = new ContactManagerImpl();
             return tmp;
         }
-        catch (FileNotFoundException fnfex)
+        else
         {
-            System.err.println("Contacts.txt file not found. Please make sure directory is readable and/or " +
-                    "\nthat you have flushed at least once previously, and then try again");
+            try
+            {
+                ObjectInputStream objectIn =
+                        new ObjectInputStream(                                      // written over several lines
+                                new BufferedInputStream(                            // for extra clarity
+                                        new FileInputStream(dataOnDisk)));
+
+                Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();      // read the HashSet containing contacts from disk
+                Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
+                objectIn.close();
+
+                ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
+                /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
+                return tmp;
+            }
+            catch (FileNotFoundException fnfex)
+            {
+                System.err.println("Contacts.txt file not found. Please make sure directory is readable and/or " +
+                        "\nthat you have flushed at least once previously, and then try again");
+            }
+            catch (ClassNotFoundException cnfex)
+            {
+                System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
+                        "\nthat you have flushed at least once previously, and then try again." +
+                        "\n If you are working in a different directory, make sure your CLASSPATH includes the required class:\n\n");
+                System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
+            }
+            catch (IOException ioex)
+            {
+                System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
+                ioex.printStackTrace();
+            }
+            return null;
         }
-        catch (ClassNotFoundException cnfex)
-        {
-            System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
-                    "\nthat you have flushed at least once previously, and then try again." +
-                    "\n If you are working in a different directory, make sure your CLASSPATH includes the required class:\n\n");
-            System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
-        }
-        catch (IOException ioex)
-        {
-            System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
-            ioex.printStackTrace();
-        }
-        return null;
     }
 }
