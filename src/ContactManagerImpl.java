@@ -6,8 +6,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
+    private static  boolean firstRun = true;
 
-    public ContactManagerImpl(){}    // empty constructor to comply with Serialization specification
+    /** First-run constructor which creates empty sets for meetings and contacts
+     *  and immediately saves them to disk, so that load() can call the second constructor
+     *  in the future. @param firstRun tells load() if this is the first run */
+    public ContactManagerImpl()
+    {
+        this.contactSet = new HashSet<Contact>();
+        this.meetingSet = new HashSet<Meeting>();
+        firstRun = false;
+        this.flush();
+    }
 
     public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset)
     {
@@ -167,6 +177,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             objectIn.close();
 
             ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
+            /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
             return tmp;
         }
         catch (FileNotFoundException fnfex)
