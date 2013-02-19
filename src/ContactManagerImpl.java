@@ -161,7 +161,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
                             new BufferedInputStream(                            // for extra clarity
                                     new FileInputStream(dataOnDisk)));
 
-            Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();
+            Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();      // read the HashSet containing contacts from disk
+            Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
             objectIn.close();
 
             ContactManager tmp = new ContactManagerImpl(contactSet);
