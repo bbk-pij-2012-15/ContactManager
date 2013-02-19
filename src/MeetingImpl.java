@@ -104,8 +104,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
             {
                 if (((MeetingImpl)itr.next()).inFuture() == true)     // use boolean getter to confirm this is a FUTURE meeting
                 {
-                    /** if this condition true we have found id AND confirmed the meeting to be FUTURE
-                     * @return itr.next which is type Meeting, cast into type FutureMeeting */
+                    /** if this condition true we have found id AND confirmed the meeting to be FUTURE; @return itr.next */
                     return itr.next();
                 }
                 else if (((MeetingImpl)itr.next()).inPast() == true)       // i.e. if this is a PAST meeting [error]
@@ -119,8 +118,7 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
             {
                 if (((MeetingImpl)itr.next()).inPast() == true)   // use boolean getter to confirm this is a PAST meeting
                 {
-                    /** if this condition true we have found id AND confirmed the meeting to be PAST
-                     * @return itr.next which is type Meeting, cast into type FutureMeeting */
+                    /** if this condition true we have found id AND confirmed the meeting to be PAST; @return itr.next */
                     return itr.next();
                 }
                 else if (((MeetingImpl)itr.next()).inFuture() == true)    // i.e. if this is a FUTURE meeting [error]
