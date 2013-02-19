@@ -94,6 +94,8 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         return (cal1Time - cal2Time);
     }
 
+    /** @param shouldBeFuture - flag passed from ContactMangager so we know
+     * whether getFutureMeeting() or getPastMeeting() has been called */
     public Meeting getMeeting(Set<Meeting> meetingSet, int id, boolean shouldBeFuture)
     {
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
