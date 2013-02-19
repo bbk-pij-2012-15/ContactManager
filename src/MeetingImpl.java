@@ -111,9 +111,8 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
                 else if (((MeetingImpl)itr.next()).inPast() == true)       // i.e. if this is a PAST meeting [error]
                 {
                     /** if this condition true we have found id BUT the meeting is PAST
-                     * @return null and throw an IllegalArgsException */
+                     * @throws an IllegalArgsException */
                     throw new IllegalArgumentException("Meeting with specified ID happened on " + ((MeetingImpl)itr.next()).getFormattedDate());
-                    return null;
                 }
             }
             else if (itr.next().getId() == id && shouldBeFuture == false)   // i.e. this needs to be a PAST meeting
@@ -127,9 +126,8 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
                 else if (((MeetingImpl)itr.next()).inFuture() == true)    // i.e. if this is a FUTURE meeting [error]
                 {
                     /** if this condition true we have found id BUT the meeting is FUTURE
-                     * @return null and throw an IllegalArgsException */
+                     * @throws an IllegalArgsException */
                     throw new IllegalArgumentException("Meeting with specified ID will not happen until " + ((MeetingImpl)itr.next()).getFormattedDate());
-                    return null;
                 }
             }
             else // if the id is never found at all
