@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class MeetingImpl implements Meeting, Comparator<Meeting>
+public class MeetingImpl implements Meeting
 {
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
@@ -83,16 +83,6 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         return future;
     }
 
-    @Override
-    public int compare(Meeting m1, Meeting m2)
-    {
-        Calendar cal1 = m1.getDate();      // the calendar for the first meeting
-        Calendar cal2 = m2.getDate();   // the calendar for the second meeting
-        int cal1Time = (int) cal1.getTimeInMillis() ;     // cast the long return type of method getTimeInMillis to an int for the comparator
-        int cal2Time = (int) cal2.getTimeInMillis();
-        /** @return a number which will unambiguously place each calendar in order (using milliseconds) */
-        return (cal1Time - cal2Time);
-    }
 
     /** @param whatKindOfMeeting - flag passed from ContactManager so we know
      * whether getFutureMeeting(), getPastMeeting() or getMeeting() has been called */
@@ -141,4 +131,18 @@ public class MeetingImpl implements Meeting, Comparator<Meeting>
         return null;
     }
 
+    public static Comparator<Meeting> MeetingComparator = new Comparator<Meeting>()
+    {
+        @Override
+        public int compare(Meeting m1, Meeting m2)
+        {
+            Calendar cal1 = m1.getDate();      // the calendar for the first meeting
+            Calendar cal2 = m2.getDate();   // the calendar for the second meeting
+            long cal1Time = cal1.getTimeInMillis() ;
+            long cal2Time = cal2.getTimeInMillis();
+            /** @return a number which will unambiguously place each calendar in order (using milliseconds)
+             * 1 if cal1Time is greater than cal2Time, -1 for vice-versa and 0 for equality*/
+            return cal1Time > cal2Time ? 1 : cal1Time < cal2Time ? -1 : 0;        // used ternary operator to save space
+        }
+    };
 }
