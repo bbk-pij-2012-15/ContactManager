@@ -64,25 +64,29 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public List<Meeting> getFutureMeetingList(Contact contact)
     {
-        /**@param contact one of the user’s contacts
-         * @return the list of future meeting(s) scheduled with this contact (maybe empty).
-         * @throws IllegalArgumentException if the contact does not exist */
-
-        /** @param list an empty list to store any matching Meetings */
-        List<Meeting> list = new ArrayList<Meeting>();
-        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        /** @throws IllegalArgumentException if the contact does not exist */
+        if (!contactSet.contains(contact))
         {
-            Meeting m = itr.next();
-            if (m.getContacts().contains(contact))
-            {
-                /** each time a matching Meeting is found, it is added to the list.
-                 * still need to sort chronologically and eliminate duplicates */
-                list.add(m);
-            }
+            throw new IllegalArgumentException("Contact \"" + contact.getName() + "\" does not exist! Please try again");
         }
+        else
+        {
+            /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
+            List<Meeting> list = new ArrayList<Meeting>();
+            for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+            {
+                Meeting m = itr.next();
+                if (m.getContacts().contains(contact))
+                {
+                    /** each time a matching Meeting is found, it is added to the list.
+                     * still need to sort chronologically and eliminate duplicates */
+                    list.add(m);
+                }
+            }
 
-        Collections.sort(list, MeetingImpl.MeetingComparator);
-        return list;
+            Collections.sort(list, MeetingImpl.MeetingComparator);
+            return list;
+        }
 
     }
 
