@@ -62,15 +62,13 @@ public class MeetingImpl implements Meeting
         String contacts = "Contacts at Meeting: " + this.getSetInfo();
         String date = "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
                 (this.meetingCal.get(GregorianCalendar.MONTH) + 1) + "/" + this.meetingCal.get(GregorianCalendar.YEAR);
-        String info = (id + "\n" + contacts + "\n" + date);
-        return info;
+        return (id + "\n" + contacts + "\n" + date);
     }
 
     public String getFormattedDate()
     {
-        String datestr = "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
+        return "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
                 (this.meetingCal.get(GregorianCalendar.MONTH) + 1) + "/" + this.meetingCal.get(GregorianCalendar.YEAR);
-        return datestr;
     }
 
     public boolean inPast()
