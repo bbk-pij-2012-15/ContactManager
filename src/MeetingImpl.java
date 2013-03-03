@@ -129,7 +129,7 @@ public class MeetingImpl implements Meeting
         return null;
     }
 
-    protected List<Meeting> returnMeetingList(Set<Meeting> meetingSet, char whatKindOfMeeting, Object obj)
+    protected static List<Meeting> returnMeetingList(Set<Meeting> meetingSet, char whatKindOfMeeting, Object obj)
     {
         List<Meeting> futureMeetings = new ArrayList<Meeting>();
         List<Meeting> pastMeetings = new ArrayList<Meeting>();
