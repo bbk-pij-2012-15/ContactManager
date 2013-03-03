@@ -87,9 +87,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             /** @param list a list to store any matching Meetings; will be returned empty if no matches */
             List<Meeting> list = new ArrayList<Meeting>();
-            for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+            for (Meeting m : meetingSet)
             {
-                Meeting m = itr.next();
                 if (m.getContacts().contains(contact))
                 {
                     /** each time a matching Meeting is found, it is added to the list. */
@@ -107,13 +106,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** @param list a list to store any matching Meetings; will be returned empty if no matches */
         List<Meeting> list = new ArrayList<Meeting>();
 
-        for (Iterator<FutureMeeting> itr = futureMeetings.iterator(); itr.hasNext();)
+        for (Meeting fm : futureMeetings)
         {
-            Meeting m = itr.next();
-            if (m.getDate().equals(date))
+            if (fm.getDate().equals(date))
             {
-                /** each time a matching Meeting is found, it is added to the list. */
-                list.add(m);
+                /** each time a matching FutureMeeting is found, it is added to the list. */
+                list.add(fm);
             }
         }
         /** call custom comparator in MeetingImpl to chronologically sort */
@@ -133,11 +131,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
             /** @param list a list to store any matching PastMeetings; will be returned empty if no matches */
             List<PastMeeting> list = new ArrayList<PastMeeting>();
 
-            for (PastMeeting m : pastMeetings)
+            for (PastMeeting pm : pastMeetings)
             {
-                if (m.getContacts().contains(contact))
+                if (pm.getContacts().contains(contact))
                 {
-                    list.add(m);
+                    list.add(pm);
                 }
             }
             /** call custom comparator in MeetingImpl to chronologically sort */
