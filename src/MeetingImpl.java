@@ -137,7 +137,6 @@ public class MeetingImpl implements Meeting
         return null;
     }
 
-
     public static Comparator<Meeting> MeetingComparator = new Comparator<Meeting>()
     {
         @Override
