@@ -86,7 +86,16 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else
         {
             /** @param list a list to store any matching Meetings; will be returned empty if no matches */
-            List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
+            List<Meeting> list = new ArrayList<Meeting>();
+            for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+            {
+                Meeting m = itr.next();
+                if (m.getContacts().contains(contact))
+                {
+                    /** each time a matching Meeting is found, it is added to the list. */
+                    list.add(m);
+                }
+            }
             /** call custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
@@ -95,16 +104,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
-        /** @param pastOrFuture we will assume meeting is future, until this is contradicted by the .before() test */
-        char pastOrFuture = 'f';
-        Calendar now = new GregorianCalendar().getInstance();
-        if (date.before(now))
-        {
-            pastOrFuture = 'p';
-        }
-
         /** @param list a list to store any matching Meetings; will be returned empty if no matches */
-        List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, pastOrFuture, date);
+        List<Meeting> list = new ArrayList<Meeting>();
+
+        for (Iterator<FutureMeeting> itr = futureMeetings.iterator(); itr.hasNext();)
+        {
+            Meeting m = itr.next();
+            if (m.getDate().equals(date))
+            {
+                /** each time a matching Meeting is found, it is added to the list. */
+                list.add(m);
+            }
+        }
         /** call custom comparator in MeetingImpl to chronologically sort */
         Collections.sort(list, MeetingImpl.MeetingComparator);
         return list;
@@ -119,18 +130,19 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
-            /** @param list a list to store any matching Meetings; will be returned empty if no matches */
-            List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
-            /** although all elements are of type PastMeeting, list is returned as type Meeting,
-             so we must populate a new list of PastMeeting in order to return */
-            List<PastMeeting> pmList = new ArrayList<PastMeeting>();
-            for (Meeting m : list)
+            /** @param list a list to store any matching PastMeetings; will be returned empty if no matches */
+            List<PastMeeting> list = new ArrayList<PastMeeting>();
+
+            for (PastMeeting m : pastMeetings)
             {
-                pmList.add((PastMeeting) m);
+                if (m.getContacts().contains(contact))
+                {
+                    list.add(m);
+                }
             }
             /** call custom comparator in MeetingImpl to chronologically sort */
-            Collections.sort(pmList, MeetingImpl.MeetingComparator);
-            return pmList;
+            Collections.sort(list, MeetingImpl.MeetingComparator);
+            return list;
         }
     }
 
