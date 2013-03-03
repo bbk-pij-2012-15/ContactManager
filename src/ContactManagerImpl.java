@@ -82,27 +82,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
-            /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
-            List<Meeting> list = new ArrayList<Meeting>();
-            /** @param futureMeetings an empty list to store a list of future meetings (so we do not return any past ones */
-            List<Meeting> futureMeetings = new ArrayList<Meeting>();
-            for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
-            {
-                if (((MeetingImpl)itr.next()).inFuture() == true)
-                {
-                    /** populate futureMeetings with meetings that satisfy the inFuture() requirement */
-                    futureMeetings.add(itr.next());
-                }
-            }
-            for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
-            {
-                Meeting m = itr.next();
-                if (m.getContacts().contains(contact))
-                {
-                    /** each time a matching Meeting is found, it is added to the list. */
-                    list.add(m);
-                }
-            }
+            List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
             /** call custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
@@ -113,26 +93,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
         /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
-        List<Meeting> list = new ArrayList<Meeting>();
-        /** @param futureMeetings an empty list to store a list of future meetings (so we do not return any past ones */
-        List<Meeting> futureMeetings = new ArrayList<Meeting>();
-        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
-        {
-            if (((MeetingImpl)itr.next()).inFuture() == true)
-            {
-                /** populate futureMeetings with meetings that satisfy the inFuture() requirement */
-                futureMeetings.add(itr.next());
-            }
-        }
-        for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
-        {
-            Meeting m = itr.next();
-            if (m.getDate().equals(date))
-            {
-                /** each time a matching Meeting is found, it is added to the list. */
-                list.add(m);
-            }
-        }
+        Meeting meeting = new MeetingImpl();
+
+        List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', date);
         /** call custom comparator in MeetingImpl to chronologically sort */
         Collections.sort(list, MeetingImpl.MeetingComparator);
         return list;
@@ -140,7 +103,23 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public List<PastMeeting> getPastMeetingList(Contact contact)
     {
-                  return null;
+        /** @throws IllegalArgumentException if the contact does not exist */
+        if (!contactSet.contains(contact))
+        {
+            throw new IllegalArgumentException("Contact \"" + contact.getName() + "\" does not exist! Please try again");
+        }
+        else
+        {
+            List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
+            List<PastMeeting> pmlist = new ArrayList<PastMeeting>();
+            for (Meeting m : list)
+            {
+                pmlist.add((PastMeeting) m);
+            }
+            /** call custom comparator in MeetingImpl to chronologically sort */
+            Collections.sort(pmlist, MeetingImpl.MeetingComparator);
+            return pmlist;
+        }
     }
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
