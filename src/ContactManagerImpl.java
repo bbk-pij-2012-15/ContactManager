@@ -181,10 +181,14 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             throw new NullPointerException("Cannot add null string of notes");
         }
-        else
+        else if (futureMeetings.contains(meeting))      // i.e. we know it is a future meeting that has happened and needs conversion into a past one
         {
-            ((MeetingImpl)meeting).addNotes(text);
+            futureMeetings.remove(meeting);
+            PastMeeting pm = (PastMeeting) meeting;
+            pastMeetings.add(pm);
         }
+
+        ((MeetingImpl)meeting).addNotes(text);
     }
 
     public void addNewContact(String name, String notes)
