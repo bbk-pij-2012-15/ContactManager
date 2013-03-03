@@ -129,6 +129,64 @@ public class MeetingImpl implements Meeting
         return null;
     }
 
+    protected List<Meeting> returnMeetingList(Set<Meeting> meetingSet, char whatKindOfMeeting, Object obj)
+    {
+        List<Meeting> futureMeetings = new ArrayList<Meeting>();
+        List<Meeting> pastMeetings = new ArrayList<Meeting>();
+        List<Meeting> listToReturn = new ArrayList<Meeting>();
+
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (((MeetingImpl)itr.next()).inFuture() == true)
+            {
+                /** populate futureMeetings with meetings that satisfy the inFuture() requirement */
+                futureMeetings.add(itr.next());
+            }
+            else if (((MeetingImpl)itr.next()).inPast() == true)
+            {
+                /** populate pastMeetings with meetings that satisfy the inPast() requirement */
+                pastMeetings.add(itr.next());
+            }
+        }
+        if (obj instanceof Contact && whatKindOfMeeting == 'f')
+        {
+            for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
+            {
+                Meeting m = itr.next();
+                if (m.getContacts().contains(obj))
+                {
+                    /** each time a matching Meeting is found, it is added to the list. */
+                    listToReturn.add(m);
+                }
+            }
+        }
+        else if (obj instanceof Calendar && whatKindOfMeeting == 'f')
+        {
+            for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
+            {
+                Meeting m = itr.next();
+                if (m.getDate().equals(obj))
+                {
+                    /** each time a matching Meeting is found, it is added to the list. */
+                    listToReturn.add(m);
+                }
+            }
+        }
+        else if (obj instanceof Contact && whatKindOfMeeting == 'p')
+        {
+            for (Iterator<Meeting> itr = pastMeetings.iterator(); itr.hasNext();)
+            {
+                Meeting m = itr.next();
+                if (m.getContacts().contains(obj))
+                {
+                    /** each time a matching Meeting is found, it is added to the list. */
+                    listToReturn.add(m);
+                }
+            }
+        }
+        return listToReturn;
+    }
+
     public static Comparator<Meeting> MeetingComparator = new Comparator<Meeting>()
     {
         @Override
