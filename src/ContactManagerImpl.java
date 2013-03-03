@@ -82,6 +82,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
+            /** @param list a list to store any matching Meetings; will be returned empty if no matches */
             List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
             /** call custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
@@ -92,9 +93,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
-        /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
-        Meeting meeting = new MeetingImpl();
-
+        /** @param list a list to store any matching Meetings; will be returned empty if no matches */
         List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', date);
         /** call custom comparator in MeetingImpl to chronologically sort */
         Collections.sort(list, MeetingImpl.MeetingComparator);
@@ -110,15 +109,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
+            /** @param list a list to store any matching Meetings; will be returned empty if no matches */
             List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', contact);
-            List<PastMeeting> pmlist = new ArrayList<PastMeeting>();
+            /** although all elements are of type PastMeeting, list is returned as type Meeting,
+             so we must populate a new list of PastMeeting in order to return */
+            List<PastMeeting> pmList = new ArrayList<PastMeeting>();
             for (Meeting m : list)
             {
-                pmlist.add((PastMeeting) m);
+                pmList.add((PastMeeting) m);
             }
             /** call custom comparator in MeetingImpl to chronologically sort */
-            Collections.sort(pmlist, MeetingImpl.MeetingComparator);
-            return pmlist;
+            Collections.sort(pmList, MeetingImpl.MeetingComparator);
+            return pmList;
         }
     }
 
