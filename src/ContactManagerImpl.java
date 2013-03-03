@@ -89,11 +89,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 Meeting m = itr.next();
                 if (m.getContacts().contains(contact))
                 {
-                    /** each time a matching Meeting is found, it is added to the list.
-                     * still need to sort chronologically and eliminate duplicates */
+                    /** each time a matching Meeting is found, it is added to the list. */
                     list.add(m);
                 }
             }
+            /** call custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
         }
@@ -102,7 +102,20 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
-                   return null;
+        /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
+        List<Meeting> list = new ArrayList<Meeting>();
+        for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            Meeting m = itr.next();
+            if (m.getDate().equals(date))
+            {
+                /** each time a matching Meeting is found, it is added to the list. */
+                list.add(m);
+            }
+        }
+        /** call custom comparator in MeetingImpl to chronologically sort */
+        Collections.sort(list, MeetingImpl.MeetingComparator);
+        return list;
     }
 
     public List<PastMeeting> getPastMeetingList(Contact contact)
