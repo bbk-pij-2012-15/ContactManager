@@ -101,17 +101,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
+    /** THIS METHOD GETS BOTH PAST AND FUTURE MEETINGS DEPENDING ON DATE GIVEN */
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
         /** @param list a list to store any matching Meetings; will be returned empty if no matches */
         List<Meeting> list = new ArrayList<Meeting>();
 
-        for (Meeting fm : futureMeetings)
+        for (Meeting m : meetingSet)
         {
-            if (fm.getDate().equals(date))
+            if (m.getDate().equals(date))
             {
-                /** each time a matching FutureMeeting is found, it is added to the list. */
-                list.add(fm);
+                /** each time a matching Meeting is found, it is added to the list. */
+                list.add(m);
             }
         }
         /** call custom comparator in MeetingImpl to chronologically sort */
