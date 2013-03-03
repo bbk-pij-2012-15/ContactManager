@@ -84,7 +84,17 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
             List<Meeting> list = new ArrayList<Meeting>();
+            /** @param futureMeetings an empty list to store a list of future meetings (so we do not return any past ones */
+            List<Meeting> futureMeetings = new ArrayList<Meeting>();
             for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+            {
+                if (((MeetingImpl)itr.next()).inFuture() == true)
+                {
+                    /** populate futureMeetings with meetings that satisfy the inFuture() requirement */
+                    futureMeetings.add(itr.next());
+                }
+            }
+            for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
             {
                 Meeting m = itr.next();
                 if (m.getContacts().contains(contact))
@@ -104,7 +114,17 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         /** @param list an empty list to store any matching Meetings; will be returned empty if no matches */
         List<Meeting> list = new ArrayList<Meeting>();
+        /** @param futureMeetings an empty list to store a list of future meetings (so we do not return any past ones */
+        List<Meeting> futureMeetings = new ArrayList<Meeting>();
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
+        {
+            if (((MeetingImpl)itr.next()).inFuture() == true)
+            {
+                /** populate futureMeetings with meetings that satisfy the inFuture() requirement */
+                futureMeetings.add(itr.next());
+            }
+        }
+        for (Iterator<Meeting> itr = futureMeetings.iterator(); itr.hasNext();)
         {
             Meeting m = itr.next();
             if (m.getDate().equals(date))
