@@ -129,10 +129,11 @@ public class MeetingImpl implements Meeting
         return null;
     }
 
+    /** @param obj - the Calendar or Contact object from the getXMeetingList() methods. useful for knowing which method is calling this one too */
     protected static List<Meeting> returnMeetingList(Set<Meeting> meetingSet, char whatKindOfMeeting, Object obj)
     {
         List<Meeting> futureMeetings = new ArrayList<Meeting>();
-        List<Meeting> pastMeetings = new ArrayList<Meeting>();
+        List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
         List<Meeting> listToReturn = new ArrayList<Meeting>();
 
         for (Iterator<Meeting> itr = meetingSet.iterator(); itr.hasNext();)
@@ -145,7 +146,7 @@ public class MeetingImpl implements Meeting
             else if (((MeetingImpl)itr.next()).inPast() == true)
             {
                 /** populate pastMeetings with meetings that satisfy the inPast() requirement */
-                pastMeetings.add(itr.next());
+                pastMeetings.add((PastMeeting)itr.next());
             }
         }
         if (obj instanceof Contact && whatKindOfMeeting == 'f')
@@ -174,13 +175,13 @@ public class MeetingImpl implements Meeting
         }
         else if (obj instanceof Contact && whatKindOfMeeting == 'p')
         {
-            for (Iterator<Meeting> itr = pastMeetings.iterator(); itr.hasNext();)
+            for (Iterator<PastMeeting> itr = pastMeetings.iterator(); itr.hasNext();)
             {
-                Meeting m = itr.next();
-                if (m.getContacts().contains(obj))
+                PastMeeting pm = itr.next();
+                if (pm.getContacts().contains(obj))
                 {
                     /** each time a matching Meeting is found, it is added to the list. */
-                    listToReturn.add(m);
+                    listToReturn.add(pm);
                 }
             }
         }
