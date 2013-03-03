@@ -6,6 +6,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private File dataOnDisk = new File("./contacts.txt");
     private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
+    private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
+    private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
     public static boolean firstRun = true;
 
     /** First-run constructor which creates empty sets for meetings and contacts
@@ -44,6 +46,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         /** if neither exception thrown, FutureMeeting object can be instantiated */
         FutureMeeting tmp = new FutureMeetingImpl(contacts, date);
         meetingSet.add(tmp);
+        futureMeetings.add(tmp);
         /** @return the ID for the meeting by calling getId() */
         System.out.println("Success - Meeting Scheduled!");
         return tmp.getId();
@@ -88,13 +91,20 @@ public class ContactManagerImpl implements ContactManager, Serializable
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
         }
-
     }
 
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
+        /** @param pastOrFuture we will assume meeting is future, until this is contradicted by the .before() test */
+        char pastOrFuture = 'f';
+        Calendar now = new GregorianCalendar().getInstance();
+        if (date.before(now))
+        {
+            pastOrFuture = 'p';
+        }
+
         /** @param list a list to store any matching Meetings; will be returned empty if no matches */
-        List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, 'f', date);
+        List<Meeting> list = MeetingImpl.returnMeetingList(meetingSet, pastOrFuture, date);
         /** call custom comparator in MeetingImpl to chronologically sort */
         Collections.sort(list, MeetingImpl.MeetingComparator);
         return list;
@@ -132,21 +142,38 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else if (contacts == null || date == null || text == null)
         {
-            throw new NullPointerException("One or more arguments are null")
+            throw new NullPointerException("One or more arguments are null");
         }
         else
         {
-            Meeting pastMeeting = new PastMeetingImpl(contacts, date);
+            PastMeeting pastMeeting = new PastMeetingImpl(contacts, date);
             meetingSet.add(pastMeeting);
+            pastMeetings.add(pastMeeting);
             /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
             addMeetingNotes(pastMeeting.getId(), text);
         }
     }
 
+    /** This method is used when a future meeting takes place, and is
+     * then converted to a past meeting (with notes).
+     *
+     * It can be also used to add notes to a past meeting at a later date.
+     * @throws IllegalStateException if the meeting is set for a date in the future */
     public void addMeetingNotes(int id, String text)
     {
         Meeting meeting = getMeeting(id);
-        ((MeetingImpl)meeting).addNotes(text);
+        if (meeting == null)
+        {
+            throw new IllegalArgumentException("Specified meeting does not exist!");
+        }
+        else if (text == null)
+        {
+            throw new NullPointerException("Cannot add null string of notes");
+        }
+        else
+        {
+            ((MeetingImpl)meeting).addNotes(text);
+        }
     }
 
     public void addNewContact(String name, String notes)
