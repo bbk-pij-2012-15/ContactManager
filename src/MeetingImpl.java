@@ -7,6 +7,7 @@ public class MeetingImpl implements Meeting
     private Calendar meetingCal;
     private boolean past = false;
     private boolean future = false;
+    private String notes;
 
     public MeetingImpl(Set<Contact> set, Calendar date)
     {
@@ -79,6 +80,13 @@ public class MeetingImpl implements Meeting
     public boolean inFuture()
     {
         return future;
+    }
+
+    public void addNotes(String note)
+    {
+        /** @return prints a newline at the end of each added note and a dash
+        at the start so the list of notes remains clear to read */
+        notes += ("-" + note + "\n");
     }
 
 
