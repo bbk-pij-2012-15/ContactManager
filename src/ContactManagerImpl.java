@@ -124,23 +124,23 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
-    /**
-     * Create a new record for a meeting that took place in the past.
-     *
-     * @param contacts a list of participants
-     * @param date the date on which the meeting took place
-     * @param text messages to be added about the meeting.
-     * @throws IllegalArgumentException if the list of contacts is
-     *
-    empty, or any of the contacts does not exist
-     * @throws NullPointerException if any of the arguments is null
-     */
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
     {
-        Meeting pastMeeting = new PastMeetingImpl(contacts, date);
-        meetingSet.add(pastMeeting);
-        /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
-        addMeetingNotes(pastMeeting.getId(), text);
+        if (contacts.isEmpty() || !contactSet.containsAll(contacts))
+        {
+            throw new IllegalArgumentException("One or more Contacts do not exist OR set is empty");
+        }
+        else if (contacts == null || date == null || text == null)
+        {
+            throw new NullPointerException("One or more arguments are null")
+        }
+        else
+        {
+            Meeting pastMeeting = new PastMeetingImpl(contacts, date);
+            meetingSet.add(pastMeeting);
+            /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
+            addMeetingNotes(pastMeeting.getId(), text);
+        }
     }
 
     public void addMeetingNotes(int id, String text)
