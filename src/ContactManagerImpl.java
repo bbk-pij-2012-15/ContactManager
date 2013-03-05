@@ -196,7 +196,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
         {
             Meeting updatedMeeting = meeting;
-            ((MeetingImpl)updatedMeeting).addNotes(text);
+            ((PastMeetingImpl)updatedMeeting).addNotes(text);
             meetingSet.remove(meeting);                                    // remove old. note-less meeting from meeting set
             meetingSet.add((Meeting) updatedMeeting);                     // add the updated meeting back to meeting set
             pastMeetings.remove(meeting);                                  // remove the old meeting from list of past meetings
@@ -287,8 +287,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
              *  not due to error, but because program is being run for the first time */
             Set<Contact> contactSet = new HashSet<Contact>();
             Set<Meeting> meetingSet = new HashSet<Meeting>();
-            ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
-            return tmp;
+            return new ContactManagerImpl(contactSet, meetingSet);
         }
         else
         {
@@ -303,9 +302,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
                 objectIn.close();
 
-                ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
                 /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
-                return tmp;
+                return new ContactManagerImpl(contactSet, meetingSet);
             }
             catch (FileNotFoundException fnfex)
             {
