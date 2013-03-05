@@ -10,15 +10,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
     public static boolean firstRun = true;
 
-    /** First-run constructor which creates empty sets for meetings and contacts
-     *  and immediately saves them to disk, so that load() can call the second constructor
-     *  in the future. @param firstRun tells load() if this is the first run */
     public ContactManagerImpl()
     {
-        this.contactSet = new HashSet<Contact>();
-        this.meetingSet = new HashSet<Meeting>();
-        firstRun = false;
-        this.flush();
+        this.load();
     }
 
     public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset)
@@ -287,7 +281,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         if (firstRun)
         {
-            ContactManager tmp = new ContactManagerImpl();
+            Set<Contact> contactSet = new HashSet<Contact>();
+            Set<Meeting> meetingSet = new HashSet<Meeting>();
+            ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
             return tmp;
         }
         else
