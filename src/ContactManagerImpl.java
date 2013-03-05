@@ -168,11 +168,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
     /** This method is used when a future meeting takes place, and is
      * then converted to a past meeting (with notes).
      *
-     * It can be also used to add notes to a past meeting at a later date.
-     * @throws IllegalStateException if the meeting is set for a date in the future */
+     * It can be also used to add notes to a past meeting at a later date. */
     public void addMeetingNotes(int id, String text)
     {
         Meeting meeting = getMeeting(id);
+        Calendar presentDate = GregorianCalendar.getInstance();
         if (meeting == null)
         {
             throw new IllegalArgumentException("Specified meeting does not exist!");
@@ -181,14 +181,31 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             throw new NullPointerException("Cannot add null string of notes");
         }
-        else if (futureMeetings.contains(meeting))      // i.e. we know it is a future meeting that has happened and needs conversion into a past one
+        else if (meeting.getDate().after(presentDate))
         {
-            futureMeetings.remove(meeting);
-            PastMeeting pm = (PastMeeting) meeting;
-            pastMeetings.add(pm);
+            throw new IllegalStateException("Meeting set for date in the future - not eligible for conversion!");
         }
-
-        ((MeetingImpl)meeting).addNotes(text);
+        else if (meeting instanceof FutureMeeting)      // we know it's a future meeting needing conversion
+        {
+            for (FutureMeeting fm : futureMeetings)
+            {
+                if (fm.getId() == id)
+                {
+                    futureMeetings.remove(fm);                              // take it out of the future meetings list
+                    PastMeeting convertedMeeting = (PastMeeting) fm;       // cast into a PastMeeting (the conversion)
+                    addMeetingNotes(convertedMeeting.getId(), text);        // add the notes
+                }
+            }
+        }
+        else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
+        {
+            Meeting updatedMeeting = meeting;
+            ((MeetingImpl)updatedMeeting).addNotes(text);
+            meetingSet.remove(meeting);                                    // remove old. note-less meeting from meeting set
+            meetingSet.add((Meeting) updatedMeeting);                     // add the updated meeting back to meeting set
+            pastMeetings.remove(meeting);                                  // remove the old meeting from list of past meetings
+            pastMeetings.add((PastMeeting) updatedMeeting);               // add our new PastMeeting to the past meetings list
+        }
     }
 
     public void addNewContact(String name, String notes)
