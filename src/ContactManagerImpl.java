@@ -8,10 +8,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
-    public static boolean firstRun = true;
+    public boolean firstRun = false;
 
     public ContactManagerImpl()
     {
+        if (args[0].equals("-n" || args[0].equals("--new")))
+            firstRun = true;
         this.load();
     }
 
@@ -308,7 +310,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
             catch (FileNotFoundException fnfex)
             {
                 System.err.println("Contacts.txt file not found. Please make sure directory is readable and/or " +
-                        "\nthat you have flushed at least once previously, and then try again");
+                        "\nthat you have flushed at least once previously, and then try again. If this is your first " +
+                        "\nrun of the program, please run again with flag '-n' or '--new'");
             }
             catch (ClassNotFoundException cnfex)
             {
