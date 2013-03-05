@@ -217,18 +217,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
         contactSet.add(tmp);
     }
 
-    /**
-     * Returns a list containing the contacts that correspond to the IDs.
-     * @param isRealId stores whether or not we found a contact with the id
-     * @param offendingId stores the id that does not correspond to a real contact
-     * @param ids an arbitrary number of contact IDs
-     * @return a list containing the contacts that correspond to the IDs.
-     * @throws IllegalArgumentException if any of the IDs does not correspond to a real contact
-     */
     public Set<Contact> getContacts(int... ids)
     {
-        boolean isRealId = false;
-        int offendingId = 0;
+        boolean isRealId = false;             /** @param isRealId stores whether or not we found a contact with the id
+        int offendingId = 0;                  *   @param offendingId stores the id that does not correspond to a real contact */
         Set<Contact> setToReturn = new HashSet<Contact>();
         for (int id : ids)
         {
@@ -250,7 +242,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public Set<Contact> getContacts(String name)
     {
-            return null;
+        Set<Contact> setToReturn = new HashSet<Contact>();
+
+
+
+        return setToReturn;
     }
 
     public void flush()
