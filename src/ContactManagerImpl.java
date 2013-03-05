@@ -219,8 +219,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public Set<Contact> getContacts(int... ids)
     {
-        boolean isRealId = false;             /** @param isRealId stores whether or not we found a contact with the id
-        int offendingId = 0;                  *   @param offendingId stores the id that does not correspond to a real contact */
+        boolean isRealId = false;             /** @param isRealId stores whether or not we found a contact with the id */
+        int offendingId = 0;                  /** @param offendingId stores the id that does not correspond to a real contact */
         Set<Contact> setToReturn = new HashSet<Contact>();
         for (int id : ids)
         {
