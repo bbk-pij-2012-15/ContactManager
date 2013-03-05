@@ -244,8 +244,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         Set<Contact> setToReturn = new HashSet<Contact>();
 
-
-
+        if (name == null)
+        {
+            throw new NullPointerException("Cannot compare contact names against a null string");
+        }
+        else
+        {
+            for (Contact contact : contactSet)
+            {
+                if (contact.getName().contains(name))       // we have a match!
+                    setToReturn.add(contact);
+            }
+        }
         return setToReturn;
     }
 
