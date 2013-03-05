@@ -281,6 +281,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         if (firstRun)
         {
+            /** make new empty sets and call the other constructor ;for when dataOnDisk doesn't exist
+             *  not due to error, but because program is being run for the first time */
             Set<Contact> contactSet = new HashSet<Contact>();
             Set<Meeting> meetingSet = new HashSet<Meeting>();
             ContactManager tmp = new ContactManagerImpl(contactSet, meetingSet);
