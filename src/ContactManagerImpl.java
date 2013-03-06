@@ -22,10 +22,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
         this.load();
     }
 
-    public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset)
+    public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset, List<PastMeeting> pmlist, List<FutureMeeting> fmlist)
     {
         this.contactSet = cset;
         this.meetingSet = mset;
+        this.pastMeetings = pmlist;
+        this.futureMeetings = fmlist;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
@@ -272,6 +274,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
             objectOut.writeObject(contactSet);      // writes the HashSet containing contacts to disk
             objectOut.writeObject(meetingSet);      // writes the HashSet containing meetings to disk
+            objectOut.writeObject(pastMeetings);
+            objectOut.writeObject(futureMeetings);
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
@@ -293,7 +297,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
              *  not due to error, but because program is being run for the first time */
             Set<Contact> contactSet = new HashSet<Contact>();
             Set<Meeting> meetingSet = new HashSet<Meeting>();
-            return new ContactManagerImpl(contactSet, meetingSet);
+            List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
+            List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
+            return new ContactManagerImpl(contactSet, meetingSet, pastMeetings, futureMeetings);
         }
         else
         {
@@ -306,10 +312,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
                 Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();      // read the HashSet containing contacts from disk
                 Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
+                List<PastMeeting> pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
+                List<FutureMeeting> futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
                 objectIn.close();
 
                 /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
-                return new ContactManagerImpl(contactSet, meetingSet);
+                return new ContactManagerImpl(contactSet, meetingSet, pastMeetings, futureMeetings);
             }
             catch (FileNotFoundException fnfex)
             {
