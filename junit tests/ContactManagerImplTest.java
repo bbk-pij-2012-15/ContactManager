@@ -101,7 +101,7 @@ public class ContactManagerImplTest
         String nullString = null;
         try
         {
-            Set<Contact> set = conman.getContacts(nullString);
+            conman.getContacts(nullString);
             fail( "Didn't throw exception on null string argument" );
         }
         catch (NullPointerException npex)
@@ -109,11 +109,10 @@ public class ContactManagerImplTest
             exception = true;
         }
         assertTrue(exception);
-
-        Set <Contact> set2 = conman.getContacts("Calvin");
-        assertTrue(set2.isEmpty());
-        Set <Contact> set3 = conman.getContacts("andrews");
-        assertTrue(set3.size() == 1);
+        Set <Contact> set = conman.getContacts("Calvin");
+        assertTrue(set.isEmpty());
+        set = conman.getContacts("andrews");
+        assertTrue(set.size() == 1);
     }
 
     @Test
