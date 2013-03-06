@@ -87,7 +87,7 @@ public class ContactManagerImplTest
         conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
-        Set<Contact> set = conman.getContacts(3, 2, 1, 5, 88);
+        Set<Contact> set = conman.getContacts(3, 2, 1, 88);
         assertTrue(set.size() == 3);
     }
 
