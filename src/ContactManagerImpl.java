@@ -257,6 +257,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public Set<Contact> getContacts(String name)
     {
+        /** @param lowerCaseContactName, @param lowerCaseInput - I convert both strings into lower case before the string
+         *  comparison, so it does not matter if user gives this method "ann" when they want to find "Ann Smith" */
+        String lowerCaseContactName;
+        String lowerCaseInput = name.toLowerCase();
         Set<Contact> setToReturn = new HashSet<Contact>();
 
         if (name == null)
@@ -267,7 +271,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             for (Contact contact : contactSet)
             {
-                if (contact.getName().contains(name))       // we have a match!
+                lowerCaseContactName = contact.getName().toLowerCase();
+                if (lowerCaseContactName.contains(lowerCaseInput))       // we have a match!
                     setToReturn.add(contact);
             }
         }
