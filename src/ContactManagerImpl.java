@@ -216,7 +216,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         /** @param uniqueId a unique Id constructed by adding 1
          *  to the current size of the HashSet */
-        int uniqueId = this.contactSet.size();
+        int uniqueId = (this.contactSet.size() + 1);
         Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
         contactSet.add(tmp);                                     // add to set of contacts
     }
