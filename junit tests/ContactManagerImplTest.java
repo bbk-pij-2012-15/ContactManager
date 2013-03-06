@@ -127,11 +127,15 @@ public class ContactManagerImplTest
     }
 
     @Test
-    public void testFlush()
+    public void testFlushAndLoad()         // merged test methods as cannot test individually
     {
-        /*conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
+        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
-        conman.flush();*/
+        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
+        conman.flush();
+        ContactManagerImpl loadedConman = new ContactManagerImpl();
+        Set<Contact> set = loadedConman.getContacts(3,2,1);
+        assertTrue(set.size() == 3);
     }
 
     @Test
