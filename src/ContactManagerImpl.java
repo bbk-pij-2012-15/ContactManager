@@ -8,12 +8,17 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
-    public boolean firstRun = false;
+    /** @param firstRun a flag so the program can distinguish between contacts.txt being absent due to a first run OR an error.
+     *  In full program user would call program with command line options -n [short] or --new [long], which would
+     *  set firstRun to true before calling the constructor. In this case brand new sets and lists would be created and
+     *  a FileNotFoundException would not be thrown. If user does not launch program with one of the command line flags,
+     *  the error message of the FileNotFoundException informs them to do so if this is their first time */
+    public static boolean firstRun = false;
 
     public ContactManagerImpl()
     {
-        if (args[0].equals("-n" || args[0].equals("--new")))
-            firstRun = true;
+       /** method load reads in data objects from disk (or instantiates new ones)
+        *  then calls second constructor with the data objects as its arguments */
         this.load();
     }
 
