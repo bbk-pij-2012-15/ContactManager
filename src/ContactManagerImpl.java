@@ -159,8 +159,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else
         {
             PastMeeting pastMeeting = new PastMeetingImpl(contacts, date);
-            meetingSet.add(pastMeeting);
-            pastMeetings.add(pastMeeting);
+            meetingSet.add(pastMeeting);                           // add to main meeting set
+            pastMeetings.add(pastMeeting);                         // add to list of past meetings
             /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
             addMeetingNotes(pastMeeting.getId(), text);
         }
@@ -168,7 +168,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     /** This method is used when a future meeting takes place, and is
      * then converted to a past meeting (with notes).
-     *
      * It can be also used to add notes to a past meeting at a later date. */
     public void addMeetingNotes(int id, String text)
     {
@@ -190,6 +189,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             for (FutureMeeting fm : futureMeetings)
             {
+                /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting */
                 if (fm.getId() == id)
                 {
                     futureMeetings.remove(fm);                              // take it out of the future meetings list
@@ -200,10 +200,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
         {
+            /** @param updatedMeeting name to indicate the updated PastMeeting object which will now have notes */
             Meeting updatedMeeting = meeting;
-            ((PastMeetingImpl)updatedMeeting).addNotes(text);
+            ((PastMeetingImpl)updatedMeeting).addNotes(text);              // add notes to updatedMeeting
             meetingSet.remove(meeting);                                    // remove old. note-less meeting from meeting set
-            meetingSet.add((Meeting) updatedMeeting);                     // add the updated meeting back to meeting set
+            meetingSet.add((PastMeeting) updatedMeeting);                  // add the updated meeting back to meeting set
             pastMeetings.remove(meeting);                                  // remove the old meeting from list of past meetings
             pastMeetings.add((PastMeeting) updatedMeeting);               // add our new PastMeeting to the past meetings list
         }
@@ -215,7 +216,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
          *  to the current size of the HashSet */
         int uniqueId = this.contactSet.size();
         Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
-        contactSet.add(tmp);
+        contactSet.add(tmp);                                     // add to set of contacts
     }
 
     public Set<Contact> getContacts(int... ids)
