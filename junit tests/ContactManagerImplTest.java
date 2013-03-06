@@ -99,7 +99,7 @@ public class ContactManagerImplTest
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         String nullString = null;
         Set<Contact> set = conman.getContacts("Calvin");
-        assertTrue(set.isEmpty();
+        assertTrue(set.isEmpty());
     }
 
     @Test
