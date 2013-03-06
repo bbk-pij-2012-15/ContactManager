@@ -94,12 +94,26 @@ public class ContactManagerImplTest
     @Test
     public void testGetContactsString()
     {
+        boolean exception = false;
         conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         String nullString = null;
-        Set<Contact> set = conman.getContacts("Calvin");
-        assertTrue(set.isEmpty());
+        try
+        {
+            Set<Contact> set = conman.getContacts(nullString);
+            fail( "Didn't throw exception on null string argument" );
+        }
+        catch (NullPointerException npex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        Set <Contact> set2 = conman.getContacts("Calvin");
+        assertTrue(set2.isEmpty());
+        Set <Contact> set3 = conman.getContacts("andrews");
+        assertTrue(set3.size() == 1);
     }
 
     @Test
