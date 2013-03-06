@@ -13,7 +13,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
      *  set firstRun to true before calling the constructor. In this case brand new sets and lists would be created and
      *  a FileNotFoundException would not be thrown. If user does not launch program with one of the command line flags,
      *  the error message of the FileNotFoundException informs them to do so if this is their first time */
-    public static boolean firstRun = false;
+    private static boolean firstRun = false;
 
     public ContactManagerImpl()
     {
