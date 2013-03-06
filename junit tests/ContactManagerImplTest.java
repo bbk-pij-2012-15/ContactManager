@@ -94,7 +94,12 @@ public class ContactManagerImplTest
     @Test
     public void testGetContactsString()
     {
-        fail("not written yet");
+        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
+        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
+        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
+        String nullString = null;
+        Set<Contact> set = conman.getContacts(nullString);
+        assertTrue(set.size() == 3);
     }
 
     @Test
