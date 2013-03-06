@@ -3,8 +3,8 @@ import java.util.*;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
-    private File dataOnDisk = new File("./contacts.txt");
-    private Set<Contact> contactSet = new HashSet<Contact>();
+    private static final File dataOnDisk = new File("./contacts.txt");
+    public Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
