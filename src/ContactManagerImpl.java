@@ -240,7 +240,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     {
                         isRealId = true;
                         setToReturn.add(contact);
+                        break;
                     }
+                    else
+                        isRealId = false;
+                        offendingId = id;
                 }
                 if (!isRealId)
                 {
