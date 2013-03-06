@@ -226,22 +226,29 @@ public class ContactManagerImpl implements ContactManager, Serializable
         boolean isRealId = false;             /** @param isRealId stores whether or not we found a contact with the id */
         int offendingId = 0;                  /** @param offendingId stores the id that does not correspond to a real contact */
         Set<Contact> setToReturn = new HashSet<Contact>();
-        for (int id : ids)
+        if (contactSet.isEmpty())
         {
-            for (Contact contact : contactSet)
+            throw new NullPointerException("No Contacts in set!");
+        }
+        else
+        {
+            for (int id : ids)
             {
-                if (id == contact.getId())
+                for (Contact contact : contactSet)
                 {
-                    isRealId = true;
-                    setToReturn.add(contact);
+                    if (id == contact.getId())
+                    {
+                        isRealId = true;
+                        setToReturn.add(contact);
+                    }
+                }
+                if (!isRealId)
+                {
+                    throw new IllegalArgumentException("Contact with id " + offendingId + " does not exist");
                 }
             }
-            if (!isRealId)
-            {
-                throw new IllegalArgumentException("Contact with id " + offendingId + " does not exist");
-            }
+            return setToReturn;
         }
-        return setToReturn;
     }
 
     public Set<Contact> getContacts(String name)
