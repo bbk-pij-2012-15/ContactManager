@@ -98,8 +98,8 @@ public class ContactManagerImplTest
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         String nullString = null;
-        Set<Contact> set = conman.getContacts(nullString);
-        assertTrue(set.size() == 3);
+        Set<Contact> set = conman.getContacts("ann");
+        assertTrue(set.size() == 1);
     }
 
     @Test
