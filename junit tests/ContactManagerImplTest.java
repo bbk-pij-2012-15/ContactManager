@@ -84,7 +84,8 @@ public class ContactManagerImplTest
     @Test
     public void testGetContactsInt()
     {
-        fail("not written yet");
+        Set<Contact> set = conman.getContacts(1, 2, 3);
+        assertTrue(set.size() == 3);
     }
 
     @Test
