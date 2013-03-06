@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
-    private File dataOnDisk = new File("./contacts.txt");
 
     @Test
     public void testAddNewContact()
