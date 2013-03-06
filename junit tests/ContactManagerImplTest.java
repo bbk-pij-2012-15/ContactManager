@@ -84,11 +84,22 @@ public class ContactManagerImplTest
     @Test
     public void testGetContactsInt()
     {
+        boolean exception = false;
         conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         Set<Contact> set = conman.getContacts(3, 2, 1);
         assertTrue(set.size() == 3);
+        try
+        {
+            conman.getContacts(3, 1, 5);
+            fail( "Didn't throw exception on invalid contact id" );
+        }
+        catch (IllegalArgumentException illargex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
     }
 
     @Test
