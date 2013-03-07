@@ -47,7 +47,7 @@ public class ContactManagerImplTest
 
         Calendar storedDate = conman.futureMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
-        assertTrue(conman.futureMeetings.get(0).getId() != 0);
+        assertTrue(conman.futureMeetings.get(0).getId() == 1);          // should be 1 as that's what listsize + 1 is
         assertEquals(date, storedDate);
         assertEquals(cset, storedSet);
     }
@@ -104,7 +104,7 @@ public class ContactManagerImplTest
 
         Calendar storedDate = conman.pastMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.pastMeetings.get(0).getContacts();
-        assertTrue(conman.pastMeetings.get(0).getId() != 0);
+        assertTrue(conman.pastMeetings.get(0).getId() == 1);        // should be 1 as that's what listsize + 1 is
         assertEquals(date, storedDate);
         assertEquals(cset, storedSet);
     }
