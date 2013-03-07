@@ -20,9 +20,6 @@ public class ContactManagerImplTest
     @Test
     public void testAddNewContact()
     {
-        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
-        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
-        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         Set<Contact> set = conman.getContacts(1, 2, 3);
         assertTrue(set.size() == 3);
     }
@@ -36,14 +33,23 @@ public class ContactManagerImplTest
     @Test
     public void testAddFutureMeeting()
     {
-        Set<Contact> cset = conman.getContacts(1,2,3);
+        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
 
         Calendar date = new GregorianCalendar();
-        date.set(2013, 9, 16);
+        date.set(2013, 9, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
-        System.out.println(conman.meetingSet);
-        System.out.println(conman.futureMeetings);
-        System.out.println(conman.pastMeetings);
+        assertFalse(conman.meetingSet.isEmpty());
+        assertFalse(conman.pastMeetings.isEmpty());
+        /**assertTrue(conman.futureMeetings.isEmpty());
+
+        PastMeeting pm = conman.pastMeetings.get(0);
+        System.out.println(((MeetingImpl)pm).getMeetingInfo());
+
+        Calendar storedDate = conman.pastMeetings.get(0).getDate();
+        Set<Contact> storedSet = conman.pastMeetings.get(0).getContacts();
+        assertFalse(conman.pastMeetings.get(0).getId() != 0);
+        assertEquals(date, storedDate);
+        assertEquals(cset, storedSet);*/
     }
 
     @Test
