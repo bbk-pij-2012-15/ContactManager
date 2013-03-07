@@ -8,7 +8,7 @@ public class MeetingImpl implements Meeting, Serializable
     private Calendar meetingCal;
     private boolean past = false;
     private boolean future = false;
-    private String notes;
+    private String meetingNotes;
 
     public MeetingImpl(int id, Set<Contact> set, Calendar date)
     {
@@ -42,6 +42,18 @@ public class MeetingImpl implements Meeting, Serializable
         return this.meetingCal;
     }
 
+    public String getNotes()
+    {
+        if (meetingNotes == null)
+        {
+            return "";
+        }
+        else
+        {
+            return this.meetingNotes;
+        }
+    }
+
     public Set<Contact> getContacts()
     {
         return this.contactsAtMeeting;
@@ -66,7 +78,8 @@ public class MeetingImpl implements Meeting, Serializable
         String contacts = "Contacts at Meeting: " + this.getSetInfo();
         String date = "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
                 (this.meetingCal.get(GregorianCalendar.MONTH) + 1) + "/" + this.meetingCal.get(GregorianCalendar.YEAR);
-        return (id + "\n" + contacts + "\n" + date);
+        String notes = "Meeting Notes: " + this.getNotes();
+        return (id + "\n" + contacts + "\n" + date + notes);
     }
 
     public String getFormattedDate()
@@ -89,7 +102,7 @@ public class MeetingImpl implements Meeting, Serializable
     {
         /** @return prints a newline at the end of each added note and a dash
         at the start so the list of notes remains clear to read */
-        notes += ("-" + note + "\n");
+        meetingNotes += ("-" + note + "\n");
     }
 
 
