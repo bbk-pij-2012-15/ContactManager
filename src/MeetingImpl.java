@@ -103,6 +103,7 @@ public class MeetingImpl implements Meeting, Serializable
      * whether getFutureMeeting(), getPastMeeting() or getMeeting() has been called */
     protected static Meeting returnMeeting(Set<Meeting> meetingSet, int id, char whatKindOfMeeting)
     {
+        boolean meetingFound = false;
         for (Meeting meeting : meetingSet)
         {
             if (meeting.getId() == id && whatKindOfMeeting == 'f')   // i.e. this needs to be a FUTURE meeting
@@ -136,13 +137,9 @@ public class MeetingImpl implements Meeting, Serializable
                 /** can just return; no need to check if meeting past or future as it can be both to satisfy getMeeting() */
                 return meeting;
             }
-            else // if the id is never found at all
-            {
-                System.err.println("No meeting found with id " + id);
-                return null;
-            }
         }
-        System.err.println("Unable to read list of meetings. Please ensure it has readable permissions and/or has been created");
+        /** if no meeting has been found at all... */
+        System.err.println("No meeting found with id " + id);
         return null;
     }
 
