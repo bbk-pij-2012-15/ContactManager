@@ -1,15 +1,21 @@
 import org.junit.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
+
+    @Before
+    public void setUpTest()
+    {
+        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
+        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
+        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
+    }
 
     @Test
     public void testAddNewContact()
@@ -30,7 +36,14 @@ public class ContactManagerImplTest
     @Test
     public void testAddFutureMeeting()
     {
-        fail("not written yet");
+        Set<Contact> cset = conman.getContacts(1,2,3);
+
+        Calendar date = new GregorianCalendar();
+        date.set(2013, 9, 16);
+        conman.addFutureMeeting(cset, date);
+        System.out.println(conman.meetingSet);
+        System.out.println(conman.futureMeetings);
+        System.out.println(conman.pastMeetings);
     }
 
     @Test
@@ -85,9 +98,6 @@ public class ContactManagerImplTest
     public void testGetContactsInt()
     {
         boolean exception = false;
-        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
-        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
-        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         Set<Contact> set = conman.getContacts(3, 2, 1);
         assertTrue(set.size() == 3);
         try
@@ -106,9 +116,6 @@ public class ContactManagerImplTest
     public void testGetContactsString()
     {
         boolean exception = false;
-        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
-        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
-        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         String nullString = null;
         try
         {
@@ -129,9 +136,6 @@ public class ContactManagerImplTest
     @Test
     public void testFlushAndLoad()         // merged test methods as cannot test individually
     {
-        conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
-        conman.addNewContact("Bob Bobbit", "Organize drinks soon");
-        conman.addNewContact("Cal Callerson", "Here is a note about Cal");
         conman.flush();
         ContactManagerImpl loadedConman = new ContactManagerImpl();
         Set<Contact> set = loadedConman.getContacts(3,2,1);
