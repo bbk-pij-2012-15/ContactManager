@@ -8,6 +8,7 @@ import static org.junit.Assert.*;
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
+    Calendar date = new GregorianCalendar();
 
     @Before
     public void setUpTest()
@@ -35,7 +36,6 @@ public class ContactManagerImplTest
     {
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
 
-        Calendar date = new GregorianCalendar();
         date.set(2013, 9, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
         assertFalse(conman.meetingSet.isEmpty());
@@ -91,14 +91,22 @@ public class ContactManagerImplTest
     @Test
     public void testAddNewPastMeeting()
     {
-        fail("not written yet");
+        date.set(2012, 4, 15);
+        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        out.println(conman.meetingSet);
+        out.println(conman.futureMeetings);
+        out.println(conman.pastMeetings);
+        for (Meeting m : conman.meetingSet)
+        {
+            out.println(((MeetingImpl)m).getMeetingInfo());
+        }
     }
 
     @Test
     public void testAddMeetingNotes()
     {
         fail("not written yet");
-    }//
+    }
 
     @Test
     public void testGetContactsInt()
