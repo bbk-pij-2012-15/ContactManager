@@ -278,7 +278,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
            /** clear data from file so we write the most up-to-date, canonical data structures,
             *  not merely appending which would result in duplicated or old data being read in */
             dataOnDisk.delete();
-            this.wait();
             ObjectOutputStream objectOut =
                     new ObjectOutputStream(                                        // written over several lines
                             new BufferedOutputStream(                              // for extra clarity
@@ -298,10 +297,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
             ioex.printStackTrace();
-        }
-        catch (InterruptedException intex)
-        {
-            System.err.println("TO FILL IN");
         }
     }
 
