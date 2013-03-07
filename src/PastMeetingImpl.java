@@ -5,9 +5,9 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
 {
     private String meetingNotes;
 
-    public PastMeetingImpl(Set<Contact> set, Calendar date)
+    public PastMeetingImpl(int id, Set<Contact> set, Calendar date)
     {
-        super(set, date);
+        super(id, set, date);
     }
 
     public void addNotes(String note)
