@@ -10,9 +10,9 @@ public class MeetingImpl implements Meeting, Serializable
     private boolean future = false;
     private String notes;
 
-    public MeetingImpl(Set<Contact> set, Calendar date)
+    public MeetingImpl(int id, Set<Contact> set, Calendar date)
     {
-        this.meetingId = (set.size() + 1);
+        this.meetingId = id;
         this.contactsAtMeeting.addAll(set);
         this.meetingCal = date;
 
