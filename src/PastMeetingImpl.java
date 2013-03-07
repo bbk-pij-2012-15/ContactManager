@@ -39,4 +39,9 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
     {
         return super.getContacts();
     }
+
+    public String getMeetingInfo()
+    {
+        return super.getMeetingInfo();
+    }
 }
