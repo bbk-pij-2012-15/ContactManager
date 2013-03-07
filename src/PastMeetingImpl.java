@@ -3,7 +3,7 @@ import java.util.Set;
 
 public class PastMeetingImpl extends MeetingImpl implements PastMeeting
 {
-    private String meetingNotes;
+    private String meetingNotes = "";
 
     public PastMeetingImpl(int id, Set<Contact> set, Calendar date)
     {
@@ -22,10 +22,7 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
       @return the notes from the meeting. */
     public String getNotes()
     {
-        if (this.meetingNotes == null)
-            return "";
-        else
-            return this.meetingNotes;
+        return this.meetingNotes;
     }
 
     public int getId()
