@@ -47,7 +47,7 @@ public class ContactManagerImplTest
 
         Calendar storedDate = conman.futureMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
-        assertFalse(conman.futureMeetings.get(0).getId() != 0);
+        assertTrue(conman.futureMeetings.get(0).getId() != 0);
         assertEquals(date, storedDate);
         assertEquals(cset, storedSet);
     }
