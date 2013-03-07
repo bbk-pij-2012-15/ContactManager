@@ -17,8 +17,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public ContactManagerImpl()
     {
-       /** method load reads in data objects from disk (or instantiates new ones)
-        *  then calls second constructor with the data objects as its arguments */
+       /** method load reads in data objects from disk (or instantiates new ones) */
         this.load();
     }
 
@@ -284,9 +283,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
                                     new FileOutputStream(dataOnDisk)));
 
             objectOut.writeObject(this.contactSet);      // writes the HashSet containing contacts to disk
-            objectOut.writeObject(meetingSet);      // writes the HashSet containing meetings to disk
-            objectOut.writeObject(pastMeetings);
-            objectOut.writeObject(futureMeetings);
+            objectOut.writeObject(this.meetingSet);      // writes the HashSet containing meetings to disk
+            objectOut.writeObject(this.pastMeetings);
+            objectOut.writeObject(this.futureMeetings);
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
@@ -300,7 +299,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
-    public void load()
+    private void load()
     {
         if (firstRun)
         {
