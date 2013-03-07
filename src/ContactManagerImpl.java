@@ -5,7 +5,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 {
     private static final File dataOnDisk = new File("./contacts.txt");
     public Set<Contact> contactSet = new HashSet<Contact>();
-    private Set<Meeting> meetingSet = new HashSet<Meeting>();
+    public Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
     /** @param firstRun a flag so the program can distinguish between contacts.txt being absent due to a first run OR an error.
@@ -20,14 +20,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
        /** method load reads in data objects from disk (or instantiates new ones)
         *  then calls second constructor with the data objects as its arguments */
         this.load();
-    }
-
-    public ContactManagerImpl(Set<Contact> cset, Set<Meeting> mset, List<PastMeeting> pmlist, List<FutureMeeting> fmlist)
-    {
-        this.contactSet = cset;
-        this.meetingSet = mset;
-        this.pastMeetings = pmlist;
-        this.futureMeetings = fmlist;
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
@@ -305,17 +297,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
-    public ContactManager load()
+    public void load()
     {
         if (firstRun)
         {
             /** make new empty sets and call the other constructor; for when dataOnDisk doesn't exist
              *  not due to error, but because program is being run for the first time */
-            Set<Contact> contactSet = new HashSet<Contact>();
-            Set<Meeting> meetingSet = new HashSet<Meeting>();
-            List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
-            List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
-            return new ContactManagerImpl(contactSet, meetingSet, pastMeetings, futureMeetings);
+            this.contactSet = new HashSet<Contact>();
+            this.meetingSet = new HashSet<Meeting>();
+            this.pastMeetings = new ArrayList<PastMeeting>();
+            this.futureMeetings = new ArrayList<FutureMeeting>();
+            this.flush();           // immediately flush to create contacts.txt
+            firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
         }
         else
         {
@@ -326,14 +319,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
                                 new BufferedInputStream(                            // for extra clarity
                                         new FileInputStream(dataOnDisk)));
 
-                Set<Contact> contactSet = (HashSet<Contact>) objectIn.readObject();      // read the HashSet containing contacts from disk
-                Set<Meeting> meetingSet = (HashSet<Meeting>) objectIn.readObject();      // read the HashSet containing meetings from disk
-                List<PastMeeting> pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
-                List<FutureMeeting> futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
+                this.contactSet = (HashSet<Contact>) objectIn.readObject();         // read the HashSet containing contacts from disk
+                this.meetingSet = (HashSet<Meeting>) objectIn.readObject();         // read the HashSet containing meetings from disk
+                this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
+                this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
                 objectIn.close();
 
-                /** @return a ContactManager object loaded with the sets of meetings and contacts from disk */
-                return new ContactManagerImpl(contactSet, meetingSet, pastMeetings, futureMeetings);
             }
             catch (FileNotFoundException fnfex)
             {
@@ -353,7 +344,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
                 ioex.printStackTrace();
             }
-            return null;
+            //return null;
         }
     }
 }
