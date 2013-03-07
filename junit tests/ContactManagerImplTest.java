@@ -118,6 +118,9 @@ public class ContactManagerImplTest
 
         assertTrue(conman.pastMeetings.get(0).getId() == 1);        // make sure before we use id in method call
         conman.addMeetingNotes(1, "Must buy a present!");
+
+        PastMeeting pm = conman.pastMeetings.get(0);
+        System.out.println(((PastMeetingImpl)pm).getMeetingInfo());     // manually see if everything looks ok
     }
 
     @Test
