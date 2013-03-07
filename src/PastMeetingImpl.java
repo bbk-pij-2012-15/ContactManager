@@ -22,7 +22,10 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
       @return the notes from the meeting. */
     public String getNotes()
     {
-        return super.getNotes();
+        if (this.meetingNotes == null)
+            return "";
+        else
+            return this.meetingNotes;
     }
 
     public int getId()
