@@ -38,7 +38,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             }
         }
         /** if neither exception thrown, FutureMeeting object can be instantiated */
-        FutureMeeting tmp = new FutureMeetingImpl(contacts, date);
+        FutureMeeting tmp = new FutureMeetingImpl(meetingIdAssigner(), contacts, date);
         meetingSet.add(tmp);
         futureMeetings.add(tmp);
         /** @return the ID for the meeting by calling getId() */
@@ -159,7 +159,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
-            PastMeeting pastMeeting = new PastMeetingImpl(contacts, date);
+            PastMeeting pastMeeting = new PastMeetingImpl(meetingIdAssigner(), contacts, date);
             meetingSet.add(pastMeeting);                           // add to main meeting set
             pastMeetings.add(pastMeeting);                         // add to list of past meetings
             /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
