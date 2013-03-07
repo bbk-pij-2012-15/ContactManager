@@ -79,7 +79,7 @@ public class MeetingImpl implements Meeting, Serializable
         String date = "Date of Meeting: " + this.meetingCal.get(GregorianCalendar.DAY_OF_MONTH) + "/" +
                 (this.meetingCal.get(GregorianCalendar.MONTH) + 1) + "/" + this.meetingCal.get(GregorianCalendar.YEAR);
         String notes = "Meeting Notes: " + this.getNotes();
-        return (id + "\n" + contacts + "\n" + date + notes);
+        return (id + "\n" + contacts + "\n" + date + "\n" + notes);
     }
 
     public String getFormattedDate()
