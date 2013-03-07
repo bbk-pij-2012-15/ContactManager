@@ -8,7 +8,7 @@ public class MeetingImpl implements Meeting, Serializable
     private Calendar meetingCal;
     private boolean past = false;
     private boolean future = false;
-    private String meetingNotes;
+    private String meetingNotes = "";
 
     public MeetingImpl(int id, Set<Contact> set, Calendar date)
     {
@@ -44,10 +44,7 @@ public class MeetingImpl implements Meeting, Serializable
 
     public String getNotes()
     {
-        if (this.meetingNotes == null)
-            return "";
-        else
-            return this.meetingNotes;
+        return this.meetingNotes;
     }
 
     public Set<Contact> getContacts()
