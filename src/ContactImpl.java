@@ -43,7 +43,7 @@ public class ContactImpl implements Contact, Serializable
     {
         /** @return returns a useful String containing a Contact's name, id and any notes
         Will be used for test purposes and to display information about a specific Contact */
-        String tmp = "Name: " + this.name + ", Id: " + this.Id + ", Notes: \n" + this.notes;
+        String tmp = "Name: " + this.name + ", Id: " + this.Id + ", Notes: " + this.notes;
         return tmp;
     }
 }
