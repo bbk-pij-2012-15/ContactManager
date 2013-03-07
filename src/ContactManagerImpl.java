@@ -6,8 +6,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
     private static final File dataOnDisk = new File("./contacts.txt");
     public Set<Contact> contactSet = new HashSet<Contact>();
     public Set<Meeting> meetingSet = new HashSet<Meeting>();
-    private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
-    private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
+    public List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
+    public List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
     /** @param firstRun a flag so the program can distinguish between contacts.txt being absent due to a first run OR an error.
      *  In full program user would call program with command line options -n [short] or --new [long], which would
      *  set firstRun to true before calling the constructor. In this case brand new sets and lists would be created and
