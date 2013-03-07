@@ -44,14 +44,10 @@ public class MeetingImpl implements Meeting, Serializable
 
     public String getNotes()
     {
-        if (meetingNotes == null)
-        {
+        if (this.meetingNotes == null)
             return "";
-        }
         else
-        {
             return this.meetingNotes;
-        }
     }
 
     public Set<Contact> getContacts()
