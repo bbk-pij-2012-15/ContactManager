@@ -55,7 +55,9 @@ public class MeetingImpl implements Meeting, Serializable
             ContactImpl tmp = (ContactImpl) itr.next();
             setInfo += tmp.getInfo() + "\n";
         }
-        return setInfo;
+       /** @return removes final newline character, which is
+        * unnecessary as there are no more contacts to follow) */
+        return setInfo.substring(0, (setInfo.length() - 1));
     }
 
     public String getMeetingInfo()
