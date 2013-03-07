@@ -275,6 +275,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         try
         {
+           /** clear data from file so we write the most up-to-date, canonical data structures,
+            *  not merely appending which would result in duplicated or old data being read in */
+            dataOnDisk.delete();
             ObjectOutputStream objectOut =
                     new ObjectOutputStream(                                        // written over several lines
                             new BufferedOutputStream(                              // for extra clarity
