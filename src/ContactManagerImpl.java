@@ -57,25 +57,19 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public PastMeeting getPastMeeting(int id)
     {
         char flag = 'p';                        // 'p' for past meeting
-        Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);      // call the method in MeetingImpl
-        return (PastMeeting) meeting;        // cast to correct type on return
+        return (PastMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);        // cast to correct type on return
     }
 
     public FutureMeeting getFutureMeeting(int id)
     {
         char flag = 'f';                        // 'f' for future meeting
-        Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);       // call the method in MeetingImpl
-        return (FutureMeeting) meeting;     // cast to correct type on return
+        return (FutureMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);     // cast to correct type on return
     }
 
     public Meeting getMeeting(int id)
     {
         char flag = 'm';                        // 'm' for simply meeting
-        Meeting meeting = new MeetingImpl();
-        meeting = ((MeetingImpl)meeting).returnMeeting(meetingSet, id, flag);       // call the method in MeetingImpl
-        return meeting;                     // no need for casting here
+        return MeetingImpl.returnMeeting(meetingSet, id, flag);                     // no need for casting here
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact)
@@ -201,13 +195,26 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
         {
-            /** @param updatedMeeting name to indicate the updated PastMeeting object which will now have notes */
-            Meeting updatedMeeting = meeting;
+            for (PastMeeting pm : pastMeetings)
+            {
+                if (pm.getId() == id)
+                {
+                    meetingSet.remove(meeting);
+                    pastMeetings.remove(pm);
+                    ((PastMeetingImpl)pm).addNotes(text);
+                    pastMeetings.add(pm);
+                    meetingSet.add(pm);
+                }
+            }
+
+
+            /** @param updatedMeeting name to indicate the updated PastMeeting object which will now have notes *//*
+            PastMeeting updatedMeeting = getPastMeeting(id);
             ((PastMeetingImpl)updatedMeeting).addNotes(text);              // add notes to updatedMeeting
             meetingSet.remove(meeting);                                    // remove old. note-less meeting from meeting set
-            meetingSet.add((PastMeeting) updatedMeeting);                  // add the updated meeting back to meeting set
+            meetingSet.add(updatedMeeting);                  // add the updated meeting back to meeting set
             pastMeetings.remove(meeting);                                  // remove the old meeting from list of past meetings
-            pastMeetings.add((PastMeeting) updatedMeeting);               // add our new PastMeeting to the past meetings list
+            pastMeetings.add(updatedMeeting);               // add our new PastMeeting to the past meetings list*/
         }
     }
 
