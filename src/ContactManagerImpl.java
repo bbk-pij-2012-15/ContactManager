@@ -46,6 +46,14 @@ public class ContactManagerImpl implements ContactManager, Serializable
         return tmp.getId();
     }
 
+    /** used to get a unique id for a newly created meeting, based on meetingSet.size(), as meetingSet is
+     *  not visible from MeetingImpl. @return id to pass into the MeetingImpl constructor*/
+    private int meetingIdAssigner()
+    {
+        int uniqueId = (meetingSet.size() + 1);
+        return uniqueId;
+    }
+
     public PastMeeting getPastMeeting(int id)
     {
         char flag = 'p';                        // 'p' for past meeting
