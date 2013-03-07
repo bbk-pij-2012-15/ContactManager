@@ -34,16 +34,16 @@ public class ContactManagerImplTest
     @Test
     public void testAddFutureMeeting()
     {
+        date.set(2013, 9, 16);                           // set to arbitrary date in future
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
 
-        date.set(2013, 9, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
         assertFalse(conman.meetingSet.isEmpty());
         assertFalse(conman.futureMeetings.isEmpty());
         assertTrue(conman.pastMeetings.isEmpty());
 
         FutureMeeting fm = conman.futureMeetings.get(0);
-        System.out.println(((MeetingImpl)fm).getMeetingInfo());     // manually see if everything look ok
+        System.out.println(((MeetingImpl)fm).getMeetingInfo());     // manually see if everything looks ok
 
         Calendar storedDate = conman.futureMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
@@ -91,15 +91,22 @@ public class ContactManagerImplTest
     @Test
     public void testAddNewPastMeeting()
     {
-        date.set(2012, 4, 15);
+        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
+
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
-        out.println(conman.meetingSet);
-        out.println(conman.futureMeetings);
-        out.println(conman.pastMeetings);
-        for (Meeting m : conman.meetingSet)
-        {
-            out.println(((MeetingImpl)m).getMeetingInfo());
-        }
+        assertFalse(conman.meetingSet.isEmpty());
+        assertFalse(conman.pastMeetings.isEmpty());
+        assertTrue(conman.futureMeetings.isEmpty());
+
+        PastMeeting pm = conman.pastMeetings.get(0);
+        System.out.println(((MeetingImpl)pm).getMeetingInfo());     // manually see if everything looks ok
+
+        Calendar storedDate = conman.pastMeetings.get(0).getDate();
+        Set<Contact> storedSet = conman.pastMeetings.get(0).getContacts();
+        assertTrue(conman.pastMeetings.get(0).getId() != 0);
+        assertEquals(date, storedDate);
+        assertEquals(cset, storedSet);
     }
 
     @Test
