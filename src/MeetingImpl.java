@@ -53,7 +53,7 @@ public class MeetingImpl implements Meeting, Serializable
         for (Iterator<Contact> itr = this.contactsAtMeeting.iterator(); itr.hasNext();)
         {
             ContactImpl tmp = (ContactImpl) itr.next();
-            setInfo += tmp.getInfo();
+            setInfo += tmp.getInfo() + "\n";
         }
         return setInfo;
     }
