@@ -43,7 +43,7 @@ public class ContactManagerImplTest
         assertTrue(conman.pastMeetings.isEmpty());
 
         FutureMeeting fm = conman.futureMeetings.get(0);
-        System.out.println(((MeetingImpl)fm).getMeetingInfo());
+        System.out.println(((MeetingImpl)fm).getMeetingInfo());     // manually see if everything look ok
 
         Calendar storedDate = conman.futureMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
