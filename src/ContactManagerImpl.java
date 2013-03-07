@@ -162,8 +162,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
             PastMeeting pastMeeting = new PastMeetingImpl(meetingIdAssigner(), contacts, date);
             meetingSet.add(pastMeeting);                           // add to main meeting set
             pastMeetings.add(pastMeeting);                         // add to list of past meetings
-            /** use method addMeetingNotes to add notes to avoid unnecessary code duplication */
-            addMeetingNotes(pastMeeting.getId(), text);
+            /** use method addNotes to add notes to avoid unnecessary code duplication */
+            ((PastMeetingImpl)pastMeeting).addNotes(text);
         }
     }
 
