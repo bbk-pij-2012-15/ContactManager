@@ -34,16 +34,16 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
 
     public int getId()
     {
-         return 0;
+         return super.getId();
     }
 
     public Calendar getDate()
     {
-        return null;
+        return super.getDate();
     }
 
     public Set<Contact> getContacts()
     {
-           return null;
+           return super.getContacts();
     }
 }
