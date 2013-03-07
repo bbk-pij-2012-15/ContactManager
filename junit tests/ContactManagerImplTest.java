@@ -39,17 +39,17 @@ public class ContactManagerImplTest
         date.set(2013, 9, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
         assertFalse(conman.meetingSet.isEmpty());
-        assertFalse(conman.pastMeetings.isEmpty());
-        /**assertTrue(conman.futureMeetings.isEmpty());
+        assertFalse(conman.futureMeetings.isEmpty());
+        assertTrue(conman.pastMeetings.isEmpty());
 
-        PastMeeting pm = conman.pastMeetings.get(0);
-        System.out.println(((MeetingImpl)pm).getMeetingInfo());
+        FutureMeeting fm = conman.futureMeetings.get(0);
+        System.out.println(((MeetingImpl)fm).getMeetingInfo());
 
-        Calendar storedDate = conman.pastMeetings.get(0).getDate();
-        Set<Contact> storedSet = conman.pastMeetings.get(0).getContacts();
-        assertFalse(conman.pastMeetings.get(0).getId() != 0);
+        Calendar storedDate = conman.futureMeetings.get(0).getDate();
+        Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
+        assertFalse(conman.futureMeetings.get(0).getId() != 0);
         assertEquals(date, storedDate);
-        assertEquals(cset, storedSet);*/
+        assertEquals(cset, storedSet);
     }
 
     @Test
