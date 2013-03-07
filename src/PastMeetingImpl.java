@@ -22,19 +22,12 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
       @return the notes from the meeting. */
     public String getNotes()
     {
-        if (meetingNotes == null)
-        {
-            return "";
-        }
-        else
-        {
-            return this.meetingNotes;
-        }
+        return super.getNotes();
     }
 
     public int getId()
     {
-         return super.getId();
+        return super.getId();
     }
 
     public Calendar getDate()
@@ -44,6 +37,6 @@ public class PastMeetingImpl extends MeetingImpl implements PastMeeting
 
     public Set<Contact> getContacts()
     {
-           return super.getContacts();
+        return super.getContacts();
     }
 }
