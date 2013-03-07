@@ -6,8 +6,8 @@ no methods here, just a naming class */
 
 public class FutureMeetingImpl extends MeetingImpl implements FutureMeeting
 {
-       public FutureMeetingImpl(Set<Contact> set, Calendar date)
+       public FutureMeetingImpl(int id, Set<Contact> set, Calendar date)
        {
-           super(set, date);
+           super(id, set, date);
        }
 }
