@@ -1,6 +1,7 @@
+import java.io.Serializable;
 import java.util.*;
 
-public class MeetingImpl implements Meeting
+public class MeetingImpl implements Meeting, Serializable
 {
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
