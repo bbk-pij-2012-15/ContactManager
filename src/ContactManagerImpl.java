@@ -301,7 +301,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     private void load()
     {
-        if (firstRun)
+        if (firstRun || !dataOnDisk.exists())           // temporarily added hack to fix serialization until i solve main issue
         {
             /** make new empty sets and call the other constructor; for when dataOnDisk doesn't exist
              *  not due to error, but because program is being run for the first time */
@@ -326,6 +326,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
                 this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
                 objectIn.close();
+                dataOnDisk.delete();        // temporarily added hack to fix serialization until i solve main issue
 
             }
             catch (FileNotFoundException fnfex)
