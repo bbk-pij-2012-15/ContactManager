@@ -347,7 +347,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
                 ioex.printStackTrace();
             }
-            //return null;
         }
     }
 }
