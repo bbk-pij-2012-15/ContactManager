@@ -187,6 +187,22 @@ public class ContactManagerImplTest
     @Test
     public void testFlushAndLoad()         // merged test methods as cannot test individually
     {
+        /** add a past meeting, then add notes to it */
+        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
+        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        conman.addMeetingNotes(1, "Must buy a present!");
+        /** add a future meeting, then convert to past */
+        date.set(2013, 3, 6);          // set yesterday's date for the meeting to have happened
+        conman.addFutureMeeting(cset, date);        // create the future meeting to convert
+        conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
+        /** add a future meeting */
+        date.set(2013, 9, 16);                           // set to arbitrary date in future
+        conman.addFutureMeeting(cset, date);
+        /** at this point we should have 2 past meetings and 1 future meeting */
+
+
+
         conman.flush();
         ContactManagerImpl loadedConman = new ContactManagerImpl();
         Set<Contact> set = loadedConman.getContacts(3,2,1);
