@@ -92,6 +92,13 @@ public class ContactManagerImplTest
         assertTrue(conman.futureMeetings.get(0).getId() == 1 );     // make sure id is what we expect
         assertTrue(conman.pastMeetings.get(0).getId() == 2 );     // make sure id is what we expect
         assertEquals(conman.meetingSet.size(), 2);               // make sur meetingSet contains both meetings
+
+        Meeting fm = conman.getMeeting(1);
+        Meeting pm = conman.getMeeting(2);
+        assertNotNull(fm);
+        assertNotNull(pm);
+        System.out.println(((MeetingImpl) fm).getMeetingInfo());               // manual
+        System.out.println("\n" + ((MeetingImpl) pm).getMeetingInfo());        // checks
     }
 
     @Test
