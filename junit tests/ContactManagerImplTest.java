@@ -122,7 +122,7 @@ public class ContactManagerImplTest
     public void testAddMeetingNotes()
     {
         /** test of first function (add notes to an existing past meeting) starts here */
-        date.set(2012, 3, 15);               // set to arbitrary date in the past
+        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
         assertTrue(conman.meetingSet.size() == 0);
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
@@ -135,7 +135,7 @@ public class ContactManagerImplTest
         assertTrue(conman.meetingSet.size() == 1);
 
         /** test of second function (convert a future meeting that has happened + add notes) starts here */
-        date.set(2013, 2, 7);          // set yesterday's date for the meeting to have happened
+        date.set(2013, Calendar.MARCH, 7);          // set yesterday's date for the meeting to have happened
         assertTrue(conman.futureMeetings.isEmpty());
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
         assertTrue(conman.futureMeetings.size() == 1);
@@ -150,14 +150,14 @@ public class ContactManagerImplTest
         System.out.println(df.format(calfut.getTime()));        // prints as 07/04/2013 - why the 4 as i set 3?
         System.out.println(df.format(now.getTime()));
 
-       /* assertTrue(conman.pastMeetings.size() == 1);
+        assertTrue(conman.pastMeetings.size() == 1);
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
         assertTrue(conman.futureMeetings.isEmpty());    // should be empty cos we removed the passed future meeting
         assertTrue(conman.meetingSet.size() == 2);
         assertTrue(conman.pastMeetings.size() == 2);
 
         PastMeeting newpm = conman.pastMeetings.get(1);
-        System.out.println(((PastMeetingImpl)newpm).getMeetingInfo());     // manually see if everything looks ok*/
+        System.out.println(((PastMeetingImpl)newpm).getMeetingInfo());     // manually see if everything looks ok
 
     }
 
