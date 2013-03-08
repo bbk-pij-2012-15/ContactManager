@@ -166,8 +166,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
      * It can be also used to add notes to a past meeting at a later date. */
     public void addMeetingNotes(int id, String text)
     {
-        Calendar errCal = GregorianCalendar.getInstance();
-        Set<Contact> errSet = new HashSet<Contact>();
+        Set<Contact> errSet = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid NullPException
 
         Meeting meeting = getMeeting(id);
         Calendar presentDate = new GregorianCalendar();
@@ -186,10 +185,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else if (meeting instanceof FutureMeeting)      // we know it's a future meeting needing conversion
         {
+           /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting
+            * the 0 id field (an impossible id) is a flag to let us know whether or not it goes through the for loop if statement */
             PastMeeting convertedMeeting = new PastMeetingImpl(0, errSet, null);
             for (FutureMeeting fm : futureMeetings)
             {
-                /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting */
                 if (fm.getId() == id)
                 {
                     convertedMeeting = new PastMeetingImpl(fm.getId(), fm.getContacts(), fm.getDate());
