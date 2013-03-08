@@ -35,7 +35,7 @@ public class ContactManagerImplTest
     @Test
     public void testAddFutureMeeting()
     {
-        date.set(2013, 9, 16);                           // set to arbitrary date in future
+        date.set(2013, Calendar.SEPTEMBER, 16);                           // set to arbitrary date in future
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
 
         conman.addFutureMeeting(cset, date);
@@ -56,7 +56,7 @@ public class ContactManagerImplTest
     @Test
     public void testGetPastMeeting()
     {
-        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
         assertTrue(conman.meetingSet.size() == 1 && conman.pastMeetings.size() == 1);   // check add has worked
@@ -100,7 +100,7 @@ public class ContactManagerImplTest
     @Test
     public void testAddNewPastMeeting()
     {
-        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
 
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
@@ -147,7 +147,7 @@ public class ContactManagerImplTest
         Calendar now = new GregorianCalendar();
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("dd/MM/yyyy");
-        System.out.println(df.format(calfut.getTime()));        // prints as 07/04/2013 - why the 4 as i set 3?
+        System.out.println(df.format(calfut.getTime()));
         System.out.println(df.format(now.getTime()));
 
         assertTrue(conman.pastMeetings.size() == 1);
@@ -204,16 +204,16 @@ public class ContactManagerImplTest
     public void testFlushAndLoad()         // merged test methods as cannot test individually
     {
         /** add a past meeting, then add notes to it */
-        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
         conman.addMeetingNotes(1, "Must buy a present!");
         /** add a future meeting, then convert to past */
-        date.set(2013, 3, 7);          // set yesterday's date for the meeting to have happened
+        date.set(2013, Calendar.MARCH, 7);          // set yesterday's date for the meeting to have happened
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
         /** add a future meeting */
-        date.set(2013, 9, 16);                           // set to arbitrary date in future
+        date.set(2013, Calendar.SEPTEMBER, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
         /** at this point we should have 2 past meetings and 1 future meeting */
         assertTrue(conman.meetingSet.size() == 3);
