@@ -147,7 +147,7 @@ public class ContactManagerImplTest
         Calendar now = new GregorianCalendar();
         SimpleDateFormat df = new SimpleDateFormat();
         df.applyPattern("dd/MM/yyyy");
-        System.out.println(df.format(calfut.getTime()));
+        System.out.println(df.format(calfut.getTime()));        // prints as 07/04/2013 - why the 4 as i set 3?
         System.out.println(df.format(now.getTime()));
 
        /* assertTrue(conman.pastMeetings.size() == 1);
