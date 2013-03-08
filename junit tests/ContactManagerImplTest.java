@@ -76,7 +76,7 @@ public class ContactManagerImplTest
     {
         conman.addFutureMeeting(cset, futureDate);
         assertTrue(conman.meetingSet.size() == 1 && conman.futureMeetings.size() == 1);   // check add has worked
-        assertTrue(conman.futureMeetings.get(0).getId() == 1);     // make sure id is what we expect before calling getPastMeeting()
+        assertTrue(conman.futureMeetings.get(0).getId() == 1);     // make sure id is what we expect
 
         FutureMeeting fm = conman.getFutureMeeting(1);
         assertNotNull(fm);
@@ -86,7 +86,12 @@ public class ContactManagerImplTest
     @Test
     public void testGetMeeting()
     {
-        fail("not written yet");
+        conman.addFutureMeeting(cset, futureDate);
+        conman.addNewPastMeeting(cset, pastDate, "another past meeting");
+        assertTrue(conman.futureMeetings.size() == 1 && conman.pastMeetings.size() == 1);   // check add has worked
+        assertTrue(conman.futureMeetings.get(0).getId() == 1 );     // make sure id is what we expect
+        assertTrue(conman.pastMeetings.get(0).getId() == 2 );     // make sure id is what we expect
+        assertEquals(conman.meetingSet.size(), 2);               // make sur meetingSet contains both meetings
     }
 
     @Test
