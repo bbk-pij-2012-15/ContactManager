@@ -55,7 +55,13 @@ public class ContactManagerImplTest
     @Test
     public void testGetPastMeeting()
     {
-        fail("not written yet");
+        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
+        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        assertTrue(conman.meetingSet.size() == 1 && conman.pastMeetings.size() == 1);   // check add has worked
+        assertTrue(conman.pastMeetings.get(0).getId() == 1);     // make sure id is what we expect before calling getPastMeeting()
+
+        //PastMeeting pm = conman.getPastMeeting(1);
     }
 
     @Test
