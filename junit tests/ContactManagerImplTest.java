@@ -134,7 +134,14 @@ public class ContactManagerImplTest
         assertTrue(conman.futureMeetings.get(0).getId() == 2);  // check before method call - also should be 2 cos it's our 2nd meeting
         assertTrue(conman.meetingSet.size() == 2);
 
+        assertTrue(conman.pastMeetings.size() == 1);
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
+        assertTrue(conman.futureMeetings.isEmpty());    // should be empty cos we removed the passed future meeting
+        assertTrue(conman.meetingSet.size() == 2);
+        assertTrue(conman.pastMeetings.size() == 2);
+
+        PastMeeting newpm = conman.pastMeetings.get(1);
+        System.out.println(((PastMeetingImpl)newpm).getMeetingInfo());     // manually see if everything looks ok
 
     }
 
