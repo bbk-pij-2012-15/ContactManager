@@ -122,7 +122,7 @@ public class ContactManagerImplTest
     public void testAddMeetingNotes()
     {
         /** test of first function (add notes to an existing past meeting) starts here */
-        date.set(2012, 4, 15);               // set to arbitrary date in the past
+        date.set(2012, 3, 15);               // set to arbitrary date in the past
         Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
         assertTrue(conman.meetingSet.size() == 0);
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
@@ -135,7 +135,7 @@ public class ContactManagerImplTest
         assertTrue(conman.meetingSet.size() == 1);
 
         /** test of second function (convert a future meeting that has happened + add notes) starts here */
-        date.set(2013, 3, 7);          // set yesterday's date for the meeting to have happened
+        date.set(2013, 2, 7);          // set yesterday's date for the meeting to have happened
         assertTrue(conman.futureMeetings.isEmpty());
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
         assertTrue(conman.futureMeetings.size() == 1);
