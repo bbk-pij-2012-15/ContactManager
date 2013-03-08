@@ -61,7 +61,9 @@ public class ContactManagerImplTest
         assertTrue(conman.meetingSet.size() == 1 && conman.pastMeetings.size() == 1);   // check add has worked
         assertTrue(conman.pastMeetings.get(0).getId() == 1);     // make sure id is what we expect before calling getPastMeeting()
 
-        //PastMeeting pm = conman.getPastMeeting(1);
+        PastMeeting pm = conman.getPastMeeting(1);
+        assertNotNull(pm);
+        System.out.println(((MeetingImpl)pm).getMeetingInfo());  // manual check
     }
 
     @Test
