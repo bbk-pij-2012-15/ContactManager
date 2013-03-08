@@ -168,7 +168,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
         Set<Contact> errSet = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid NullPException
         Meeting meeting = getMeeting(id);
         Calendar presentDate = new GregorianCalendar();
-        presentDate.set(2013, 3, 7);
         if (meeting == null)
         {
             throw new IllegalArgumentException("Specified meeting does not exist!");
@@ -193,11 +192,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     convertedMeeting = new PastMeetingImpl(fm.getId(), fm.getContacts(), fm.getDate());
                 }
             }
-            if (convertedMeeting.getId() == 0)   // we know we haven't been through the for loop if statement, so no point adding
+            if (convertedMeeting.getId() == 0)   // we haven't been through the for loop and/or if statement, so no point adding
             {
                 throw new IllegalArgumentException("Couldn't find meeting and/or list of meetings!");
             }
-            else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our set/list
+            else  // we know that convertedMeeting has been through the for loop and/or if statement, so can add it to our set/list
             {
                 meetingSet.remove(meeting);
                 futureMeetings.remove(meeting);
