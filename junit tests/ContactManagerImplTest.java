@@ -1,6 +1,7 @@
 import org.junit.*;
 
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.junit.Assert.*;
@@ -63,7 +64,7 @@ public class ContactManagerImplTest
 
         PastMeeting pm = conman.getPastMeeting(1);
         assertNotNull(pm);
-        System.out.println(((MeetingImpl)pm).getMeetingInfo());  // manual check
+        System.out.println(((MeetingImpl) pm).getMeetingInfo());  // manual check
     }
 
     @Test
@@ -142,7 +143,12 @@ public class ContactManagerImplTest
         assertTrue(conman.futureMeetings.get(0).getId() == 2);  // check before method call - also should be 2 cos it's our 2nd meeting
         assertTrue(conman.meetingSet.size() == 2);
 
-
+        Calendar calfut = conman.futureMeetings.get(0).getDate();
+        Calendar now = new GregorianCalendar();
+        SimpleDateFormat df = new SimpleDateFormat();
+        df.applyPattern("dd/MM/yyyy");
+        System.out.println(df.format(calfut.getTime()));
+        System.out.println(df.format(now.getTime()));
 
        /* assertTrue(conman.pastMeetings.size() == 1);
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
