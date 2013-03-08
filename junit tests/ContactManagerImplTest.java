@@ -129,9 +129,12 @@ public class ContactManagerImplTest
         date.set(2013, 3, 6);          // set yesterday's date for the meeting to have happened
         assertTrue(conman.futureMeetings.isEmpty());
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
-        assertFalse(conman.futureMeetings.isEmpty());
+        assertTrue(conman.futureMeetings.size() == 1);
 
-        //conman.addMeetingNotes();
+        assertTrue(conman.futureMeetings.get(0).getId() == 2);  // check before method call - also should be 2 cos it's our 2nd meeting
+        assertTrue(conman.meetingSet.size() == 2);
+
+        conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
 
     }
 
