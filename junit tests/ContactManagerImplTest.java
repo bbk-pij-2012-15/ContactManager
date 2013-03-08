@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
-    Calendar futureDate = new GregorianCalendar();
+    Calendar futureDate, futureDate2, futureDate3 = new GregorianCalendar();
     Calendar presentDate = new GregorianCalendar();  // leave set to present date
     Calendar pastDate = new GregorianCalendar();
     Calendar yesterday = new GregorianCalendar();
@@ -27,6 +27,8 @@ public class ContactManagerImplTest
         pastDate.set(2012, Calendar.APRIL, 15);          // set to arbitrary date in the past
         cset = conman.getContacts(1,2,3);               // populate a contact set to pass to methods
         yesterday.add(Calendar.DAY_OF_MONTH, -1);       // set to yesterday's date by taking 1 off the day field
+        futureDate2.add(Calendar.DAY_OF_MONTH, 7);      // a week later than present day
+        futureDate3.add(Calendar.YEAR, 2);              // 2 years after present day
     }
 
     @Test
@@ -104,7 +106,9 @@ public class ContactManagerImplTest
     @Test
     public void testGetFutureMeetingListContact()
     {
-        fail("not written yet");
+        conman.addFutureMeeting(cset, futureDate);
+        conman.addFutureMeeting(cset, futureDate2);
+        conman.addFutureMeeting(cset, futureDate3);
     }
 
     @Test
