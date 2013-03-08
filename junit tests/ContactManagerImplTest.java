@@ -9,7 +9,13 @@ import static org.junit.Assert.*;
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
-    Calendar date = new GregorianCalendar();
+    Calendar futureDate = new GregorianCalendar();
+    Calendar presentDate = new GregorianCalendar();  // leave set to present date
+    Calendar pastDate = new GregorianCalendar();
+    Calendar yesterday = new GregorianCalendar();
+    Set<Contact> cset = new HashSet<Contact>();
+
+
 
     @Before
     public void setUpTest()
@@ -17,13 +23,16 @@ public class ContactManagerImplTest
         conman.addNewContact("Ann Andrews", "CTO at Canonical UK");
         conman.addNewContact("Bob Bobbit", "Organize drinks soon");
         conman.addNewContact("Cal Callerson", "Here is a note about Cal");
+        futureDate.set(2013, Calendar.SEPTEMBER, 16);    // set to arbitrary date in the future
+        pastDate.set(2012, Calendar.APRIL, 15);          // set to arbitrary date in the past
+        cset = conman.getContacts(1,2,3);               // populate a contact set to pass to methods
+        yesterday.add(Calendar.DAY_OF_MONTH, -1);       // set to yesterday's date by taking 1 off the day field
     }
 
     @Test
     public void testAddNewContact()
     {
-        Set<Contact> set = conman.getContacts(1, 2, 3);
-        assertTrue(set.size() == 3);
+        assertTrue(cset.size() == 3);
     }
 
     @After
@@ -35,10 +44,7 @@ public class ContactManagerImplTest
     @Test
     public void testAddFutureMeeting()
     {
-        date.set(2013, Calendar.SEPTEMBER, 16);                           // set to arbitrary date in future
-        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
-
-        conman.addFutureMeeting(cset, date);
+        conman.addFutureMeeting(cset, futureDate);
         assertFalse(conman.meetingSet.isEmpty());
         assertFalse(conman.futureMeetings.isEmpty());
         assertTrue(conman.pastMeetings.isEmpty());
@@ -49,16 +55,14 @@ public class ContactManagerImplTest
         Calendar storedDate = conman.futureMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.futureMeetings.get(0).getContacts();
         assertTrue(conman.futureMeetings.get(0).getId() == 1);          // should be 1 as that's what listsize + 1 is
-        assertEquals(date, storedDate);
+        assertEquals(futureDate, storedDate);
         assertEquals(cset, storedSet);
     }
 
     @Test
     public void testGetPastMeeting()
     {
-        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
-        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
-        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        conman.addNewPastMeeting(cset, pastDate, "Hugh's 22nd birthday");
         assertTrue(conman.meetingSet.size() == 1 && conman.pastMeetings.size() == 1);   // check add has worked
         assertTrue(conman.pastMeetings.get(0).getId() == 1);     // make sure id is what we expect before calling getPastMeeting()
 
@@ -70,7 +74,7 @@ public class ContactManagerImplTest
     @Test
     public void testGetFutureMeeting()
     {
-        fail("not written yet");
+        conman.addFutureMeeting(cset, futureDate);
     }
 
     @Test
@@ -100,10 +104,7 @@ public class ContactManagerImplTest
     @Test
     public void testAddNewPastMeeting()
     {
-        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
-        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
-
-        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        conman.addNewPastMeeting(cset, pastDate, "Hugh's 22nd birthday");
         assertFalse(conman.meetingSet.isEmpty());
         assertFalse(conman.pastMeetings.isEmpty());
         assertTrue(conman.futureMeetings.isEmpty());
@@ -114,7 +115,7 @@ public class ContactManagerImplTest
         Calendar storedDate = conman.pastMeetings.get(0).getDate();
         Set<Contact> storedSet = conman.pastMeetings.get(0).getContacts();
         assertTrue(conman.pastMeetings.get(0).getId() == 1);        // should be 1 as that's what listsize + 1 is
-        assertEquals(date, storedDate);
+        assertEquals(pastDate, storedDate);
         assertEquals(cset, storedSet);
     }
 
@@ -122,10 +123,8 @@ public class ContactManagerImplTest
     public void testAddMeetingNotes()
     {
         /** test of first function (add notes to an existing past meeting) starts here */
-        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
-        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
         assertTrue(conman.meetingSet.size() == 0);
-        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        conman.addNewPastMeeting(cset, pastDate, "Hugh's 22nd birthday");
 
         assertTrue(conman.pastMeetings.get(0).getId() == 1);        // make sure before we use id in method call
         conman.addMeetingNotes(1, "Must buy a present!");
@@ -135,9 +134,8 @@ public class ContactManagerImplTest
         assertTrue(conman.meetingSet.size() == 1);
 
         /** test of second function (convert a future meeting that has happened + add notes) starts here */
-        date.set(2013, Calendar.MARCH, 7);          // set yesterday's date for the meeting to have happened
         assertTrue(conman.futureMeetings.isEmpty());
-        conman.addFutureMeeting(cset, date);        // create the future meeting to convert
+        conman.addFutureMeeting(cset, yesterday);        // create the future meeting to convert
         assertTrue(conman.futureMeetings.size() == 1);
 
         assertTrue(conman.futureMeetings.get(0).getId() == 2);  // check before method call - also should be 2 cos it's our 2nd meeting
@@ -204,17 +202,13 @@ public class ContactManagerImplTest
     public void testFlushAndLoad()         // merged test methods as cannot test individually
     {
         /** add a past meeting, then add notes to it */
-        date.set(2012, Calendar.APRIL, 15);               // set to arbitrary date in the past
-        Set<Contact> cset = conman.getContacts(1,2,3);     // populate a contact set to pass to method
-        conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
+        conman.addNewPastMeeting(cset, pastDate, "Hugh's 22nd birthday");
         conman.addMeetingNotes(1, "Must buy a present!");
         /** add a future meeting, then convert to past */
-        date.set(2013, Calendar.MARCH, 7);          // set yesterday's date for the meeting to have happened
-        conman.addFutureMeeting(cset, date);        // create the future meeting to convert
+        conman.addFutureMeeting(cset, yesterday);        // create the future meeting to convert
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
         /** add a future meeting */
-        date.set(2013, Calendar.SEPTEMBER, 16);                           // set to arbitrary date in future
-        conman.addFutureMeeting(cset, date);
+        conman.addFutureMeeting(cset, futureDate);
         /** at this point we should have 2 past meetings and 1 future meeting */
         assertTrue(conman.meetingSet.size() == 3);
 
