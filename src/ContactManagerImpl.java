@@ -161,13 +161,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
-    /** This method is used when a future meeting takes place, and is
-     * then converted to a past meeting (with notes).
-     * It can be also used to add notes to a past meeting at a later date. */
+    /** This method is used when a future meeting takes place, and is then converted to a past meeting (with notes), or to
+     * add notes to a past meeting at a later date. @throws IllegalArgumentException if specified meeting is null OR not found */
     public void addMeetingNotes(int id, String text)
     {
         Set<Contact> errSet = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid NullPException
-
         Meeting meeting = getMeeting(id);
         Calendar presentDate = new GregorianCalendar();
         presentDate.set(2013, 3, 7);
@@ -197,7 +195,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             }
             if (convertedMeeting.getId() == 0)   // we know we haven't been through the for loop if statement, so no point adding
             {
-                System.err.println("Couldn't find meeting and/or list of meetings");
+                throw new IllegalArgumentException("Couldn't find meeting and/or list of meetings!");
             }
             else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our set/list
             {
