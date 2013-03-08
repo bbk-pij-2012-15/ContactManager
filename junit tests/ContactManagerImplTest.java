@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 public class ContactManagerImplTest
 {
     ContactManagerImpl conman = new ContactManagerImpl();
-    Calendar futureDate, futureDate2, futureDate3 = new GregorianCalendar();
+    Calendar futureDate = new GregorianCalendar(), futureDate2 = new GregorianCalendar(), futureDate3 = new GregorianCalendar();
     Calendar presentDate = new GregorianCalendar();  // leave set to present date
     Calendar pastDate = new GregorianCalendar();
     Calendar yesterday = new GregorianCalendar();
@@ -106,9 +106,27 @@ public class ContactManagerImplTest
     @Test
     public void testGetFutureMeetingListContact()
     {
+        Contact bob = new ContactImpl("", "", 0);
+        for (Contact c : cset)
+        {
+            if (c.getName() == "Bob Bobbit")
+                bob = c;
+        }
+        Set<Contact> setWithoutBob;
+        setWithoutBob = conman.getContacts(1,3);
         conman.addFutureMeeting(cset, futureDate);
-        conman.addFutureMeeting(cset, futureDate2);
+        conman.addFutureMeeting(setWithoutBob, futureDate2);  // bob does not attend this meeting
         conman.addFutureMeeting(cset, futureDate3);
+        assertTrue(setWithoutBob.size() == 2);
+
+        assertTrue(conman.contactSet.size() == 3 && conman.futureMeetings.size() == 3); //check adding has worked fine
+        List<Meeting> list = conman.getFutureMeetingList(bob);
+        assertFalse(list.isEmpty());
+        assertTrue(list.size() == 2);       // cos doesn't have the meeting bob didn't attend
+        for (Meeting m : list)
+        {
+            System.out.println(((MeetingImpl)m).getMeetingInfo());
+        }
     }
 
     @Test
