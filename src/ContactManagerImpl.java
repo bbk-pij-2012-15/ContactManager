@@ -166,6 +166,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
      * It can be also used to add notes to a past meeting at a later date. */
     public void addMeetingNotes(int id, String text)
     {
+        Calendar errCal = GregorianCalendar.getInstance();
+        Set<Contact> errSet = new HashSet<Contact>();
+
         Meeting meeting = getMeeting(id);
         Calendar presentDate = new GregorianCalendar();
         presentDate.set(2013, 3, 7);
@@ -183,16 +186,26 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else if (meeting instanceof FutureMeeting)      // we know it's a future meeting needing conversion
         {
+            PastMeeting convertedMeeting = new PastMeetingImpl(0, errSet, null);
             for (FutureMeeting fm : futureMeetings)
             {
                 /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting */
                 if (fm.getId() == id)
                 {
-                    futureMeetings.remove(fm);                              // take it out of the future meetings list
-                    PastMeeting convertedMeeting = new PastMeetingImpl(fm.getId(), fm.getContacts(), fm.getDate());
-                    //PastMeeting convertedMeeting = (PastMeeting) fm;       // cast into a PastMeeting (the conversion)
-                    addMeetingNotes(convertedMeeting.getId(), text);        // add the notes
+                    convertedMeeting = new PastMeetingImpl(fm.getId(), fm.getContacts(), fm.getDate());
                 }
+            }
+            if (convertedMeeting.getId() == 0)   // we know we haven't been through the for loop if statement, so no point adding
+            {
+                System.err.println("Couldn't find meeting and/or list of meetings");
+            }
+            else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our set/list
+            {
+                meetingSet.remove(meeting);
+                futureMeetings.remove(meeting);
+                pastMeetings.add(convertedMeeting);
+                meetingSet.add(convertedMeeting);
+                addMeetingNotes(convertedMeeting.getId(), text);        // add the notes
             }
         }
         else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
