@@ -126,7 +126,7 @@ public class ContactManagerImplTest
         assertTrue(conman.meetingSet.size() == 1);
 
         /** test of second function (convert a future meeting that has happened + add notes) starts here */
-        date.set(2013, 3, 6);          // set yesterday's date for the meeting to have happened
+        date.set(2013, 3, 7);          // set yesterday's date for the meeting to have happened
         assertTrue(conman.futureMeetings.isEmpty());
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
         assertTrue(conman.futureMeetings.size() == 1);
@@ -193,20 +193,25 @@ public class ContactManagerImplTest
         conman.addNewPastMeeting(cset, date, "Hugh's 22nd birthday");
         conman.addMeetingNotes(1, "Must buy a present!");
         /** add a future meeting, then convert to past */
-        date.set(2013, 3, 6);          // set yesterday's date for the meeting to have happened
+        date.set(2013, 3, 7);          // set yesterday's date for the meeting to have happened
         conman.addFutureMeeting(cset, date);        // create the future meeting to convert
         conman.addMeetingNotes(2, "Meeting took place with general consensus - idea ready to pitch");
         /** add a future meeting */
         date.set(2013, 9, 16);                           // set to arbitrary date in future
         conman.addFutureMeeting(cset, date);
         /** at this point we should have 2 past meetings and 1 future meeting */
-
-
+        assertTrue(conman.meetingSet.size() == 3);
 
         conman.flush();
         ContactManagerImpl loadedConman = new ContactManagerImpl();
-        Set<Contact> set = loadedConman.getContacts(3,2,1);
-        assertTrue(set.size() == 3);
+        assertTrue(loadedConman.contactSet.size() == 3);
+        assertTrue(loadedConman.meetingSet.size() == 3);
+        assertTrue(loadedConman.pastMeetings.size() == 2);
+        assertTrue(loadedConman.futureMeetings.size() == 1);
+        for (Meeting m : loadedConman.meetingSet)
+        {
+            ((MeetingImpl)m).getMeetingInfo();     // manual check
+        }
     }
 
     @Test
