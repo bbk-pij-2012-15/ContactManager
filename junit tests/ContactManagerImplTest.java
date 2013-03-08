@@ -77,6 +77,10 @@ public class ContactManagerImplTest
         conman.addFutureMeeting(cset, futureDate);
         assertTrue(conman.meetingSet.size() == 1 && conman.futureMeetings.size() == 1);   // check add has worked
         assertTrue(conman.futureMeetings.get(0).getId() == 1);     // make sure id is what we expect before calling getPastMeeting()
+
+        FutureMeeting fm = conman.getFutureMeeting(1);
+        assertNotNull(fm);
+        System.out.println(((MeetingImpl) fm).getMeetingInfo());  // manual looksee
     }
 
     @Test
