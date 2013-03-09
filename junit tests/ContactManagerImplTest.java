@@ -132,7 +132,11 @@ public class ContactManagerImplTest
     @Test
     public void testGetFutureMeetingListCalendar()
     {
-        fail("not written yet");
+        conman.addFutureMeeting(cset, futureDate3);
+        conman.addFutureMeeting(cset, futureDate2);  // 2 meetings on future date 3
+        conman.addFutureMeeting(cset, futureDate3);
+        assertTrue(conman.meetingSet.size() == 3 && conman.futureMeetings.size() == 3);
+        assertTrue(conman.futureMeetings.get(0).getDate() == futureDate3);
     }
 
     @Test
