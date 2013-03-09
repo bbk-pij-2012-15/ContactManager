@@ -2,6 +2,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class MeetingImplTest
@@ -31,14 +32,43 @@ public class MeetingImplTest
     @After
     public void cleanUp()
     {
-
+        conman = null;
     }
 
     @Test
     public void testComparator()
     {
-        List<Meeting> unsortedMeetings;
-        Meeting m1 = new MeetingImpl()
+        SimpleDateFormat df = new SimpleDateFormat();
+        df.applyPattern("dd/MM/yyyy");
+        /** add 7 different meetings with 7 different dates, and a list to store them */
+        List<Meeting> unsortedMeetings = new ArrayList<Meeting>();
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Meeting m2 = new MeetingImpl(2, cset, pastDate);
+        Meeting m3 = new MeetingImpl(3, cset, futureDate3);
+        Meeting m4 = new MeetingImpl(4, cset, presentDate);
+        Meeting m5 = new MeetingImpl(5, cset, futureDate2);
+        Meeting m6 = new MeetingImpl(6, cset, yesterday);
+        Meeting m7 = new MeetingImpl(7, cset, twoDaysLater);
+        unsortedMeetings.add(m1);
+        unsortedMeetings.add(m2);
+        unsortedMeetings.add(m3);
+        unsortedMeetings.add(m4);
+        unsortedMeetings.add(m5);
+        unsortedMeetings.add(m6);
+        unsortedMeetings.add(m7);
+        for (Meeting m : unsortedMeetings)
+        {
+            Calendar cal = m.getDate();
+            System.out.println(df.format(cal.getTime()));
+        }
+        System.out.println("========================================================================");
+        List<Meeting> sortedMeetings = new ArrayList<Meeting>(unsortedMeetings);
+        Collections.sort(sortedMeetings, MeetingImpl.MeetingComparator);            // sort using our custom comparator
+        for (Meeting m : sortedMeetings)
+        {
+            Calendar cal = m.getDate();
+            System.out.println(df.format(cal.getTime()));
+        }
     }
 
     @Test
