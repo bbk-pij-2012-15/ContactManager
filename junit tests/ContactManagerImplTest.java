@@ -137,6 +137,13 @@ public class ContactManagerImplTest
         conman.addFutureMeeting(cset, futureDate3);
         assertTrue(conman.meetingSet.size() == 3 && conman.futureMeetings.size() == 3);
         assertTrue(conman.futureMeetings.get(0).getDate() == futureDate3);
+
+        List<Meeting> list = conman.getFutureMeetingList(futureDate3); // should return 2 meetings
+        assertEquals(list.size(), 2);
+        for (Meeting m : list)
+        {
+            System.out.println(((MeetingImpl)m).getMeetingInfo());      // manual check
+        }
     }
 
     @Test
