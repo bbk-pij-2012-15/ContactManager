@@ -2,8 +2,16 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.*;
+
 public class MeetingImplTest
 {
+    Calendar futureDate = new GregorianCalendar(), futureDate2 = new GregorianCalendar(), futureDate3 = new GregorianCalendar();
+    Calendar presentDate = new GregorianCalendar();  // leave set to present date
+    Calendar pastDate = new GregorianCalendar(), twoDaysLater = new GregorianCalendar();
+    Calendar yesterday = new GregorianCalendar();
+    Set<Contact> cset = new HashSet<Contact>();
+
     @Before
     public void setUpTest()
     {
@@ -14,6 +22,13 @@ public class MeetingImplTest
     public void cleanUp()
     {
 
+    }
+
+    @Test
+    public void testComparator()
+    {
+        List<Meeting> unsortedMeetings;
+        Meeting m1 = new MeetingImpl()
     }
 
     @Test
