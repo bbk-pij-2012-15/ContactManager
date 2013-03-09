@@ -150,16 +150,33 @@ public class ContactManagerImplTest
     public void testGetPastMeetingList()
     {
         Contact bob = new ContactImpl("", "", 0);
+        Contact ann = new ContactImpl("", "", 0);
         for (Contact c : cset)
         {
             if (c.getName() == "Bob Bobbit")
                 bob = c;
+            else if (c.getName() == "Ann Andrews")
+                ann = c;
         }
         Set<Contact> setWithoutBob;
         setWithoutBob = conman.getContacts(1,3);
+        assertTrue(conman.meetingSet.isEmpty() && conman.pastMeetings.isEmpty());
         conman.addNewPastMeeting(cset, pastDate, "Last board meeting");
         conman.addNewPastMeeting(setWithoutBob, pastDate, "Drinks after board meeting - bob couldn't come");
         conman.addNewPastMeeting(cset, twoDaysLater, "Follow-up meeting with everyone two days later");
+        assertTrue(conman.meetingSet.size() == 3 && conman.pastMeetings.size() == 3);
+
+        List<PastMeeting> listNoBob = conman.getPastMeetingList(bob);
+        List<PastMeeting> listWBob = conman.getPastMeetingList(ann);
+        List<PastMeeting> combinedList = new ArrayList<PastMeeting>(listNoBob);
+        assertFalse(listNoBob.isEmpty() && listWBob.isEmpty());
+        assertTrue(listNoBob.size() == 2 && listWBob.size() == 3);
+        combinedList.addAll(listWBob);
+        for (PastMeeting pm : combinedList)
+        {
+            System.out.println(((MeetingImpl) pm).getMeetingInfo());
+        }
+
     }
 
     @Test
