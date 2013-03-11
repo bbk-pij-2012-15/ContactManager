@@ -117,7 +117,7 @@ public class MeetingImplTest
     }
 
     @Test
-    public void testGetNotes()
+    public void testAddAndGetNotes()
     {
         Meeting m1 = new MeetingImpl(1, cset, futureDate);
         ((MeetingImpl)m1).addNotes("this is a note");
@@ -129,13 +129,18 @@ public class MeetingImplTest
     @Test
     public void testGetContacts()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Set<Contact> conSet = m1.getContacts();
 
+        assertEquals(cset, conSet);
     }
 
     @Test
     public void testGetSetInfo()
     {
-
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        String contactsInfo = ((MeetingImpl)m1).getSetInfo();
+        System.out.println(contactsInfo);       // manual inspection for this test, as string too long
     }
 
     @Test
@@ -158,12 +163,6 @@ public class MeetingImplTest
 
     @Test
     public void testInFuture()
-    {
-
-    }
-
-    @Test
-    public void testAddNotes()
     {
 
     }
