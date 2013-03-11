@@ -100,13 +100,30 @@ public class MeetingImplTest
     @Test
     public void testGetDate()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Meeting m2 = new MeetingImpl(2, cset, pastDate);
+        Meeting m3 = new MeetingImpl(3, cset, futureDate3);
+        Meeting m4 = new MeetingImpl(4, cset, presentDate);
 
+        Calendar cal1 = m1.getDate();
+        Calendar cal2 = m2.getDate();
+        Calendar cal3 = m3.getDate();
+        Calendar cal4 = m4.getDate();
+
+        assertEquals(futureDate, cal1);
+        assertEquals(pastDate, cal2);
+        assertEquals(futureDate3, cal3);
+        assertEquals(presentDate, cal4);
     }
 
     @Test
     public void testGetNotes()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        ((MeetingImpl)m1).addNotes("this is a note");
+        String notes = ((MeetingImpl) m1).getNotes();
 
+        assertEquals("-this is a note\n", notes);
     }
 
     @Test
