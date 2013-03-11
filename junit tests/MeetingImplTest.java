@@ -146,24 +146,39 @@ public class MeetingImplTest
     @Test
     public void testGetMeetingInfo()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        String meetingInfo = ((MeetingImpl)m1).getMeetingInfo();
+        System.out.println(meetingInfo);       // manual inspection for this test, as string too long
 
+        ((MeetingImpl)m1).addNotes("this is a note");
+        ((MeetingImpl)m1).addNotes("this is another note");
+        meetingInfo = ((MeetingImpl)m1).getMeetingInfo();
+        System.out.println(meetingInfo);
     }
 
     @Test
     public void testGetFormattedDate()
     {
-
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        String dateStr = ((MeetingImpl)m1).getFormattedDate();
+        String expectedDate = "Date of Meeting: 16/9/2013";
+        assertEquals(expectedDate, dateStr);
     }
 
     @Test
-    public void testInPast()
+    public void testInPastAndInFuture()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Meeting m2 = new MeetingImpl(2, cset, pastDate);
+        Meeting m3 = new MeetingImpl(3, cset, presentDate);
 
-    }
+        assertTrue(((MeetingImpl) m1).inFuture());
+        assertFalse(((MeetingImpl) m1).inPast());
+        assertTrue(((MeetingImpl) m2).inPast());
+        assertFalse(((MeetingImpl) m2).inFuture());
 
-    @Test
-    public void testInFuture()
-    {
+        System.out.println(((MeetingImpl) m3).inFuture());
+        System.out.println(((MeetingImpl) m3).inPast());
 
     }
 
