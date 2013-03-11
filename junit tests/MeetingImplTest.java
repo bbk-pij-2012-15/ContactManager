@@ -1,6 +1,7 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -64,16 +65,35 @@ public class MeetingImplTest
         System.out.println("========================================================================");
         List<Meeting> sortedMeetings = new ArrayList<Meeting>(unsortedMeetings);
         Collections.sort(sortedMeetings, MeetingImpl.MeetingComparator);            // sort using our custom comparator
+        Calendar prevCal = null;
         for (Meeting m : sortedMeetings)
         {
             Calendar cal = m.getDate();
             System.out.println(df.format(cal.getTime()));
+            if (prevCal != null)
+                assertTrue(cal.after(prevCal));         // ensures current calendar is always later than the previous
+            prevCal = cal;
         }
     }
 
     @Test
     public void testGetId()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Meeting m2 = new MeetingImpl(2, cset, pastDate);
+        Meeting m3 = new MeetingImpl(3, cset, futureDate3);
+        Meeting m4 = new MeetingImpl(4, cset, presentDate);
+
+        int id1 = m1.getId();
+        int id2 = m2.getId();
+        int id3 = m3.getId();
+        int id4 = m4.getId();
+
+        assertEquals(1, id1);
+        assertEquals(2, id2);
+        assertEquals(3, id3);
+        assertEquals(4, id4);
+
 
     }
 
