@@ -114,13 +114,13 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     list.add(m);
                 }
             }
-            /** call custom comparator in MeetingImpl to chronologically sort */
+            /** @see MeetingImpl#MeetingComparator - calls custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
         }
     }
 
-    /** THIS METHOD GETS BOTH PAST AND FUTURE MEETINGS DEPENDING ON DATE GIVEN */
+    /** THIS METHOD GETS BOTH PAST AND FUTURE MEETINGS DEPENDING ON DATE GIVEN - see FT forum */
     public List<Meeting> getFutureMeetingList(Calendar date)
     {
         /** @param list a list to store any matching Meetings; will be returned empty if no matches */
@@ -134,7 +134,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 list.add(m);
             }
         }
-        /** call custom comparator in MeetingImpl to chronologically sort */
+        /** @see MeetingImpl#MeetingComparator - calls custom comparator in MeetingImpl to chronologically sort */
         Collections.sort(list, MeetingImpl.MeetingComparator);
         return list;
     }
@@ -158,7 +158,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     list.add(pm);
                 }
             }
-            /** call custom comparator in MeetingImpl to chronologically sort */
+            /** @see MeetingImpl#MeetingComparator - calls custom comparator in MeetingImpl to chronologically sort */
             Collections.sort(list, MeetingImpl.MeetingComparator);
             return list;
         }
@@ -177,18 +177,18 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else
         {
             PastMeeting pastMeeting = new PastMeetingImpl(meetingIdAssigner(), contacts, date);
-            /** use method addNotes to add notes to avoid unnecessary code duplication */
+            /** @see PastMeetingImpl#addNotes(String) use this method to add notes to avoid unnecessary code duplication */
             ((PastMeetingImpl)pastMeeting).addNotes(text);
             meetingSet.add(pastMeeting);                           // add to main meeting set AFTER notes are added
             pastMeetings.add(pastMeeting);                         // add to list of past meetings AFTER notes are added
         }
     }
 
-    /** This method is used when a future meeting takes place, and is then converted to a past meeting (with notes), or to
-     * add notes to a past meeting at a later date. @throws IllegalArgumentException if specified meeting is null OR not found */
+    /** This method is used EITHER: when a future meeting happens, and is then converted to a past meeting (with notes),
+     *                          OR: to add notes to a past meeting at a date after its creation. */
     public void addMeetingNotes(int id, String text)
     {
-        Set<Contact> errSet = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid NullPException
+        Set<Contact> set = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid a NullPointerException
         Meeting meeting = getMeeting(id);
         Calendar presentDate = new GregorianCalendar();
         if (meeting == null)
@@ -206,26 +206,29 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else if (meeting instanceof FutureMeeting)      // we know it's a future meeting needing conversion
         {
            /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting
-            * the 0 id field (an impossible id) is a flag to let us know whether or not it goes through the for loop if statement */
-            PastMeeting convertedMeeting = new PastMeetingImpl(0, errSet, null);
+            *  the 0 id field (an impossible id) is a flag to let us know whether or not it goes through the for loop if statement */
+            PastMeeting convertedMeeting = new PastMeetingImpl(0, set, null);
             for (FutureMeeting fm : futureMeetings)
             {
                 if (fm.getId() == id)
                 {
+                    /** convertedMeeting is now re-constructed with proper values, which shows that we have an id match */
                     convertedMeeting = new PastMeetingImpl(fm.getId(), fm.getContacts(), fm.getDate());
                 }
             }
-            if (convertedMeeting.getId() == 0)   // we haven't been through the for loop and/or if statement, so no point adding
+            if (convertedMeeting.getId() == 0)   // i.e. we haven't had an id match (got into the for loop if statement)
             {
                 throw new IllegalArgumentException("Couldn't find meeting and/or list of meetings!");
             }
-            else  // we know that convertedMeeting has been through the for loop and/or if statement, so can add it to our set/list
+            else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our set/list
             {
-                meetingSet.remove(meeting);
-                futureMeetings.remove(meeting);
-                pastMeetings.add(convertedMeeting);
-                meetingSet.add(convertedMeeting);
-                addMeetingNotes(convertedMeeting.getId(), text);        // add the notes
+                meetingSet.remove(meeting);                    // remove the old FutureMeeting from main meeting set
+                futureMeetings.remove(meeting);                // remove the old FutureMeeting from list of future meetings
+                pastMeetings.add(convertedMeeting);            // add the new PastMeeting to list of past meetings
+                meetingSet.add(convertedMeeting);              // add the new PastMeeting to main meeting set
+                /** here we call this method again to add the notes to our new PastMeeting object,
+                 *  knowing it will drop through to the else if below (as it is not an instanceof PastMeeting) */
+                addMeetingNotes(convertedMeeting.getId(), text);
             }
         }
         else if (meeting instanceof PastMeeting)    // this will catch cases where we just want to add notes to a PastMeeting (including the convertedMeeting)
@@ -234,11 +237,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
             {
                 if (pm.getId() == id)
                 {
-                    meetingSet.remove(meeting);
-                    pastMeetings.remove(pm);
+                    meetingSet.remove(meeting);            // remove the old PastMeeting (without new note) from list of past meetings
+                    pastMeetings.remove(pm);               // add the new PastMeeting (without new note) from list of past meetings
+                    /** @see PastMeetingImpl#addNotes(String) use this method to actually add notes to avoid unnecessary code duplication */
                     ((PastMeetingImpl)pm).addNotes(text);
-                    pastMeetings.add(pm);
-                    meetingSet.add(pm);
+                    pastMeetings.add(pm);                  // add the new PastMeeting (with new note) to list of past meetings
+                    meetingSet.add(pm);                    // add the new PastMeeting (with new note) to main meeting set
                 }
             }
 
