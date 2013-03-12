@@ -1,5 +1,21 @@
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
+import java.io.File;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Iterator;
+import java.util.Collections;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
@@ -303,7 +319,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
            /** clear data from file so we write the most up-to-date, canonical data structures,
             *  not merely appending which would result in duplicated or old data being read in */
-            dataOnDisk.delete();
+            //dataOnDisk.delete();
             ObjectOutputStream objectOut =
                     new ObjectOutputStream(                                        // written over several lines
                             new BufferedOutputStream(                              // for extra clarity
@@ -326,7 +342,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
     }
 
-    private void load()
+    public void load()
     {
         if (firstRun || !dataOnDisk.exists())           // temporarily added hack to fix serialization until i solve main issue
         {
