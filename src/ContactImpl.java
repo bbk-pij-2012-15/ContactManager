@@ -4,8 +4,8 @@ public class ContactImpl implements Contact, Serializable
 {
     private String name;
     private String notes = "";
-    /** @param IdHelper in order to ensure uniqueness,
-    the user cannot be allowed to assign id's */
+    /** @param Id a unique id calculated by ContactManagerImpl
+     (by adding 1 to the current size of the set of contacts) */
     private int Id;
 
     public ContactImpl(String name, String notes, int Id)
