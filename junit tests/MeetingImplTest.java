@@ -185,6 +185,43 @@ public class MeetingImplTest
     @Test
     public void testReturnMeeting()
     {
+        Meeting m1 = new MeetingImpl(1, cset, futureDate);
+        Meeting m2 = new MeetingImpl(2, cset, pastDate);
+        Meeting m3 = new MeetingImpl(3, cset, presentDate);
+        Set<Meeting> mset = new HashSet<Meeting>();
+        mset.add(m1);
+        mset.add(m2);
+        mset.add(m3);
+        assertTrue(mset.size() == 3);
+
+        Meeting mr1 = MeetingImpl.returnMeeting(mset, 1, 'f');    // return the first meeting
+        Meeting mr2 = MeetingImpl.returnMeeting(mset, 2, 'p');    // return the second meeting
+        Meeting mr3 = MeetingImpl.returnMeeting(mset, 3, 'm');    // return the third meeting
+
+        boolean exception = false;
+        try
+        {
+            Meeting err1 = MeetingImpl.returnMeeting(mset, 2, 'f');   // should throw IllegalArgs as future is requested, but meeting is past
+        }
+        catch (IllegalArgumentException illargex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        exception = false;
+        try
+        {
+            Meeting err2 = MeetingImpl.returnMeeting(mset, 1, 'p');   // should throw IllegalArgs as past is requested, but meeting is future
+        }
+        catch (IllegalArgumentException illargex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        Meeting nullErr = MeetingImpl.returnMeeting(mset, 5, 'p');  // give a non-existent id; should return null and print an error
+        assertNull(nullErr);
 
     }
 }
