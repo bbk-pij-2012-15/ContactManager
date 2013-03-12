@@ -41,7 +41,7 @@ public class ContactImpl implements Contact, Serializable
     {
         /** method prints a newline at the end of each added note and a dash-bullet
         *   at the start so the list of notes remains clear to read */
-        notes += ("-" + note + "\n");
+        this.notes += ("-" + note + "\n");
     }
 
     protected String getInfo()
