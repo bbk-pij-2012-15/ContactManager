@@ -103,7 +103,6 @@ public class MeetingImpl implements Meeting, Serializable
      * whether getFutureMeeting(), getPastMeeting() or getMeeting() has been called */
     protected static Meeting returnMeeting(Set<Meeting> meetingSet, int id, char whatKindOfMeeting)
     {
-        boolean meetingFound = false;
         for (Meeting meeting : meetingSet)
         {
             if (meeting.getId() == id && whatKindOfMeeting == 'f')   // i.e. this needs to be a FUTURE meeting
