@@ -6,7 +6,7 @@ public class ContactImpl implements Contact, Serializable
     private String notes = "";   // initialized to empty string, so will never be returned null
 
     /** @param Id a unique id calculated by ContactManagerImpl
-     (by adding 1 to the current size of the set of contacts) */
+     *  (by adding 1 to the current size of the set of contacts) */
     private int Id;
 
     public ContactImpl(String name, String notes, int Id)
@@ -40,14 +40,14 @@ public class ContactImpl implements Contact, Serializable
     public void addNotes(String note)
     {
         /** method prints a newline at the end of each added note and a dash-bullet
-        *   at the start so the list of notes remains clear to read */
+         *  at the start so the list of notes remains clear to read */
         this.notes += ("-" + note + "\n");
     }
 
     protected String getInfo()
     {
-        /** @return returns a useful String containing a Contact's name, id and any notes
-        Will be used for test purposes and to display information about a specific Contact */
+        /** @return a useful String containing a Contact's name, id and any notes about them
+         *  Will be used for test purposes and by user to display information about a specific Contact */
         String tmp = "Name: " + this.name + ", Id: " + this.Id + ", Notes: " + this.notes;
         return tmp;
     }
