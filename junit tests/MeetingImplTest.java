@@ -197,6 +197,12 @@ public class MeetingImplTest
         Meeting mr1 = MeetingImpl.returnMeeting(mset, 1, 'f');    // return the first meeting
         Meeting mr2 = MeetingImpl.returnMeeting(mset, 2, 'p');    // return the second meeting
         Meeting mr3 = MeetingImpl.returnMeeting(mset, 3, 'm');    // return the third meeting
+        assertNotNull(mr1);
+        assertNotNull(mr2);
+        assertNotNull(mr3);
+        assertEquals(m1, mr1);
+        assertEquals(m2, mr2);
+        assertEquals(m3, mr3);
 
         boolean exception = false;
         try
