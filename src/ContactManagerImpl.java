@@ -41,9 +41,9 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
     {
         /** @param currentDate an instance of Calendar to get the
-         current date in order to see if the date provided is valid */
+         *  current date in order to see if the date provided is valid */
         Calendar currentDate = GregorianCalendar.getInstance();
-        if (currentDate.after(date))       // i.e if user's date is in the past
+        if (currentDate.after(date))            // i.e if date param is in the past
         {
             throw new IllegalArgumentException("Specified date is in the past! Please try again.");
         }
@@ -58,35 +58,41 @@ public class ContactManagerImpl implements ContactManager, Serializable
         FutureMeeting tmp = new FutureMeetingImpl(meetingIdAssigner(), contacts, date);
         meetingSet.add(tmp);
         futureMeetings.add(tmp);
-        /** @return the ID for the meeting by calling getId() */
         System.out.println("Success - Meeting Scheduled!");
+        /** @return the ID for the meeting by calling the getId() method of FutureMeetingImpl */
         return tmp.getId();
     }
 
-    /** used to get a unique id for a newly created meeting, based on meetingSet.size(), as meetingSet is
-     *  not visible from MeetingImpl. @return id to pass into the MeetingImpl constructor*/
+    /** used to get a unique id for a newly created meeting, based on current size of meetingSet.
+     *  This is because meetingSet is not visible from MeetingImpl, being a private field */
     private int meetingIdAssigner()
     {
-        int uniqueId = (meetingSet.size() + 1);
-        return uniqueId;
+        /** @return id to pass into the MeetingImpl constructor */
+        return (meetingSet.size() + 1);
     }
 
+    /** @see MeetingImpl#returnMeeting(java.util.Set, int, char) */
     public PastMeeting getPastMeeting(int id)
     {
-        char flag = 'p';                        // 'p' for past meeting
-        return (PastMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);        // cast to correct type on return
+        char flag = 'p';   // 'p' for past meeting
+        /** @return Meeting object from returnMeeting(), cast into a PastMeeting */
+        return (PastMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);
     }
 
+    /** @see MeetingImpl#returnMeeting(java.util.Set, int, char) */
     public FutureMeeting getFutureMeeting(int id)
     {
-        char flag = 'f';                        // 'f' for future meeting
-        return (FutureMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);     // cast to correct type on return
+        char flag = 'f';   // 'f' for future meeting
+        /** @return Meeting object from returnMeeting(), cast into a FutureMeeting */
+        return (FutureMeeting)MeetingImpl.returnMeeting(meetingSet, id, flag);
     }
 
+    /** @see MeetingImpl#returnMeeting(java.util.Set, int, char) */
     public Meeting getMeeting(int id)
     {
-        char flag = 'm';                        // 'm' for simply meeting
-        return MeetingImpl.returnMeeting(meetingSet, id, flag);                     // no need for casting here
+        char flag = 'm';   // 'm' for simply meeting
+        /** @return Meeting object from returnMeeting(), with no need for casting */
+        return MeetingImpl.returnMeeting(meetingSet, id, flag);
     }
 
     public List<Meeting> getFutureMeetingList(Contact contact)
