@@ -336,34 +336,31 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void load()
     {
-        if (firstRun)
+        if (firstRun && dataOnDisk.exists())
         {
-            if (dataOnDisk.exists())
-            {
-                System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
+            System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
                         " to load your Contact Manager? [y/n]");
-                Scanner in = new Scanner(System.in);
-                char answer = in.next().charAt(0);
-                if (answer == 'y' || answer == 'Y')
-                {
-                    firstRun = false;
-                    this.load();
-                }
-                else
-                {
-                /** immediately flush() the empty data structures to create contacts.txt on disk.
-                 *  for when dataOnDisk doesn't exist not due to error, but because program is being run for the first time */
-                    System.out.println("Creating fresh data structures...");
-                    this.flush();
-                    firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
-                }
+            Scanner in = new Scanner(System.in);
+            char answer = in.next().charAt(0);
+            if (answer == 'y' || answer == 'Y')
+            {
+                firstRun = false;
+                this.load();
             }
             else
             {
-                System.out.println("Creating empty data structures for first run of program...");
-                firstRun = false;
+                /** immediately flush() the empty data structures to create contacts.txt on disk.
+                 *  for when dataOnDisk doesn't exist not due to error, but because program is being run for the first time */
+                System.out.println("Creating fresh data structures...");
                 this.flush();
+                firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
             }
+        }
+        else if (firstRun && !dataOnDisk.exists())
+        {
+            System.out.println("Creating empty data structures for first run of program...");
+            firstRun = false;
+            this.flush();
         }
         else
         {
