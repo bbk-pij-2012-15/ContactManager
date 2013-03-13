@@ -9,12 +9,21 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public Set<Meeting> meetingSet = new HashSet<Meeting>();
     public List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     public List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
-    /** @param firstRun a flag so the program can distinguish between contacts.txt being absent due to a first run OR an error.
+    /** @param firstRun a flag so the program can tell if this is the first ContactManager created this JVM instance
+     *  this knowledge enables it to distinguish between contacts.txt being absent due to a first run OR an error.
      *  In full program user would call program with command line options -n [short] or --new [long], which would
-     *  set firstRun to true before calling the constructor. In this case brand new sets and lists would be created and
-     *  a FileNotFoundException would not be thrown. If user does not launch program with one of the command line flags,
-     *  the error message of the FileNotFoundException informs them to do so if this is their first time
-     *  it is assumed to be true for the first ContactManager created this JVM instance */
+     *  set firstRun to true before calling the constructor. If user does not launch program with one of the command line flags,
+     *  and a FileNotFoundException is thrown, the error message informs them to do so if this is their first time.
+     *
+     *  If firstRun is true, the load() method will check to see if dataOnDisk exists. If it does not, we can create new
+     *  lists and sets without throwing a FileNotFoundException, as we know this is the first run and so expect no contacts.txt.
+     *  If dataOnDisk does exist, the user is informed there is already a contacts.txt file on disk, and asked whether
+     *  they would like to use that to load their ContactManager, or start afresh. This is for when the user has run the program
+     *  with one of the new flags, either by mistake or because they want a new and empty ContactManager
+     *
+     *  Since this program does not have a runner or main method, the best that I can do is to initialize it to true here,
+     *  so that it will be true for the first ContactManager created on a given instance of the JVM, and so if there is already
+     *  a contacts.txt file on disk from previous runs, it will provide the option to use that file or to start afresh */
     private static boolean firstRun = true;
 
     public ContactManagerImpl()
@@ -329,14 +338,35 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         if (firstRun)
         {
-            /** immediately flush() the empty data structures to create contacts.txt on disk.
-             *  for when dataOnDisk doesn't exist not due to error, but because program is being run for the first time */
-            this.flush();
-            firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
+            if (dataOnDisk.exists())
+            {
+                System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
+                        " to load your Contact Manager? [y/n]");
+                Scanner in = new Scanner(System.in);
+                char answer = in.next().charAt(0);
+                if (answer == 'y' || answer == 'Y')
+                {
+                    firstRun = false;
+                    this.load();
+                }
+                else
+                {
+                /** immediately flush() the empty data structures to create contacts.txt on disk.
+                 *  for when dataOnDisk doesn't exist not due to error, but because program is being run for the first time */
+                    System.out.println("Creating fresh data structures...");
+                    this.flush();
+                    firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
+                }
+            }
+            else
+            {
+                System.out.println("Creating empty data structures for first run of program...");
+                firstRun = false;
+                this.flush();
+            }
         }
         else
         {
-            System.out.println("IN ELSE CLAUSE");
             try
             {
                 ObjectInputStream objectIn =
