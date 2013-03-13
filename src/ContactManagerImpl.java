@@ -1,26 +1,10 @@
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
+import java.io.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
-    private static final File dataOnDisk = new File("./contacts.txt");
+    private static File dataOnDisk;
     public Set<Contact> contactSet = new HashSet<Contact>();
     public Set<Meeting> meetingSet = new HashSet<Meeting>();
     public List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
@@ -34,7 +18,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public ContactManagerImpl()
     {
-       /** method load reads in data objects from disk (or instantiates new ones) */
+        /** if dataOnDisk is null, we know the program is being run for the first time */
+        if (dataOnDisk == null)
+        {
+            firstRun = true;
+            dataOnDisk = new File("./contacts.txt");
+        }
         this.load();
     }
 
@@ -245,22 +234,13 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     meetingSet.add(pm);                    // add the new PastMeeting (with new note) to main meeting set
                 }
             }
-
-
-            /** @param updatedMeeting name to indicate the updated PastMeeting object which will now have notes *//*
-            PastMeeting updatedMeeting = getPastMeeting(id);
-            ((PastMeetingImpl)updatedMeeting).addNotes(text);              // add notes to updatedMeeting
-            meetingSet.remove(meeting);                                    // remove old. note-less meeting from meeting set
-            meetingSet.add(updatedMeeting);                  // add the updated meeting back to meeting set
-            pastMeetings.remove(meeting);                                  // remove the old meeting from list of past meetings
-            pastMeetings.add(updatedMeeting);               // add our new PastMeeting to the past meetings list*/
         }
     }
 
     public void addNewContact(String name, String notes)
     {
         /** @param uniqueId a unique Id constructed by adding 1
-         *  to the current size of the HashSet */
+         *  to the current size of the HashSet containing contacts */
         int uniqueId = (this.contactSet.size() + 1);
         Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
         contactSet.add(tmp);                                     // add to set of contacts
@@ -269,7 +249,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public Set<Contact> getContacts(int... ids)
     {
         boolean isRealId = false;             /** @param isRealId stores whether or not we found a contact with the id */
-        int offendingId = 0;                  /** @param offendingId stores the id that does not correspond to a real contact */
+        int offendingId = 0;                  /** @param offendingId stores an id that does not correspond to a real contact */
         Set<Contact> setToReturn = new HashSet<Contact>();
         if (contactSet.isEmpty())
         {
@@ -328,9 +308,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         try
         {
-           /** clear data from file so we write the most up-to-date, canonical data structures,
-            *  not merely appending which would result in duplicated or old data being read in */
-            //dataOnDisk.delete();
             ObjectOutputStream objectOut =
                     new ObjectOutputStream(                                        // written over several lines
                             new BufferedOutputStream(                              // for extra clarity
@@ -355,15 +332,11 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void load()
     {
-        if (firstRun || !dataOnDisk.exists())           // temporarily added hack to fix serialization until i solve main issue
+        if (firstRun)
         {
-            /** make new empty sets and call the other constructor; for when dataOnDisk doesn't exist
-             *  not due to error, but because program is being run for the first time */
-            this.contactSet = new HashSet<Contact>();
-            this.meetingSet = new HashSet<Meeting>();
-            this.pastMeetings = new ArrayList<PastMeeting>();
-            this.futureMeetings = new ArrayList<FutureMeeting>();
-            this.flush();           // immediately flush to create contacts.txt
+            /** immediately flush() the empty data structures to create contacts.txt on disk.
+             *  for when dataOnDisk doesn't exist not due to error, but because program is being run for the first time */
+            this.flush();
             firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
         }
         else
@@ -380,8 +353,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
                 this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
                 objectIn.close();
-                dataOnDisk.delete();        // temporarily added hack to fix serialization until i solve main issue
-
             }
             catch (FileNotFoundException fnfex)
             {
