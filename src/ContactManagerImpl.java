@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ContactManagerImpl implements ContactManager, Serializable
 {
-    private static File dataOnDisk;
+    private static File dataOnDisk = new File("./contacts.txt");
     public Set<Contact> contactSet = new HashSet<Contact>();
     public Set<Meeting> meetingSet = new HashSet<Meeting>();
     public List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
@@ -13,17 +13,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
      *  In full program user would call program with command line options -n [short] or --new [long], which would
      *  set firstRun to true before calling the constructor. In this case brand new sets and lists would be created and
      *  a FileNotFoundException would not be thrown. If user does not launch program with one of the command line flags,
-     *  the error message of the FileNotFoundException informs them to do so if this is their first time */
-    private static boolean firstRun = false;
+     *  the error message of the FileNotFoundException informs them to do so if this is their first time
+     *  it is assumed to be true for the first ContactManager created this JVM instance */
+    private static boolean firstRun = true;
 
     public ContactManagerImpl()
     {
-        /** if dataOnDisk is null, we know the program is being run for the first time */
-        if (dataOnDisk == null)
-        {
-            firstRun = true;
-            dataOnDisk = new File("./contacts.txt");
-        }
         this.load();
     }
 
@@ -341,6 +336,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         }
         else
         {
+            System.out.println("IN ELSE CLAUSE");
             try
             {
                 ObjectInputStream objectIn =
@@ -356,8 +352,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
             }
             catch (FileNotFoundException fnfex)
             {
-                System.err.println("Contacts.txt file not found. Please make sure directory is readable and/or " +
-                        "\nthat you have flushed at least once previously, and then try again. If this is your first " +
+                System.err.println("Contacts.txt file not found. Please make sure file and/or directory is readable, and that" +
+                        "\nthat you are in the correct directory, and then try again. If this is your first " +
                         "\nrun of the program, please run again with flag '-n' or '--new'");
             }
             catch (ClassNotFoundException cnfex)
