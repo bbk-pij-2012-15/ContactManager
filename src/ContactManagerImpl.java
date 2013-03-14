@@ -317,10 +317,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
                             new BufferedOutputStream(                              // for extra clarity
                                     new FileOutputStream(dataOnDisk)));
 
-            objectOut.writeObject(this.contactSet);      // writes the HashSet containing contacts to disk
-            objectOut.writeObject(this.meetingSet);      // writes the HashSet containing meetings to disk
-            objectOut.writeObject(this.pastMeetings);
-            objectOut.writeObject(this.futureMeetings);
+            objectOut.writeObject(this.contactSet);       // write the HashSet containing contacts to disk
+            objectOut.writeObject(this.meetingSet);       // write the HashSet containing meetings to disk
+            objectOut.writeObject(this.pastMeetings);     // write the ArrayList containing past meetings to disk
+            objectOut.writeObject(this.futureMeetings);   // write the ArrayList containing future meetings to disk
             objectOut.close();
         }
         catch (FileNotFoundException fnfex)
@@ -376,10 +376,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
                                 new BufferedInputStream(                            // for extra clarity
                                         new FileInputStream(dataOnDisk)));
 
-                this.contactSet = (HashSet<Contact>) objectIn.readObject();         // read the HashSet containing contacts from disk
-                this.meetingSet = (HashSet<Meeting>) objectIn.readObject();         // read the HashSet containing meetings from disk
-                this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();
-                this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();
+                this.contactSet = (HashSet<Contact>) objectIn.readObject();              // read the HashSet containing contacts from disk
+                this.meetingSet = (HashSet<Meeting>) objectIn.readObject();              // read the HashSet containing meetings from disk
+                this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();      // read the ArrayList of past meetings from disk
+                this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();  // read the ArrayList of future meetings from disk
                 objectIn.close();
             }
             catch (FileNotFoundException fnfex)
