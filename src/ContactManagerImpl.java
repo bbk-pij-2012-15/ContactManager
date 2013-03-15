@@ -5,10 +5,10 @@ import java.util.*;
 public class ContactManagerImpl implements ContactManager, Serializable
 {
     private static File dataOnDisk = new File("./contacts.txt");
-    public Set<Contact> contactSet = new HashSet<Contact>();
-    public Set<Meeting> meetingSet = new HashSet<Meeting>();
-    public List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
-    public List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
+    private Set<Contact> contactSet = new HashSet<Contact>();
+    private Set<Meeting> meetingSet = new HashSet<Meeting>();
+    private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
+    private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
     /** @param firstRun a flag so the program can tell if this is the first ContactManager created this JVM instance
      *  this knowledge enables it to distinguish between contacts.txt being absent due to a first run OR an error.
      *  In full program user would call program with command line options -n [short] or --new [long], which would
@@ -24,7 +24,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
      *  Since this program does not have a runner or main method, the best that I can do is to initialize it to true here,
      *  so that it will be true for the first ContactManager created on a given instance of the JVM, and so if there is already
      *  a contacts.txt file on disk from previous runs, it will provide the option to use that file or to start afresh */
-    private static boolean firstRun = true;
+    private static boolean firstRun = false;
 
     public ContactManagerImpl()
     {
@@ -245,6 +245,15 @@ public class ContactManagerImpl implements ContactManager, Serializable
     {
         /** @param uniqueId a unique Id constructed by adding 1
          *  to the current size of the HashSet containing contacts */
+        if (name == null)
+        {
+            throw new NullPointerException("Cannot add contact with a null name!");
+        }
+        else if (notes == null)
+        {
+            throw new NullPointerException("Cannot add contact with null notes!");
+        }
+
         int uniqueId = (this.contactSet.size() + 1);
         Contact tmp = new ContactImpl(name, notes, uniqueId);    // construct a Contact object by calling ContactImpl constructor
         contactSet.add(tmp);                                     // add to set of contacts
