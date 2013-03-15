@@ -159,6 +159,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text)
     {
+        Calendar now = new GregorianCalendar();
         if (contacts.isEmpty() || !contactSet.containsAll(contacts))
         {
             throw new IllegalArgumentException("One or more Contacts do not exist OR set is empty");
@@ -166,6 +167,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
         else if (contacts == null || date == null || text == null)
         {
             throw new NullPointerException("One or more arguments are null");
+        }
+        else if (date.after(now))
+        {
+            throw new IllegalArgumentException("Cannot create a past meeting with a future date!");
         }
         else
         {
