@@ -172,7 +172,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             throw new IllegalArgumentException("Cannot create a past meeting with a future date!");
         }
-        else
+        else    // an exception hasn't been thrown, so we can add the meeting
         {
             PastMeeting pastMeeting = new PastMeetingImpl(meetingIdAssigner(), contacts, date);
             /** @see PastMeetingImpl#addNotes(String) use this method to add notes to avoid unnecessary code duplication */
@@ -186,8 +186,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
      *                          OR: to add notes to a past meeting at a date after its creation. */
     public void addMeetingNotes(int id, String text)
     {
-        Set<Contact> set = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid a NullPointerException
-        Meeting meeting = getMeeting(id);
+        Meeting meeting = getMeeting(id);       // find meeting by id - will be null if doesn't exist
+        /** @param presentDate a calendar object set to present date, to compare meeting against to tell if it is future */
         Calendar presentDate = new GregorianCalendar();
         if (meeting == null)
         {
@@ -205,6 +205,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
            /** @param convertedMeeting name to indicate the original FutureMeeting type is now a PastMeeting
             *  the 0 id field (an impossible id) is a flag to let us know whether or not it goes through the for loop if statement */
+            Set<Contact> set = new HashSet<Contact>();     // to use for our empty convertedMeeting, to avoid a NullPointerException
             PastMeeting convertedMeeting = new PastMeetingImpl(0, set, null);
             for (FutureMeeting fm : futureMeetings)
             {
@@ -216,16 +217,16 @@ public class ContactManagerImpl implements ContactManager, Serializable
             }
             if (convertedMeeting.getId() == 0)   // i.e. we haven't had an id match (got into the for loop if statement)
             {
-                throw new IllegalArgumentException("Couldn't find meeting and/or list of meetings!");
+                throw new IllegalArgumentException("Couldn't find meeting in list of meetings!");
             }
-            else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our set/list
+            else  // we know that convertedMeeting has been through the for loop if statement, so can add it to our sets/lists
             {
                 meetingSet.remove(meeting);                    // remove the old FutureMeeting from main meeting set
                 futureMeetings.remove(meeting);                // remove the old FutureMeeting from list of future meetings
                 pastMeetings.add(convertedMeeting);            // add the new PastMeeting to list of past meetings
                 meetingSet.add(convertedMeeting);              // add the new PastMeeting to main meeting set
                 /** here we call this method again to add the notes to our new PastMeeting object,
-                 *  knowing it will drop through to the else if below (as it is not an instanceof PastMeeting) */
+                 *  knowing it will drop through to the else if below (as it is now an instanceof PastMeeting) */
                 addMeetingNotes(convertedMeeting.getId(), text);
             }
         }
@@ -241,6 +242,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
                     ((PastMeetingImpl)pm).addNotes(text);
                     pastMeetings.add(pm);                  // add the new PastMeeting (with new note) to list of past meetings
                     meetingSet.add(pm);                    // add the new PastMeeting (with new note) to main meeting set
+                }
+                else
+                {
+                    throw new IllegalArgumentException("Couldn't find meeting in list of meetings!");
                 }
             }
         }
@@ -271,7 +276,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         Set<Contact> setToReturn = new HashSet<Contact>();
         if (contactSet.isEmpty())
         {
-            throw new NullPointerException("No Contacts in set!");
+            throw new NullPointerException("No Contacts in Contact Manager!");
         }
         else
         {
@@ -406,7 +411,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
             {
                 System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
                         "\nthat you have flushed at least once previously, and then try again." +
-                        "\n If you are working in a different directory, make sure your CLASSPATH includes the required class:\n\n");
+                        "\n If you are working in a different directory, make sure your $CLASSPATH includes the required class:\n\n");
                 System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
             }
             catch (IOException ioex)
