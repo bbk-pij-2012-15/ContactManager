@@ -12,31 +12,15 @@ public class MeetingImpl implements Meeting, Serializable
     private int meetingId;
     private Set<Contact> contactsAtMeeting = new HashSet<Contact>();
     private Calendar meetingCal;
-
-    /** @param past a marker to test if the meeting date is in the past */
-    private boolean past = false;
-    /** @param future a marker to test if the meeting date is in the future */
-    private boolean future = false;
-
     private String meetingNotes = "";  // initialized to the empty string so no chance of being returned as null
 
     /** @param id a unique id calculated in ContactManagerImpl by adding 1 to the current size of the set of meetings
      *  @see ContactManagerImpl#meetingIdAssigner() */
     public MeetingImpl(int id, Set<Contact> set, Calendar date)
     {
-        this.meetingId = id;
+        this.meetingId = id;     // id is never passed in by user directly, so fine to have in constructor
         this.contactsAtMeeting.addAll(set);
         this.meetingCal = date;
-
-        Calendar currentDate = GregorianCalendar.getInstance();
-        if (currentDate.after(date))             // i.e if meeting date is in the past
-        {
-            this.past = true;
-        }
-        else if (currentDate.before(date))       // i.e. if meeting date is in the future
-        {
-            this.future = true;
-        }
     }
 
     public int getId()
@@ -100,15 +84,29 @@ public class MeetingImpl implements Meeting, Serializable
         return (id + "\n" + contacts + "\n" + date + "\n" + notes);
     }
 
+    /** @return truth value about meeting being in the past */
     public boolean inPast()
     {
-        /** @return truth value about meeting being in the past */
+        /** @param past a marker to test if the meeting date is in the past */
+        boolean past = false;
+        Calendar currentDate = GregorianCalendar.getInstance();
+        if (this.getDate().before(currentDate))
+        {
+           past = true;
+        }
         return past;
     }
 
+    /** @return truth value about meeting being in the future */
     public boolean inFuture()
     {
-        /** @return truth value about meeting being in the future */
+        /** @param future a marker to test if the meeting date is in the future */
+        boolean future = false;
+        Calendar currentDate = GregorianCalendar.getInstance();
+        if (this.getDate().after(currentDate))
+        {
+           future = true;
+        }
         return future;
     }
 
