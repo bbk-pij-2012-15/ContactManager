@@ -20,8 +20,8 @@ public class MeetingImpl implements Meeting, Serializable
 
     private String meetingNotes = "";  // initialized to the empty string so no chance of being returned as null
 
-    /** @param id a unique id calculated in ContactManagerImpl
-     *  (by adding 1 to the current size of the set of meetings */
+    /** @param id a unique id calculated in ContactManagerImpl by adding 1 to the current size of the set of meetings
+     *  @see ContactManagerImpl#meetingIdAssigner() */
     public MeetingImpl(int id, Set<Contact> set, Calendar date)
     {
         this.meetingId = id;
@@ -176,7 +176,7 @@ public class MeetingImpl implements Meeting, Serializable
         {
             Calendar cal1 = m1.getDate();      // the calendar for the first meeting
             Calendar cal2 = m2.getDate();   // the calendar for the second meeting
-            long cal1Time = cal1.getTimeInMillis() ;
+            long cal1Time = cal1.getTimeInMillis();
             long cal2Time = cal2.getTimeInMillis();
             /** @return a number which will unambiguously place each calendar in order (using milliseconds)
              *  1 if cal1Time is greater than cal2Time, -1 for vice-versa and 0 for equality*/
