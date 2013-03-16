@@ -187,8 +187,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
     public void addMeetingNotes(int id, String text)
     {
         Meeting meeting = getMeeting(id);       // find meeting by id - will be null if doesn't exist
-        /** @param presentDate a calendar object set to present date, to compare meeting against to tell if it is future */
-        Calendar presentDate = new GregorianCalendar();
+
         if (meeting == null)
         {
             throw new IllegalArgumentException("Specified meeting does not exist!");
@@ -197,7 +196,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
         {
             throw new NullPointerException("Cannot add null string of notes");
         }
-        else if (meeting.getDate().after(presentDate))
+        else if (((MeetingImpl)meeting).inFuture() == true)
         {
             throw new IllegalStateException("Meeting set for date in the future - not eligible for conversion!");
         }
