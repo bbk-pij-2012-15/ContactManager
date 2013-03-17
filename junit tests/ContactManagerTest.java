@@ -20,7 +20,7 @@ public class ContactManagerTest
     @BeforeClass
     public static void setUpClass()
     {
-        conman = new ContactManagerImpl("s");
+        conman = new ContactManagerImpl();
     }
 
     @Before
@@ -73,6 +73,24 @@ public class ContactManagerTest
             exception = true;
         }
         assertTrue(exception);
+        exception = false;
+
+        calendar.set(2005, 7, 22);
+        conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
+        System.out.println(conman.getPastMeeting(2).getNotes());
+
+        try
+        {
+            conman.getPastMeeting(1); // a future meeting is at id 1, so exception should be thrown
+        }
+        catch (IllegalArgumentException illex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
+
+        Meeting nullmeet = conman.getPastMeeting(7); // no such contact so should return null
+        assertNull(nullmeet);
     }
 
     @Test
