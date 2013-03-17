@@ -41,7 +41,7 @@ public class ContactManagerTest
         PrintStream old = System.out;
         System.setOut(ps);
 
-        calendar.add(Calendar.YEAR, 2);
+        calendar.set(2015, 7, 22);
         conman.addFutureMeeting(cset, calendar);
         String expected = "Success - Meeting Scheduled!\n";
         String actual = (barr.toString());
@@ -56,7 +56,23 @@ public class ContactManagerTest
     @Test
     public void testGetPastMeeting()
     {
+        boolean exception = false;
+        try
+        {
+            calendar.set(2099, 7, 22);
+            conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
+        }
+        catch (IllegalArgumentException illargex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
+        calendar.set(2005, 7, 22);
+        conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
 
+        Meeting m = null;
+        m = conman.getPastMeeting(1);
+        assertNotNull(m);
     }
 
     @Test
