@@ -1,5 +1,7 @@
 import org.junit.After;
 import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -10,15 +12,20 @@ import java.util.*;
 
 public class ContactManagerTest
 {
-    ContactManager conman;
     Set<Contact> cset = new HashSet<Contact>();
     File data = new File("./contacts.txt");
     Calendar calendar = new GregorianCalendar();
+    static ContactManager conman;
+
+    @BeforeClass
+    public static void setUpClass()
+    {
+        conman = new ContactManagerImpl();
+    }
 
     @Before
     public void setUpTest()
     {
-        conman = new ContactManagerImpl();
         Contact c1 = new ContactImpl("ann", "contact 1", 1);
         Contact c2 = new ContactImpl("bob", "contact 2", 2);
         Contact c3 = new ContactImpl("cal", "contact 3", 3);
@@ -26,11 +33,10 @@ public class ContactManagerTest
         cset = conman.getContacts(1,2,3);
     }
 
-    @After
-    public void cleanUp()
+    @AfterClass
+    public static void cleanUp()
     {
         conman = null;
-        data.delete();
     }
 
     @Test
@@ -56,23 +62,8 @@ public class ContactManagerTest
     @Test
     public void testGetPastMeeting()
     {
-        boolean exception = false;
-        try
-        {
-            calendar.set(2099, 7, 22);
-            conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
-        }
-        catch (IllegalArgumentException illargex)
-        {
-            exception = true;
-        }
-        assertTrue(exception);
-        calendar.set(2005, 7, 22);
+        calendar.set(2099, 7, 22);
         conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
-
-        Meeting m = null;
-        m = conman.getPastMeeting(1);
-        assertNotNull(m);
     }
 
     @Test
