@@ -15,8 +15,6 @@ public class ContactManagerImplTest
     Calendar yesterday = new GregorianCalendar();
     Set<Contact> cset = new HashSet<Contact>();
 
-
-
     @Before
     public void setUpTest()
     {
