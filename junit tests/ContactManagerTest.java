@@ -20,7 +20,7 @@ public class ContactManagerTest
     @BeforeClass
     public static void setUpClass()
     {
-        conman = new ContactManagerImpl();
+        conman = new ContactManagerImpl("s");
     }
 
     @Before
@@ -62,8 +62,17 @@ public class ContactManagerTest
     @Test
     public void testGetPastMeeting()
     {
-        calendar.set(2099, 7, 22);
-        conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
+        boolean exception = false;
+        try
+        {
+            calendar.set(2099, 7, 22);
+            conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
+        }
+        catch (NullPointerException npex)
+        {
+            exception = true;
+        }
+        assertTrue(exception);
     }
 
     @Test
