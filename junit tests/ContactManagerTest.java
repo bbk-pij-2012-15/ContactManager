@@ -91,6 +91,7 @@ public class ContactManagerTest
 
         Meeting nullmeet = conman.getPastMeeting(7); // no such contact so should return null
         assertNull(nullmeet);
+
     }
 
     @Test
