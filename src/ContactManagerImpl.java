@@ -22,30 +22,49 @@ import java.util.Set;
 public class ContactManagerImpl implements ContactManager, Serializable
 {
     private static File dataOnDisk = new File("./contacts.txt");
-    private Set<Contact> contactSet = new HashSet<Contact>();
+    public Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
-    /** @param firstRun a flag so the program can tell if this is the first ContactManager created this JVM instance
-     *  this knowledge enables it to distinguish between contacts.txt being absent due to a first run OR an error.
-     *  In full program user would call program with command line options -n [short] or --new [long], which would
-     *  set firstRun to true before calling the constructor. If user does not launch program with one of the command line flags,
-     *  and a FileNotFoundException is thrown, the error message informs them to do so if this is their first time.
-     *
-     *  If firstRun is true, the load() method will check to see if dataOnDisk exists. If it does not, we can create new
-     *  lists and sets without throwing a FileNotFoundException, as we know this is the first run and so expect no contacts.txt.
-     *  If dataOnDisk does exist, the user is informed there is already a contacts.txt file on disk, and asked whether
-     *  they would like to use that to load their ContactManager, or start afresh. This is for when the user has run the program
-     *  with one of the new flags, either by mistake or because they want a new and empty ContactManager
-     *
-     *  Since this program does not have a runner or main method, the best that I can do is to initialize it to true here,
-     *  so that it will be true for the first ContactManager created on a given instance of the JVM, and so if there is already
-     *  a contacts.txt file on disk from previous runs, it will provide the option to use that file or to start afresh */
-    private static boolean firstRun = false;
 
     public ContactManagerImpl()
     {
-        this.load();
+        /** contacts.txt is found on disk and we ask user whether to use the file to load their ContactManager
+         *  OR whether they wish to create a new ContactManager with empty contacts and meeting data */
+        if (dataOnDisk.exists())
+        {
+            System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
+                    " to load your Contact Manager? [y/n]");
+            Scanner in = new Scanner(System.in);
+            char answer = in.next().charAt(0);
+            if (answer == 'y' || answer == 'Y')     // i.e. they want to use the old data
+            {
+                this.load();       // we can call load() now to load the data from contacts.txt
+            }
+            else          // i.e. they want to start afresh with an empty Contact Manager
+            {
+                /** immediately flush() the empty data fields created with the ContactManager object to overwrite contacts.txt */
+                System.out.println("Creating fresh data structures...");
+                this.flush();
+            }
+        }
+        /** contacts.txt is NOT found on disk, so all we need to do is flush the empty data structures to create it */
+        else if (!dataOnDisk.exists())
+        {
+            System.out.println("It appears contacts.txt does not exist! Is this your first run of the program? [y/n]");
+            Scanner in = new Scanner(System.in);
+            char answer = in.next().charAt(0);
+            if (answer == 'y' || answer == 'Y')     // i.e. it IS their first run of program
+            {
+                System.out.println("Creating empty data structures for first run of program...");
+                this.flush();
+            }
+            else // i.e. some sort of error has occurred
+            {
+                /** call load(), which will throw a FileNotFoundException, giving user more information and possible solutions */
+                this.load();
+            }
+        }
     }
 
     public int addFutureMeeting(Set<Contact> contacts, Calendar date)
@@ -371,70 +390,35 @@ public class ContactManagerImpl implements ContactManager, Serializable
 
     public void load()
     {
-        /** test for when user has specified that this is the first run of the program, but contacts.txt is found on disk
-         *  we ask whether to use the file to load their ContactManager (perhaps the specifying of first time was an accident)
-         *  OR whether they wish to create a new ContactManager with empty contact and meeting data */
-        if (firstRun && dataOnDisk.exists())
+        try
         {
-            System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
-                        " to load your Contact Manager? [y/n]");
-            Scanner in = new Scanner(System.in);
-            char answer = in.next().charAt(0);
-            if (answer == 'y' || answer == 'Y')     // i.e. they want to use the old data
-            {
-                firstRun = false;        // set firstRun back to false
-                this.load();       // call load() again - now that firstRun is false, execution will drop through to the 'else'
-            }
-            else
-            {
-                /** immediately flush() the empty data structures created with the ContactManager object to overwrite contacts.txt */
-                System.out.println("Creating fresh data structures...");
-                this.flush();
-                firstRun = false;       // set firstRun to false now that we have created new data structures and flushed
-            }
-        }
-        /** test for when user has specified that this is the first run of the program, and contacts.txt is NOT found on disk
-         * since this is the expected case for a user on their first run, all we need to do is flush the empty data structures */
-        else if (firstRun && !dataOnDisk.exists())
-        {
-            System.out.println("Creating empty data structures for first run of program...");
-            firstRun = false;
-            this.flush();
-        }
-        /** normal run of program - it is not the first run, so we want to load the saved data from disk */
-        else
-        {
-            try
-            {
-                ObjectInputStream objectIn =
-                        new ObjectInputStream(                                      // written over several lines
-                                new BufferedInputStream(                            // for extra clarity
-                                        new FileInputStream(dataOnDisk)));
+            ObjectInputStream objectIn =
+                    new ObjectInputStream(                                      // written over several lines
+                            new BufferedInputStream(                            // for extra clarity
+                                    new FileInputStream(dataOnDisk)));
 
-                this.contactSet = (HashSet<Contact>) objectIn.readObject();              // read the HashSet containing contacts from disk
-                this.meetingSet = (HashSet<Meeting>) objectIn.readObject();              // read the HashSet containing meetings from disk
-                this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();      // read the ArrayList of past meetings from disk
-                this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();  // read the ArrayList of future meetings from disk
-                objectIn.close();
-            }
-            catch (FileNotFoundException fnfex)
-            {
-                System.err.println("Contacts.txt file not found. Please make sure file and/or directory is readable, and that" +
-                        "\nthat you are in the correct directory, and then try again. If this is your first " +
-                        "\nrun of the program, please run again with flag '-n' or '--new'");
-            }
-            catch (ClassNotFoundException cnfex)
-            {
-                System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
-                        "\nthat you have flushed at least once previously, and then try again." +
-                        "\n If you are working in a different directory, make sure your $CLASSPATH includes the required class:\n\n");
-                System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
-            }
-            catch (IOException ioex)
-            {
-                System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
-                ioex.printStackTrace();
-            }
+            this.contactSet = (HashSet<Contact>) objectIn.readObject();              // read the HashSet containing contacts from disk
+            this.meetingSet = (HashSet<Meeting>) objectIn.readObject();              // read the HashSet containing meetings from disk
+            this.pastMeetings = (ArrayList<PastMeeting>) objectIn.readObject();      // read the ArrayList of past meetings from disk
+            this.futureMeetings = (ArrayList<FutureMeeting>) objectIn.readObject();  // read the ArrayList of future meetings from disk
+            objectIn.close();
+        }
+        catch (FileNotFoundException fnfex)
+        {
+            System.err.println("Contacts.txt file not found! Please make sure file and/or directory is readable, and that" +
+                    "\nthat you are in the correct directory, and then try again.");
+        }
+        catch (ClassNotFoundException cnfex)
+        {
+            System.err.println("Could not load a required class. Please make sure directory is readable and/or " +
+                    "\nthat you have flushed at least once previously, and then try again." +
+                    "\n If you are working in a different directory, make sure your $CLASSPATH includes the required class:\n\n");
+            System.out.print(cnfex.getCause().toString());       // will hopefully print the class(es) that caused the exception
+        }
+        catch (IOException ioex)
+        {
+            System.err.println("Problem writing to disk. See stack trace for details and/or please try again");
+            ioex.printStackTrace();
         }
     }
 }
