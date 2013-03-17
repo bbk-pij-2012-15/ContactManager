@@ -49,7 +49,6 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 this.load();     // re-load with user's requested fresh data sets
             }
         }
-
         /** contacts.txt is NOT found on disk and we ask user whether this is their first time running the program
          *  if it is, we can just flush new, empty data structures. if not, we know there has been an error */
         else if (!dataOnDisk.exists())
