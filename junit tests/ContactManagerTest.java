@@ -68,7 +68,7 @@ public class ContactManagerTest
             calendar.set(2099, 7, 22);
             conman.addNewPastMeeting(cset, calendar, "Here is a past meeting");
         }
-        catch (NullPointerException npex)
+        catch (IllegalArgumentException illex)
         {
             exception = true;
         }
