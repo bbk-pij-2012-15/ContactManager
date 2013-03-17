@@ -46,9 +46,12 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 /** immediately flush() the empty data fields created with the ContactManager object to overwrite contacts.txt */
                 System.out.println("Creating fresh data structures...");
                 this.flush();
+                this.load();     // re-load with user's requested fresh data sets
             }
         }
-        /** contacts.txt is NOT found on disk, so all we need to do is flush the empty data structures to create it */
+
+        /** contacts.txt is NOT found on disk and we ask user whether this is their first time running the program
+         *  if it is, we can just flush new, empty data structures. if not, we know there has been an error */
         else if (!dataOnDisk.exists())
         {
             System.out.println("It appears contacts.txt does not exist! Is this your first run of the program? [y/n]");
@@ -56,8 +59,10 @@ public class ContactManagerImpl implements ContactManager, Serializable
             char answer = in.next().charAt(0);
             if (answer == 'y' || answer == 'Y')     // i.e. it IS their first run of program
             {
+                /** immediately flush() the empty data fields created with the ContactManager object to create contacts.txt */
                 System.out.println("Creating empty data structures for first run of program...");
                 this.flush();
+                this.load();      // load from disk with empty data sets
             }
             else // i.e. some sort of error has occurred
             {
