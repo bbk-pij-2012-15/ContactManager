@@ -33,7 +33,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
          *  OR whether they wish to create a new ContactManager with empty contacts and meeting data */
         if (dataOnDisk.exists())
         {
-            System.out.println("It appears contacts.txt already exists! Would you like to use what is already in it" +
+            System.out.println("contacts.txt found. Would you like to use what is already in it" +
                     " to load your Contact Manager? [y/n]");
             Scanner in = new Scanner(System.in);
             char answer = in.next().charAt(0);
@@ -54,7 +54,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
          *  if it is, we can just flush new, empty data structures. if not, we know there has been an error */
         else if (!dataOnDisk.exists())
         {
-            System.out.println("It appears contacts.txt does not exist! Is this your first run of the program? [y/n]");
+            System.out.println("contacts.txt not found. Is this your first run of the program? [y/n]");
             Scanner in = new Scanner(System.in);
             char answer = in.next().charAt(0);
             if (answer == 'y' || answer == 'Y')     // i.e. it IS their first run of program
@@ -64,7 +64,7 @@ public class ContactManagerImpl implements ContactManager, Serializable
                 this.flush();
                 this.load();      // load from disk with empty data sets
             }
-            else // i.e. some sort of error has occurred
+            else // i.e. it is NOT their first run, so some sort of error has occurred
             {
                 /** call load(), which will throw a FileNotFoundException, giving user more information and possible solutions */
                 this.load();
@@ -411,7 +411,8 @@ public class ContactManagerImpl implements ContactManager, Serializable
         catch (FileNotFoundException fnfex)
         {
             System.err.println("Contacts.txt file not found! Please make sure file and/or directory is readable, and that" +
-                    "\nthat you are in the correct directory, and then try again.");
+                    "\nthat you are in the correct directory, and then try again.\n");
+            fnfex.printStackTrace();
         }
         catch (ClassNotFoundException cnfex)
         {
