@@ -228,6 +228,5 @@ public class MeetingImplTest
 
         Meeting nullErr = MeetingImpl.returnMeeting(mset, 5, 'p');  // give a non-existent id; should return null and print an error
         assertNull(nullErr);
-
     }
 }
