@@ -22,7 +22,7 @@ import java.util.Set;
 public class ContactManagerImpl implements ContactManager, Serializable
 {
     private static File dataOnDisk = new File("./contacts.txt");
-    public Set<Contact> contactSet = new HashSet<Contact>();
+    private Set<Contact> contactSet = new HashSet<Contact>();
     private Set<Meeting> meetingSet = new HashSet<Meeting>();
     private List<FutureMeeting> futureMeetings = new ArrayList<FutureMeeting>();
     private List<PastMeeting> pastMeetings = new ArrayList<PastMeeting>();
